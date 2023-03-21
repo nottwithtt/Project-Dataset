@@ -32,7 +32,7 @@ async function connectToRedis() {
   //let list = await consultConversationsOfUser('1234');
   //console.log(list);
   let mapa = await loadConversation('con-1');
-  console.log(mapa.size);
+  console.log(mapa);
 }
 
 /*
