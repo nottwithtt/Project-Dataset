@@ -14,16 +14,32 @@
                 <div class="d-flex col-1 mt-4 mx-5">
                     <img name="imageUser" src="Images/Icons/noImage.jpg" Style="width: 125px; height: 125px;border-radius: 50%;">
                 </div>
-                <div class="col-11 mt-5">
+                <div class="col-10 mt-5">
                     <p class="display-4" name="nameUsername">User</p>
+                </div>
+                <div class="col-1 mt-4 d-flex justify-content-end">
+                    <button type="button" class="btn-close" aria-label="Close"></button>
                 </div>
             </div>
 
-            <div class="col-11 d-flex mt-5 mx-5">
+            <div class="col-11 d-flex mt-4 mx-5">
+                <div class="d-flex">
+                    <form action="idUser">
+                        <div>
+                            <label for="txtIdUser" class="form-label h5">Id User</label>
+                        </div>
+                        <div>
+                            <input id="txtIdUser" type="text" class="form-control" disabled value="28918289128" style="width: 600px;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-11 d-flex mt-3 mx-5">
                 <div class="d-flex">
                     <form action="name">
                         <div>
-                            <label for="name" class="form-label h5">Name</label>
+                            <label for="txtName" class="form-label h5">Name</label>
                         </div>
                         <div>
                             <input id="txtName" type="text" class="form-control" disabled value="Luisa" style="width: 600px;">
@@ -36,10 +52,10 @@
                 <div class="d-flex">
                     <form action="lastName">
                         <div>
-                            <label for="lastName" class="form-label h5">Last Name</label>
+                            <label for="txtLastName" class="form-label h5">Last Name</label>
                         </div>
                         <div>
-                            <input id="txtName" type="text" class="form-control" disabled value="Vargas Monge" style="width: 600px;">
+                            <input id="txtLastName" type="text" class="form-control" disabled value="Vargas Monge" style="width: 600px;">
                         </div>
                     </form>
                 </div>
@@ -49,20 +65,20 @@
                 <div class="col-6 d-flex">
                     <form action="password">
                         <div>
-                            <label for="password" class="form-label h5">Password</label>
+                            <label for="txtPassword" class="form-label h5">Password</label>
                         </div>
                         <div>
-                            <input id="txtName" type="password" class="form-control" disabled value="password" style="width: 600px;">
+                            <input id="txtPassword" type="password" class="form-control" disabled value="password" style="width: 600px;">
                         </div>
                     </form>
                 </div>
                 <div class="col-5 d-flex">
-                    <form action="relpyPassword" style="display:none;">
+                    <form id="actionReplyPassword" action="replyPassword" style="display:none;">
                         <div>
-                            <label for="relpyPassword" class="form-label h5">Reply Password</label>
+                            <label for="txtReplyPassword" class="form-label h5">Reply Password</label>
                         </div>
                         <div>
-                            <input id="txtName" type="password" class="form-control" disabled value="password" style="width: 600px;">
+                            <input id="txtReplyPassword" type="password" class="form-control" disabled style="width: 600px;">
                         </div>
                     </form>
                 </div>
@@ -73,7 +89,7 @@
                         <form action="birthday">
                             <label for="birthday" class="form-label h5">Birthday</label>
                             <div>
-                                <input id="registerBirthdayDate" type="date" class="date" value="2005-10-22" style="width: 600px; height: 40px;" disabled>
+                                <input id="profileBirthdayDate" type="date" class="date" value="2005-10-22" style="width: 600px; height: 40px;" disabled>
                             </div>
                         </form>
                 </div>
@@ -86,7 +102,7 @@
 
 
                 <div class="d-flex mx-5">
-                    <button onclick="editProfile('btnSaveChanges')"  id="btnSaveChanges" class="btn btn-success" type="button" style="display: none;" >Save Changes</button>
+                    <button onclick="saveChanges('btnSaveChanges')"  id="btnSaveChanges" class="btn btn-success" type="button" style="display: none;" >Save Changes</button>
                 </div>
             </div>
 

@@ -27,8 +27,8 @@
                   <a class="nav-link dropdown-toggle"  id="navFilterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Filter</a>
                   <ul class="dropdown-menu" aria-labelledby="navFilterDropdown">
                     <li><a class="dropdown-item" onclick="filterChange('None')">None</a></li>
-                    <li><a class="dropdown-item" onclick="filterChange('Users')">Users</a></li>
-                    <li><a class="dropdown-item" onclick="filterChange('Datasets')">Datasets</a></li>
+                    <li><a class="dropdown-item" onclick="filterChange('NameDataset')">Name Dataset</a></li>
+                    <li><a class="dropdown-item" onclick="filterChange('DescriptionDataset')">Description Dataset</a></li>
                   </ul>
               </ul>
               <input class="form-control me-2" style="width:500px ;" type="search" placeholder="Search" aria-label="Search">
@@ -103,119 +103,125 @@
 
       <section class="container col" style ="height: 200px">
 
-        <div class="d-flex justify-content-around" Style="height: 350px;">
+        <div class="d-flex flex-row justify-content-around" Style="height: 350px;">
           <div class="col-3 list-group mt-5 mx-5">
             <a href="#" class="container d-flex flex-column list-group-item list-group-item-action ">
                 <div class="d-flex justify-content-center">
                   <img class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
                 </div>
                 <div>
-                  <p class="card-title h6 mx-3">Dataset1</p>
-                  <p class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
+                  <p id="nameD1" class="card-title h6 mx-3">Dataset1</p>
+                  <p id="descriptionD1" class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
                 </div>
 
                 <hr class="mt-2">
                 <div class="col-12 d-flex">
-                  <div class="col-7 d-flex flex-column justify-content-around">
-                    <div><label class="text-secondary mx-3" value="Include 16th march 2023"></label></div>
-                    <div></div>
-                    
-                    
+                  <div class="col-8 d-flex flex-column justify-content-around">
+                    <div><p id="dateIncludeD1" class="text-secondary mx-3">Include 16th march 2023</p></div>
+                    <div><p id="countFilesD1" class="text-secondary mx-3">1 File</p></div>
+                  </div>
 
+                  <div class="col-3 d-flex flex-column justify-content-around">
+                    <div><p id="sizeD1" class="text-secondary mx-3">34mb</p></div>
+
+                    <div class="mx-3">
+                        <div class="card" style="height: 30px; width: 70px;">
+                          <div class=" col-12 d-flex flex-row ">
+                            <div class="col-6">
+                              <p class="text-secondary mt-1 mx-2">4</p>
+                            </div>
+                            <div class="class=6">
+                              <img src="Images/Icons/like.png" style="width: 20px;">
+                            </div>
+                          </div>
+                          
+                        </div>
+                    </div>
                   </div>
                   
                 </div>
             </a>
           </div>
-          <!--
-          <div class=" card col-3 mt-5 d-flex" style="height: 405px;" >
-            <img class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
-            <div class="col-12">
-                <div>
-                    <p class="card-title h6 mx-3">Dataset1</p>
-                </div>
-    
-                <div>
-                    <p class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
-                </div>
-                <hr>
-                <div class="col-12 d-flex">
-                    <div class="col-7 d-flex flex-column justify-content-between">
-                        <div>
-                            <p class="card-text text-secondary mx-3">Include 16th march 2023</p>
-                        </div>
-                        <div >
-                            <p class="card-text text-secondary mx-3"> 1 File</p>
-                        </div>
-                    </div>
-                    <div class="container d-flex flex-column justify-content-between">
-    
-                      <div class="d-flex justify-content-end">
-                        <p class="card-text text-secondary mb-3"> 34mb</p>
-                      </div>
-                      <div class="contenedor d-flex justify-content-end">
-                        <div class="card" style="width: 90px; height: 40px;">
-                          <div class="d-flex flex-row">
-                            <div>
-                              <p class="card-text mx-3 mt-1">4</p>
-                            </div>
-                            <div>
-                              <img class="mt-1 " src="Images/Icons/like.png" height="30px" width="30px">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-          </div>
 
-          <div class=" card col-3 mt-5 d-flex" style="height: 405px;" >
-            <img class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
-            <div class="col-12">
-                <div>
-                    <p class="card-title h6 mx-3">Dataset1</p>
+          <div class="col-3 list-group mt-5 mx-5">
+            <a href="#" class="container d-flex flex-column list-group-item list-group-item-action ">
+                <div class="d-flex justify-content-center">
+                  <img class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
                 </div>
-    
                 <div>
-                    <p class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
+                  <p id="nameD1" class="card-title h6 mx-3">Dataset1</p>
+                  <p id="descriptionD1" class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
                 </div>
-                <hr>
+
+                <hr class="mt-2">
                 <div class="col-12 d-flex">
-                    <div class="col-7 d-flex flex-column justify-content-between">
-                        <div>
-                            <p class="card-text text-secondary mx-3">Include 16th march 2023</p>
-                        </div>
-                        <div >
-                            <p class="card-text text-secondary mx-3"> 1 File</p>
-                        </div>
-                    </div>
-                    <div class="container d-flex flex-column justify-content-between">
-    
-                      <div class="d-flex justify-content-end">
-                        <p class="card-text text-secondary mb-3"> 34mb</p>
-                      </div>
-                      <div class="contenedor d-flex justify-content-end">
-                        <div class="card" style="width: 90px; height: 40px;">
-                          <div class="d-flex flex-row">
-                            <div>
-                              <p class="card-text mx-3 mt-1">4</p>
+                  <div class="col-8 d-flex flex-column justify-content-around">
+                    <div><p id="dateIncludeD1" class="text-secondary mx-3">Include 16th march 2023</p></div>
+                    <div><p id="countFilesD1" class="text-secondary mx-3">1 File</p></div>
+                  </div>
+
+                  <div class="col-3 d-flex flex-column justify-content-around">
+                    <div><p id="sizeD1" class="text-secondary mx-3">34mb</p></div>
+
+                    <div class="mx-3">
+                        <div class="card" style="height: 30px; width: 70px;">
+                          <div class=" col-12 d-flex flex-row ">
+                            <div class="col-6">
+                              <p class="text-secondary mt-1 mx-2">4</p>
                             </div>
-                            <div>
-                              <img class="mt-1 " src="Images/Icons/like.png" height="30px" width="30px">
+                            <div class="class=6">
+                              <img src="Images/Icons/like.png" style="width: 20px;">
                             </div>
                           </div>
+                          
                         </div>
-                      </div>
                     </div>
+                  </div>
+                  
                 </div>
-            </div>
+            </a>
           </div>
-        -->
+          
+          <div class="col-3 list-group mt-5 mx-5">
+            <a href="#" class="container d-flex flex-column list-group-item list-group-item-action ">
+                <div class="d-flex justify-content-center">
+                  <img class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
+                </div>
+                <div>
+                  <p id="nameD1" class="card-title h6 mx-3">Dataset1</p>
+                  <p id="descriptionD1" class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
+                </div>
+
+                <hr class="mt-2">
+                <div class="col-12 d-flex">
+                  <div class="col-8 d-flex flex-column justify-content-around">
+                    <div><p id="dateIncludeD1" class="text-secondary mx-3">Include 16th march 2023</p></div>
+                    <div><p id="countFilesD1" class="text-secondary mx-3">1 File</p></div>
+                  </div>
+
+                  <div class="col-3 d-flex flex-column justify-content-around">
+                    <div><p id="sizeD1" class="text-secondary mx-3">34mb</p></div>
+
+                    <div class="mx-3">
+                        <div class="card" style="height: 30px; width: 70px;">
+                          <div class=" col-12 d-flex flex-row ">
+                            <div class="col-6">
+                              <p class="text-secondary mt-1 mx-2">4</p>
+                            </div>
+                            <div class="class=6">
+                              <img src="Images/Icons/like.png" style="width: 20px;">
+                            </div>
+                          </div>
+                          
+                        </div>
+                    </div>
+                  </div>
+                  
+                </div>
+            </a>
+          </div>
         </div>
-        
       </section>
-
     </div>
   </div>
 
