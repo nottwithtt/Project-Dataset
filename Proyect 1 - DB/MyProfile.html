@@ -10,17 +10,37 @@
 <body>
     <div class="container-fluid" >
         <div class="row">
-            <div class="col-11 d-flex">
-                <div class="d-flex col-1 mt-4 mx-5">
-                    <img name="imageUser" src="Images/Icons/noImage.jpg" Style="width: 125px; height: 125px;border-radius: 50%;">
-                </div>
-                <div class="col-10 mt-5">
-                    <p class="display-4" name="nameUsername">User</p>
-                </div>
-                <div class="col-1 mt-4 d-flex justify-content-end">
+            <div name="closeButton" class="col-12">
+                <div class="d-flex justify-content-end mt-3" style="margin-right: 5vw;">
                     <button type="button" class="btn-close" aria-label="Close"></button>
                 </div>
             </div>
+            
+            <div name="header" class="col-12 d-flex flex-row  justify-content-around" >
+                <div class="d-flex col-1">
+                    <img name="imageUser" src="Images/Icons/noImage.jpg" Style="width: 8vw; height: 8vw;border-radius: 50%;">
+                </div>
+
+                <div class="col-3" style="margin-top: 2vw;">
+                    <p class="display-4" name="nameUsername">User</p>
+                </div>
+
+                <div name="followers" class="col-2 d-flex flex-column" style="margin-top: 3vw;">
+                    <div>
+                        <p class="h4">Followers</p>
+                    </div>
+                    <div><p style="font-size:larger;">1</p></div>
+                </div>
+        
+                <div name="following" class="col-2 d-flex flex-column"  style="margin-top: 3vw;">
+                    <div>
+                        <p class="h4">Following</p>
+                    </div>
+                    <div><p style="font-size:larger;">1</p></div>
+                </div>
+            </div>
+
+            
 
             <div class="col-11 d-flex mt-4 mx-5">
                 <div class="d-flex">
