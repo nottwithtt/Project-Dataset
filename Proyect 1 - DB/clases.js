@@ -1,7 +1,21 @@
-/* Functions of Home */
+/* Functions of Sign In */
 
+function signIn(){
+    let username = document.getElementById('txtUsernameSignIn');
+    let password = document.getElementById('txtPasswordSignIn');
+    let authorizeCorrect = false;
+
+    if (authorizeCorrect){
+        window.open("Home.html");
+    }
+    
+}
+
+
+
+/* Functions of Home */
 function filterChange(filterUser){
-    var filter = document.getElementById('navFilterDropdown');
+    let filter = document.getElementById('navFilterDropdown');
 
     if(filterUser == "Users")
         filter.innerHTML = 'Users';
@@ -27,10 +41,9 @@ function editProfile(ActionButton){
         document.getElementById('txtLastName').disabled=false;
         document.getElementById('txtPassword').disabled=false;
         document.getElementById('txtReplyPassword').disabled=false;
-        document.getElementById('profileBirthdayDate').disabled=false;
     }    
-
 }
+
 
 
 function saveChanges(ActionButton){
@@ -46,7 +59,6 @@ function saveChanges(ActionButton){
         document.getElementById('txtLastName').disabled=true;
         document.getElementById('txtPassword').disabled=true;
         document.getElementById('txtReplyPassword').disabled=true;
-        document.getElementById('profileBirthdayDate').disabled=true;
     }    
 
 }
