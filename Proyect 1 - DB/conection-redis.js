@@ -131,7 +131,7 @@ async function consultConversationsOfUser(idUser){
   return nameConversation;
 }
 
-async function loadConversation(idConversation){
+async function loadMessages(idConversation){
     let mapMessages = new Map();
     
     let keyName = 'mes-' + idConversation + '-';

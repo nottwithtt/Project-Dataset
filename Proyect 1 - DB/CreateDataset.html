@@ -124,7 +124,7 @@
                         </form> 
                     </div>
                     <div>
-                        <input class="form-control mt-2" type="file" id="formFile" accept=".jpg , .png">
+                        <input id="imageDataset" class="form-control mt-2" type="file" id="formFile" accept=".jpg , .png">
                     </div>
                 </div>
             </div>
@@ -132,14 +132,14 @@
             <div class="col-12 d-flex flex-column mt-3">
                 <div>
                     <form action="name">
-                        <label for="txtNameDataset" class="form-label">File</label>
-                        <input id="txtNameDataset" type="file" multiple class="form-control" required style="width: 85.5vw;">
+                        <label for="fileDataset" class="form-label">File</label>
+                        <input id="fileDataset" type="file" multiple class="form-control" required style="width: 85.5vw;">
                     </form>
                 </div>
 
                 <div class="d-flex flex-row mt-5">
                     <div>
-                        <input value="Create Dataset" id="btnCreateDataset" class="btn btn-primary" type="button" >
+                        <input value="Create Dataset" id="btnCreateDataset" onclick="createDataBase()" class="btn btn-primary" type="button" >
                     </div>
                 </div>
             </div>

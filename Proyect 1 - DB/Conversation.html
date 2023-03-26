@@ -97,15 +97,16 @@
             <p class="h2 mb-4" style="font-size: 40px;">Chats</p>
             <div class="d-flex flex-column">
               <div>
-                <input id="newMessage" type="submit" class="btn btn-outline-primary mt-3" value="+" style="border-radius: 50%; margin-left: 66vw; margin-bottom: 1vw;" >
+                <input id="newMessage" onclick="createNewConversationBox()" type="submit" class="btn btn-outline-primary mt-3" value="+" style="border-radius: 50%; margin-left: 66vw; margin-bottom: 1vw;" >
               </div>
             </div>
           </div>
         </div>
 
         <div class="d-flex flex-row" style="margin-left:8vw;">
-          <div class="d-inline-flex  flex-column justify-content-start" >
-            <div class="d-flex justify-content-start" style=" border-radius: 6px; margin-bottom: 1vw; width: 75vw;" >
+          <div id="conversationBoxesDiv" class="d-inline-flex  flex-column justify-content-start" >
+
+            <div id="conversationBox" class="d-flex justify-content-start" style=" border-radius: 6px; margin-bottom: 1vw; width: 75vw;" >
               <a href="" class="d-flex flex-row list-group-item list-group-item-action"">
                 <div>
                   <img src="Images\Home\profile.png" style="width: 2.7vw; margin-right: 1vw;">
@@ -116,54 +117,12 @@
               </a>
             </div>
 
-            <div class="d-flex justify-content-start" style="border-radius: 6px; margin-bottom: 1vw; width: 75vw;" >
-              <a href="" class="d-flex flex-row list-group-item list-group-item-action">
-                <div>
-                  <img src="Images\Home\profile.png" style="width: 2.6vw; margin-right: 1vw;">
-                </div>
-                <div>
-                  <p class="h5 mt-2">UserName</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="d-flex justify-content-start" style="border-radius: 6px; margin-bottom: 1vw; width: 75vw;" >
-              <a href="" class="d-flex flex-row list-group-item list-group-item-action">
-                <div>
-                  <img src="Images\Home\profile.png" style="width: 2.6vw; margin-right: 1vw;">
-                </div>
-                <div>
-                  <p class="h5 mt-2">UserName</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="d-flex justify-content-start" style="border-radius: 6px; margin-bottom: 1vw; width:75vw;" >
-              <a href="" class="d-flex flex-row list-group-item list-group-item-action">
-                <div>
-                  <img src="Images\Home\profile.png" style="width: 2.6vw; margin-right: 1vw;">
-                </div>
-                <div>
-                  <p class="h5 mt-2">UserName</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="d-flex justify-content-start" style="border-radius: 6px;margin-bottom: 1vw; width: 75vw;" >
-              <a href="" class="d-flex flex-row list-group-item list-group-item-action">
-                <div>
-                  <img src="Images\Home\profile.png" style="width: 2.6vw; margin-right: 1vw;">
-                </div>
-                <div>
-                  <p class="h5 mt-2">UserName</p>
-                </div>
-              </a>
-            </div>
           </div>
         </div>
       </div>
     </div>
 
     <script src="bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
+    <script src="clases.js"></script>
   </body>
 </html>

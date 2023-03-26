@@ -12,6 +12,82 @@ function signIn(){
     }
 }
 
+function authorizeAccess(){
+    
+}
+
+/* Function of My Dataset Page */
+
+function loadMyDataSets(){
+
+}
+
+/* Function to create a dataset */
+
+function createDataBase() {
+    let datasetName =  document.getElementById("txtNameDataset");
+    let datasetDescription = document.getElementById("txtDescriptionDataset");
+    let datasetImage = document.getElementById("imageDataset");
+    let datasetFiles = document.getElementById("fileDataset")
+}
+
+
+/* Function for Conversations */
+
+function loadConversation () {
+    /* functions to get all Conversations */
+    /* for to get the conversations one by one */
+    createNewConversationBox(); // (inside the for) create a box for each conversation
+}
+
+function createNewConversationBox() {
+
+    const boxesDiv = document.querySelector("#conversationBoxesDiv");
+    const convBox = document.querySelector("#conversationBox");
+    const newConvBox = convBox.cloneNode(true);
+
+    const usernameText = newConvBox.querySelector("p");
+    const imageBox = newConvBox.querySelector("img");
+
+    usernameText.textContent= "New User";
+    //imageBox.src = newImage;
+
+    boxesDiv.appendChild(newConvBox);
+
+}
+
+
+/* Functions for Messages */
+
+function createNewMessageBox() {
+
+    const messagesDiv = document.querySelector("#messagesDiv");
+    const rightMessageBox = document.querySelector("#rightMessage");
+    const leftMessageBox = document.querySelector("#leftMessage");
+
+    // call function to validate the user, depending of it, the box is printed on the right or left
+
+    //Right Messages
+    const newRightMessageBox = rightMessageBox.cloneNode(true);
+
+    const rightMessageContent = newRightMessageBox.querySelector("p");
+    rightMessageContent.textContent = "Right Message Content";
+
+    messagesDiv.appendChild (newRightMessageBox);
+
+    //Left Messages
+
+    const newLeftMessageBox = leftMessageBox.cloneNode(true);
+
+    const leftMessageContent = newLeftMessageBox.querySelector("p");
+    leftMessageContent.textContent = " Left Message Content";
+
+    messagesDiv.appendChild (newLeftMessageBox);
+
+}
+
+
+
 
 /* Functions of Home */
 function filterChange(filterUser){
