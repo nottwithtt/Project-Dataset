@@ -30,7 +30,7 @@ function createDataBase() {
     let datasetName =  document.getElementById("txtNameDataset");
     let datasetDescription = document.getElementById("txtDescriptionDataset");
     let datasetImage = document.getElementById("imageDataset");
-    let datasetFiles = document.getElementById("fileDataset")
+    let datasetFiles = document.getElementById("fileDataset");
 }
 
 
@@ -61,7 +61,7 @@ function createNewConversationBox() {
 /* Functions for Messages */
 
 function loadMessages () {
-    
+
 }
 
 function createNewMessageBox() {
