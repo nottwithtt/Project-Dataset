@@ -3,12 +3,13 @@
 function signIn(){
     let username = document.getElementById('txtUsernameSignIn');
     let password = document.getElementById('txtPasswordSignIn');
-    let authorizeCorrect = false;
+    let authorizeCorrect = true;
+    // Verify in the database Password and User
 
     if (authorizeCorrect){
-        window.open("Home.html");
+        window.location.href= "Home.html";
+        //Save userMongoId
     }
-    
 }
 
 
