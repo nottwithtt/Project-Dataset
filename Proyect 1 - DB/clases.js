@@ -7,11 +7,10 @@ function signIn(){
     // Verify in the database Password and User
 
     if (authorizeCorrect){
-        window.location.href= "Home.html";
+        window.location.href ="Home.html";
         //Save userMongoId
     }
 }
-
 
 
 /* Functions of Home */
