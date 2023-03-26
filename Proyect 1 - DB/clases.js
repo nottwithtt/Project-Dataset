@@ -1,3 +1,5 @@
+// Using onload ="" can call a function when a window is opened
+
 /* Functions of Sign In */
 
 function signIn(){
@@ -22,7 +24,7 @@ function loadMyDataSets(){
 
 }
 
-/* Function to create a dataset */
+/* Function to Create a Dataset */
 
 function createDataBase() {
     let datasetName =  document.getElementById("txtNameDataset");
@@ -32,11 +34,11 @@ function createDataBase() {
 }
 
 
-/* Function for Conversations */
+/* Functions for Conversations */
 
-function loadConversation () {
+function loadConversations () {
     /* functions to get all Conversations */
-    /* for to get the conversations one by one */
+    /* for cicle to get the conversations one by one */
     createNewConversationBox(); // (inside the for) create a box for each conversation
 }
 
@@ -47,17 +49,20 @@ function createNewConversationBox() {
     const newConvBox = convBox.cloneNode(true);
 
     const usernameText = newConvBox.querySelector("p");
-    const imageBox = newConvBox.querySelector("img");
+    //const imageBox = newConvBox.querySelector("img");
 
     usernameText.textContent= "New User";
     //imageBox.src = newImage;
 
     boxesDiv.appendChild(newConvBox);
-
 }
 
 
 /* Functions for Messages */
+
+function loadMessages () {
+    
+}
 
 function createNewMessageBox() {
 
@@ -65,9 +70,9 @@ function createNewMessageBox() {
     const rightMessageBox = document.querySelector("#rightMessage");
     const leftMessageBox = document.querySelector("#leftMessage");
 
-    // call function to validate the user, depending of it, the box is printed on the right or left
+    /* call function to validate the user, depending of it, the box is printed on the right or left */
 
-    //Right Messages
+    // Right Messages
     const newRightMessageBox = rightMessageBox.cloneNode(true);
 
     const rightMessageContent = newRightMessageBox.querySelector("p");
@@ -75,7 +80,7 @@ function createNewMessageBox() {
 
     messagesDiv.appendChild (newRightMessageBox);
 
-    //Left Messages
+    // Left Messages
 
     const newLeftMessageBox = leftMessageBox.cloneNode(true);
 
