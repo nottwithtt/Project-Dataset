@@ -17,7 +17,7 @@ async function connectToRedis() {
 
 const Redis = require("ioredis");
 
-let client = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1-ruling-falcon-34023.upstash.io:34023");
+let client = new Redis("redis://default:df96baece9df4865ad9f057e8dde97a0@usw1-diverse-sole-34060.upstash.io:34060");
 
 async function connectToRedis() {
   
@@ -31,8 +31,10 @@ async function connectToRedis() {
   //console.log(conver);
   //let list = await consultConversationsOfUser('1234');
   //console.log(list);
-  let mapa = await loadConversation('con-1');
-  console.log(mapa);
+
+  let conversations = await consultConversationsOfUser('1234');
+  console.log(conversations);
+  
 }
 
 /*
@@ -115,20 +117,21 @@ async function consultConversation(idUser1, idUser2){
 
 async function consultConversationsOfUser(idUser){
   let x = await client.keys('*');
-  let nameConversation = [];
+  let conversationsUser = new Map();
 
-  
-  for(let i = 0; i < x.length;i++){
+
+  for(let i = 0; i < x.length ; i++){
     let keyName = x[i];
     if (keyName.substring(0,3) == 'con'){
-      let u1 = await client.hget(x[i],'user1');
-      let u2 = await client.hget(x[i],'user2');
+      let key = x[i];
+      let u1 = await client.hget(key,'user1');
+      let u2 = await client.hget(key,'user2');
       if(idUser == u1 || idUser == u2){
-        nameConversation.push(x[i]);
+        conversationsUser.set(key,{"user1":u1,"user2":u2});
       }
     }
   }
-  return nameConversation;
+  return conversationsUser;
 }
 
 async function loadMessages(idConversation){
