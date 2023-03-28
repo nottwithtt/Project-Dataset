@@ -3,7 +3,7 @@ function createNewCard (){;
   const datasetCardDiv = document.querySelector("#cardDiv");
 
   var datasetCardStructure = `
-  <div id="dataSetCard" class="col-3 list-group mt-5 mx-5">
+  <div id="dataSetCard1" class="col-3 list-group mt-5 mx-5">
     <a href="#" onclick="createNewCard()" class="container d-flex flex-column list-group-item list-group-item-action ">
       <div class="d-flex justify-content-center">
         <img id="datasetImage" class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
@@ -41,7 +41,6 @@ function createNewCard (){;
   </a>
   </div>
   `;
-
-  datasetCardDiv.insertAdjacentHTML("afterbegin", datasetCardStructure);
+  
 
 }
