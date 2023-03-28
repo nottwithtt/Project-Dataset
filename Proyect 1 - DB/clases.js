@@ -31,6 +31,7 @@ function editActiveUser(idUser,name,lastName,password,photo){
 function signIn(){
     let username = document.getElementById('txtUsernameSignIn');
     let password = document.getElementById('txtPasswordSignIn');
+    exampleSession();
     let authorizeCorrect = true;
     // Verify in the database Password and User
 
@@ -43,6 +44,48 @@ function signIn(){
 function authorizeAccess(){
     
 }
+
+/* Functions of Register */
+
+
+function changeRegisterImage(){
+
+    var file = document.getElementById("buttonUploadRegisterPhoto").files[0];
+    var img = URL.createObjectURL(file);
+
+    document.getElementById("registerPhoto").src= img;
+}
+
+function register(){
+    let name = document.getElementById("registerNameTxt").value;
+    let lastName = document.getElementById("registerLastNameTxt").value;
+    let username = document.getElementById("registerUsernameTxt").value;
+    let birthday = document.getElementById("registerBirthdayDate").value;
+
+    updateActiveUser(name,lastName,username,birthday,photo);
+}
+
+
+/* Functions of Home */
+
+function filterChange(filterUser){
+    let filter = document.getElementById('navFilterDropdown');
+
+    if(filterUser == "Users")
+        filter.innerHTML = 'Users';
+    if(filterUser == "NameDataset")
+        filter.innerHTML = 'Name Dataset';
+    if(filterUser == "DescriptionDataset")
+        filter.innerHTML = 'Description Dataset';
+    if(filterUser == "None")
+        filter.innerHTML = 'Filter';
+}
+
+function changeInfoUser(){
+    let homeUser = document.getElementById('homeUsername');
+    homeUser.innerText = sessionStorage.getItem("username");
+}
+
 
 /* Function of My Dataset Page */
 
@@ -120,19 +163,7 @@ function createNewMessageBox() {
 
 
 
-/* Functions of Home */
-function filterChange(filterUser){
-    let filter = document.getElementById('navFilterDropdown');
 
-    if(filterUser == "Users")
-        filter.innerHTML = 'Users';
-    if(filterUser == "NameDataset")
-        filter.innerHTML = 'Name Dataset';
-    if(filterUser == "DescriptionDataset")
-        filter.innerHTML = 'Description Dataset';
-    if(filterUser == "None")
-        filter.innerHTML = 'Filter';
-}
   
 /* Functions of Profile */
 function editProfile(ActionButton){
