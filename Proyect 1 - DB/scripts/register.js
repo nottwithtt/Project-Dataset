@@ -1,3 +1,4 @@
+src="session.js";
 
 function changeRegisterImage(){
 
@@ -12,6 +13,11 @@ function register(){
     let lastName = document.getElementById("registerLastNameTxt").value;
     let username = document.getElementById("registerUsernameTxt").value;
     let birthday = document.getElementById("registerBirthdayDate").value;
+    let photo = "1234";
+    
+    // Insert the password and infoUser in the database.
+    // createUser(name,lastName,username,birthday,photo);
 
-    updateActiveUser(name,lastName,username,birthday,photo);
+    updateActiveUser(name,lastName,userName,birthday,photo);
+
 }
