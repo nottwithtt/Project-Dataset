@@ -25,5 +25,3 @@ function editActiveUser(idUser,name,lastName,password,photo){
     sessionStorage.setItem("photo", photo);
 }
 
-
-
