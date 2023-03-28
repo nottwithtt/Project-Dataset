@@ -17,7 +17,7 @@ async function connectToRedis() {
 
 const Redis = require("ioredis");
 
-let client = new Redis("redis://default:df96baece9df4865ad9f057e8dde97a0@usw1-diverse-sole-34060.upstash.io:34060");
+let client = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1-ruling-falcon-34023.upstash.io:34023");
 
 async function connectToRedis() {
   
