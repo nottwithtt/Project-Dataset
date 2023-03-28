@@ -120,11 +120,15 @@
                     <div>
                         <form action="name">
                             <label for="txtImageDataset" class="form-label">Image</label>
-                            <input id="txtImageDataset" type="text" class="form-control" required style="height: 15vw;">
+                            <div class="card">
+                              <div class="card-img">
+                                  <img id="imageDataSet" src="Images\Icons\noImage.jpg" id="dataSetImage"  style=" width: 27.56vw; height: 20vw;">
+                              </div>
+                            </div>
                         </form> 
                     </div>
                     <div>
-                        <input id="imageDataset" class="form-control mt-2" type="file" id="formFile" accept=".jpg , .png">
+                        <input id="imageDataSetForm" class="form-control mt-2" onchange="uploadPhoto()" type="file" id="formFile" accept=".jpg , .png">
                     </div>
                 </div>
             </div>
@@ -139,7 +143,7 @@
 
                 <div class="d-flex flex-row mt-5">
                     <div>
-                        <input value="Create Dataset" id="btnCreateDataset" onclick="createDataBase()" class="btn btn-primary" type="button" >
+                        <input value="Create Dataset" id="btnCreateDataset" onclick="createDataSetTest()" class="btn btn-primary" type="button" >
                     </div>
                 </div>
             </div>
@@ -149,5 +153,6 @@
 
   <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
   <script src="clases.js"></script>
+  <script src="createDataSetTest.js"></script>
 </body>
 </html>
