@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View User</title>
+
+    <link rel="stylesheet" href="../bootstrap-5.0.2-dist/css/bootstrap.min.css">
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div name="closeButton" class="col-12">
+                <div class="d-flex justify-content-end mt-4" style="margin-right: 5vw;">
+                    <button type="button" class="btn-close" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <div name="header" class="col-12 d-flex flex-row justify-content-around">
+                <div name="imageUser" class="col d-flex mx-5 mt-2">
+                    <div>
+                        <img src="Images/Icons/noImage.jpg" style="height: 8vw; width: 8vw; border-radius: 50%;">
+                    </div>
+                </div>
+                <div name="nameUser" class="col-3 m-auto">
+                    <p class="h2 mx-5">lu123Vargas</p>
+                </div>
+
+                <div class="col-2 m-auto">
+                    <input value="Follow"  id="btnEditProfile" class="btn btn-primary" type="button" >
+                </div>
+        
+                <div name="followers" class="col-2 d-flex flex-column" style="margin-top: 2.3vw;">
+                    <div>
+                        <p class="h4">Followers</p>
+                    </div>
+                    <div><p style="font-size:larger;">1</p></div>
+                </div>
+        
+                <div name="following" class="col-2 d-flex flex-column"  style="margin-top: 2.3vw;">
+                    <div>
+                        <p class="h4">Following</p>
+                    </div>
+                    <div><p style="font-size:larger;">1</p></div>
+                </div>
+            </div>
+
+            <div name="infoUser" class="col">
+                <div name="nameUser d-flex flex-column" style="margin-left: 4vw; margin-top: 3vw;">
+                    <div>
+                        <p class="h4">Name</p>
+                    </div>
+                    <div>
+                        <p style="font-size:large"> Luisa</p>
+                    </div>
+                </div>
+
+                <div name="nameUser d-flex flex-column" style="margin-left: 4vw; margin-top: 3vw;">
+                    <div>
+                        <p class="h4">LastName</p>
+                    </div>
+                    <div>
+                        <p style="font-size:large"> Vargas Monge</p>
+                    </div>
+                </div>
+
+                <div name="nameUser d-flex flex-column" style="margin-left: 4vw; margin-top: 3vw;">
+                    <div>
+                        <p class="h4">Date of birth</p>
+                    </div>
+                    <div>
+                        <p style="font-size:large"> 13/11/2000</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="mt-5 mb-2">
+
+            <div name="datasetsUser" class="col-12" style="margin-bottom: 100px;">
+                <div>
+                    <p class="h3" style="margin-left: 4vw; margin-top: 2vw;">User datasets</p>
+                </div>
+                
+                <div name="datasets" class="d-flex flex-row justify-content-around" Style="height: 350px;">
+                    <div class="col-3 list-group mt-5 mx-5">
+                        <a href="#" class="container d-flex flex-column list-group-item list-group-item-action ">
+                            <div class="d-flex justify-content-center">
+                              <img class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
+                            </div>
+                            <div class="col-12 d-flex flex-row">
+                              <div class="col-10 d-flex flex-column">
+                                <p id="nameD1" class="card-title h6 mx-3">Dataset1</p>
+                                <p id="descriptionD1" class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
+                              </div>
+                              <div class="col-1 ">
+                                <img src="Images/Icons/noImage.jpg" style="width: 4vw; height: 4vw; border-radius: 50%; ">
+                              </div>
+                            </div>
+            
+                            <hr class="mt-2">
+                            <div class="col-12 d-flex">
+                              <div class="col-8 d-flex flex-column justify-content-around">
+                                <div><p id="dateIncludeD1" class="text-secondary mx-3">Include 16th march 2023</p></div>
+                                <div><p id="countFilesD1" class="text-secondary mx-3">1 File</p></div>
+                              </div>
+            
+                              <div class="col-3 d-flex flex-column justify-content-around">
+                                <div><p id="sizeD1" class="text-secondary mx-3">34mb</p></div>
+            
+                                <div class="mx-3">
+                                    <div class="card" style="height: 30px; width: 70px;">
+                                      <div class=" col-12 d-flex flex-row ">
+                                        <div class="col-6">
+                                          <p class="text-secondary mt-1 mx-2">4</p>
+                                        </div>
+                                        <div class="class=6">
+                                          <img src="Images/Icons/like.png" style="width: 20px;">
+                                        </div>
+                                      </div>
+                                      
+                                    </div>
+                                </div>
+                              </div>
+                              
+                            </div>
+                        </a>
+                    </div>
+          
+                    <div class="col-3 list-group mt-5 mx-5">
+                        <a href="#" class="container d-flex flex-column list-group-item list-group-item-action ">
+                            <div class="d-flex justify-content-center">
+                              <img class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
+                            </div>
+                            <div class="col-12 d-flex flex-row">
+                              <div class="col-10 d-flex flex-column">
+                                <p id="nameD1" class="card-title h6 mx-3">Dataset1</p>
+                                <p id="descriptionD1" class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
+                              </div>
+                              <div class="col-1 ">
+                                <img src="Images/Icons/noImage.jpg" style="width: 4vw; height: 4vw; border-radius: 50%; ">
+                              </div>
+                            </div>
+            
+                            <hr class="mt-2">
+                            <div class="col-12 d-flex">
+                              <div class="col-8 d-flex flex-column justify-content-around">
+                                <div><p id="dateIncludeD1" class="text-secondary mx-3">Include 16th march 2023</p></div>
+                                <div><p id="countFilesD1" class="text-secondary mx-3">1 File</p></div>
+                              </div>
+            
+                              <div class="col-3 d-flex flex-column justify-content-around">
+                                <div><p id="sizeD1" class="text-secondary mx-3">34mb</p></div>
+            
+                                <div class="mx-3">
+                                    <div class="card" style="height: 30px; width: 70px;">
+                                      <div class=" col-12 d-flex flex-row ">
+                                        <div class="col-6">
+                                          <p class="text-secondary mt-1 mx-2">4</p>
+                                        </div>
+                                        <div class="class=6">
+                                          <img src="Images/Icons/like.png" style="width: 20px;">
+                                        </div>
+                                      </div>
+                                      
+                                    </div>
+                                </div>
+                              </div>
+                              
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="col-3 list-group mt-5 mx-5">
+                        <a href="#" class="container d-flex flex-column list-group-item list-group-item-action ">
+                            <div class="d-flex justify-content-center">
+                              <img class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
+                            </div>
+                            <div class="col-12 d-flex flex-row">
+                              <div class="col-10 d-flex flex-column">
+                                <p id="nameD1" class="card-title h6 mx-3">Dataset1</p>
+                                <p id="descriptionD1" class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
+                              </div>
+                              <div class="col-1 ">
+                                <img src="Images/Icons/noImage.jpg" style="width: 4vw; height: 4vw; border-radius: 50%; ">
+                              </div>
+                            </div>
+            
+                            <hr class="mt-2">
+                            <div class="col-12 d-flex">
+                              <div class="col-8 d-flex flex-column justify-content-around">
+                                <div><p id="dateIncludeD1" class="text-secondary mx-3">Include 16th march 2023</p></div>
+                                <div><p id="countFilesD1" class="text-secondary mx-3">1 File</p></div>
+                              </div>
+            
+                              <div class="col-3 d-flex flex-column justify-content-around">
+                                <div><p id="sizeD1" class="text-secondary mx-3">34mb</p></div>
+            
+                                <div class="mx-3">
+                                    <div class="card" style="height: 30px; width: 70px;">
+                                      <div class=" col-12 d-flex flex-row ">
+                                        <div class="col-6">
+                                          <p class="text-secondary mt-1 mx-2">4</p>
+                                        </div>
+                                        <div class="class=6">
+                                          <img src="Images/Icons/like.png" style="width: 20px;">
+                                        </div>
+                                      </div>
+                                      
+                                    </div>
+                                </div>
+                              </div>
+                              
+                            </div>
+                        </a>
+                    </div>
+                    
+                  </div>
+
+            </div>
+
+        </div>
+    </div>        
+    
+    <script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../scripts/viewUser.js"></script>
+    <script src="../scripts/session.js"></script>
+</body>
+</html>

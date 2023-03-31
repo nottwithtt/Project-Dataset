@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Datasets</title>
+    <link rel="stylesheet" href="../bootstrap-5.0.2-dist/css/bootstrap.min.css">
+</head>
+<body>
+
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2a2d3b;">
+      <div class="container-fluid">
+        
+        <a class="navbar-brand" href="#">Navbar</a>
+  
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          
+          <div class="container-fluid d-flex justify-content-between">
+            <div  class="d-flex">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li id="filterButtonHome" class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle"  id="navFilterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Filter</a>
+                  <ul class="dropdown-menu" aria-labelledby="navFilterDropdown">
+                    <li><a class="dropdown-item" onclick="filterChange('None')">None</a></li>
+                    <li><a class="dropdown-item" onclick="filterChange('Users')">Users</a></li>
+                    <li><a class="dropdown-item" onclick="filterChange('NameDataset')">Name Dataset</a></li>
+                    <li><a class="dropdown-item" onclick="filterChange('DescriptionDataset')">Description Dataset</a></li>
+                  </ul>
+              </ul>
+              <input class="form-control me-2" style="width:500px ;" type="search" placeholder="Search" aria-label="Search">
+              <div>
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </div>
+            </div>
+  
+            <div class="d-flex">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex">
+                <li id="homeWindow" class="nav-item mx-3">
+                  <a class="nav-link" aria-current="page" href="#">Home</a>
+                </li>
+      
+                <li id="datasetsButtonHome" class="nav-item dropdown mx-3">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Datasets
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">My datasets</a></li>
+                    <li><a class="dropdown-item" href="#">Create dataset</a></li>
+                  </ul>
+                </li>
+      
+                <li id="messageButtonHome" class="nav-item mx-3">
+                  <a class="nav-link" href="#">Messages</a>
+                </li>
+              </ul>
+            </div>
+  
+            <div class="d-flex">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                
+                <li id="datasetsButtonHome" class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle nav-link-dark" style="margin-right: 20px;" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Account
+                  </a>
+
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="#">Sign Out</a></li>
+                  </ul>
+                </li>
+
+                <li>
+                  <img class="dropdown-toggle" name="imageUser" data-toggle="downtownAccount" src="Images/icons/noImage.jpg" Style="width: 40px; height: 40px;border-radius: 50%;" >
+                </li>
+
+              </ul>
+                
+            </div>
+  
+          </div>
+          
+          
+  
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container-fluid">
+    <div class="row">
+        <div name="title" class="col-11 d-flex" Style="margin-top: 3vw; margin-left: 4vw;">
+            <div>
+                <p class="h1">Create a dataset</p>
+            </div>
+        </div>
+
+        <div name="structure" class="col-11 d-flex flex-column" style="margin-left: 4vw; margin-right: 4vw;">
+            <div class="col-11 d-flex flex-row mt-3">
+                <div class="col-8 d-flex flex-column">
+                    <div>
+                        <form action="name">
+                            <label for="txtNameDataset" class="form-label">Name</label>
+                            <input id="txtNameDataset" type="text" class="form-control" required>
+                        </form>
+                    </div>
+
+                    <div class="mt-4">
+                        <form action="description">
+                            <label for="txtDescriptionDataset" class="form-label">Description</label>
+                            <input id="txtDescriptionDataset" type="textarea" class="form-control" style="height: 12vw;" required>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-4 d-flex flex-column" style="margin-left: 3vw;">
+                    <div>
+                        <form action="name">
+                            <label for="txtImageDataset" class="form-label">Image</label>
+                            <div class="card">
+                              <div class="card-img">
+                                  <img id="imageDataSet" src="Images\Icons\noImage.jpg" id="dataSetImage"  style=" width: 27.56vw; height: 20vw;">
+                              </div>
+                            </div>
+                        </form> 
+                    </div>
+                    <div>
+                        <input id="imageDataSetForm" class="form-control mt-2" onchange="uploadPhoto()" type="file" id="formFile" accept=".jpg , .png">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 d-flex flex-column mt-3">
+                <div>
+                    <form action="name">
+                        <label for="fileDataset" class="form-label">File</label>
+                        <input id="fileDataset" type="file" multiple class="form-control" required style="width: 85.5vw;">
+                    </form>
+                </div>
+
+                <div class="d-flex flex-row mt-5">
+                    <div>
+                        <input value="Create Dataset" id="btnCreateDataset" onclick="createDataSetTest()" class="btn btn-primary" type="button" >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../scripts/createDataSet.js"></script>
+  <script src="../scripts/session.js"></script>
+</body>
+</html>

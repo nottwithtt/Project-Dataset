@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Datasets</title>
+    <link rel="stylesheet" href="../bootstrap-5.0.2-dist/css/bootstrap.min.css">
+</head>
+<body>
+
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2a2d3b;">
+      <div class="container-fluid">
+        
+        <a class="navbar-brand" href="#">Navbar</a>
+  
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          
+          <div class="container-fluid d-flex justify-content-between">
+            <div  class="d-flex">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li id="filterButtonHome" class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle"  id="navFilterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Filter</a>
+                  <ul class="dropdown-menu" aria-labelledby="navFilterDropdown">
+                    <li><a class="dropdown-item" onclick="filterChange('None')">None</a></li>
+                    <li><a class="dropdown-item" onclick="filterChange('Users')">Users</a></li>
+                    <li><a class="dropdown-item" onclick="filterChange('NameDataset')">Name Dataset</a></li>
+                    <li><a class="dropdown-item" onclick="filterChange('DescriptionDataset')">Description Dataset</a></li>
+                  </ul>
+              </ul>
+              <input class="form-control me-2" style="width:500px ;" type="search" placeholder="Search" aria-label="Search">
+              <div>
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </div>
+            </div>
+  
+            <div class="d-flex">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex">
+                <li id="homeWindow" class="nav-item mx-3">
+                  <a class="nav-link" aria-current="page" href="#">Home</a>
+                </li>
+      
+                <li id="datasetsButtonHome" class="nav-item dropdown mx-3">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Datasets
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">My datasets</a></li>
+                    <li><a class="dropdown-item" href="#">Create dataset</a></li>
+                  </ul>
+                </li>
+      
+                <li id="messageButtonHome" class="nav-item mx-3">
+                  <a class="nav-link" href="#">Messages</a>
+                </li>
+              </ul>
+            </div>
+  
+            <div class="d-flex">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                
+                <li id="datasetsButtonHome" class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle nav-link-dark" style="margin-right: 20px;" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Account
+                  </a>
+
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="#">Sign Out</a></li>
+                  </ul>
+                </li>
+
+                <li>
+                  <img class="dropdown-toggle" name="imageUser" data-toggle="downtownAccount" src="Images/icons/noImage.jpg" Style="width: 40px; height: 40px;border-radius: 50%;" >
+                </li>
+
+              </ul>
+                
+            </div>
+  
+          </div>
+          
+          
+  
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container-fluid">
+    <div class="row">
+      <section class="col-11 mx-5 mt-4 d-flex" Style="height: 50px">
+        <div class="col-11">
+            <p class="display-6">Results</p>
+        </div>
+      </section>
+
+      <section class="container col" style ="height: 200px">
+
+        <div id="cardDiv" class="d-flex flex-wrap justify-content-start" Style="height: 350px;">
+
+          <div id="dataSetCard" class="col-3 list-group mt-5 mx-5">
+            <a href="#" onclick="createNewCard()" class="container d-flex flex-column list-group-item list-group-item-action ">
+                <div class="d-flex justify-content-center">
+                  <img id="datasetImage" class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
+                </div>
+                <div>
+                  <p id="nameD1" class="card-title h6 mx-3">Dataset1</p>
+                  <p id="descriptionD1" class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
+                </div>
+
+                <hr class="mt-2">
+                <div class="col-12 d-flex">
+                  <div class="col-8 d-flex flex-column justify-content-around">
+                    <div><p id="dateIncludeD1" class="text-secondary mx-3">Include 16th march 2023</p></div>
+                    <div><p id="countFilesD1" class="text-secondary mx-3">1 File</p></div>
+                  </div>
+
+                  <div class="col-3 d-flex flex-column justify-content-around">
+                    <div><p id="sizeD1" class="text-secondary mx-3">34mb</p></div>
+
+                    <div class="mx-3">
+                        <div class="card" style="height: 30px; width: 70px;">
+                          <div class=" col-12 d-flex flex-row ">
+                            <div class="col-6" >
+                              <p id="dataSetLikes" class="text-secondary mt-1 mx-2">4</p>
+                            </div>
+                            <div class="class=6">
+                              <img src="Images/Icons/like.png" style="width: 20px;">
+                            </div>
+                          </div>
+                          
+                        </div>
+                    </div>
+                  </div>
+                  
+                </div>
+            </a>
+          </div>
+          
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../components/datasetBox.js"></script>
+  <script src="../scripts/searchDatasets.js"></script>
+  <script src="../scripts/session.js"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+</body>
+</html>
