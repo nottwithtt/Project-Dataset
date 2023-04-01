@@ -29,12 +29,23 @@ const FileSaver  = require('file-saver');
 const Redis = require("ioredis");
 const redisDB = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1-ruling-falcon-34023.upstash.io:34023");
 
+const mysql = require('mysql2');
+const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
+
 
 //Variables para conectarse a mysql
 //const mysql = require('mysql2')
 //const connection = mysql.createConnection('mysql://4eme3kqqx4ueltv2mfzj:pscale_pw_L5cO1mxvZ83BMQUwcEYLLMWdEPBPMkrbQE7nB9TEK7t@us-east.connect.psdb.cloud/project?ssl={"rejectUnauthorized":true}')
 
-app.listen(3001,()=>{
+
+async function subirFoto(foto){
+    connection.query(`INSERT INTO comments(name) VALUES('Hola',${foto})`);
+    console.log('upload correctly!');
+}
+subirFoto();
+
+
+app.listen(3000,()=>{
     console.log('app listening in port 3000');
 });
 
@@ -66,13 +77,59 @@ app.set('view engine','html');
 
 app.use(express.static(__dirname+'/'));
 
+// # # # # # # # VALUES HTML # # # # # # #
+
 app.get('/',(req,res)=>{
-    res.sendFile(__dirname+'/public/home.html');
+    res.sendFile(__dirname+'/public/SignIn.html');
 });
 
-app.get('/messages',(req,res)=>{
-    res.sendFile(__dirname+'/messages.html');
+app.get('/Register',(req,res)=>{
+    res.sendFile(__dirname+'/public/Register.html');
 });
+
+app.get('/Home',(req,res)=>{
+    res.sendFile(__dirname+'/public/Home.html');
+});
+
+app.get('/SearchDatasets',(req,res)=>{
+    res.sendFile(__dirname+'/public/SearchDatasets.html');
+});
+
+app.get('/SearchUsers',(req,res)=>{
+    res.sendFile(__dirname+'/public/SearchUsers.html');
+});
+
+app.get('/MyDatasets',(req,res)=>{
+    res.sendFile(__dirname+'/public/MyDatasets.html');
+});
+
+app.get('/CreateDataset',(req,res)=>{
+    res.sendFile(__dirname+'/public/CreateDataset.html');
+});
+
+app.get('/ViewDataset',(req,res)=>{
+    res.sendFile(__dirname+'/public/ViewDataset.html');
+});
+
+app.get('/ViewUser',(req,res)=>{
+    res.sendFile(__dirname+'/public/ViewUser.html');
+});
+
+app.get('/Conversations',(req,res)=>{
+    res.sendFile(__dirname+'/public/Conversations.html');
+});
+
+app.get('/Messages',(req,res)=>{
+    res.sendFile(__dirname+'/public/Messages.html');
+});
+
+app.get('/MyProfile',(req,res)=>{
+    res.sendFile(__dirname+'/public/MyProfile.html');
+});
+
+
+
+// # # # # # # # END VALUES # # # # # # #
 
 
 let id;
