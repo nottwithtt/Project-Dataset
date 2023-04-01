@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--favicon-->
+    <link rel="icon" href="../Images/Icons/Isotipo.ico" type="ico" sizes="48x48">
+    <title>Home</title>
+    <link rel="stylesheet" href="bootstrap-5.0.2-dist/css/bootstrap.min.css">
+</head>
+<body onload= "changeInfoUser()">
+  <!-- NAV VAR -->
+  <header>
+    <!-- NAV-->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2a2d3b;">
+      <div class="container-fluid">
+        <!-- LOGO NAVBAR -->
+        <div>
+          <img src="../Images/Icons/Isotipo.png" Style="width: 2.5vw; height: 2.5vw;">
+        </div>
+        <!-- NAME NAVBAR -->
+        <a class="navbar-brand">Dataford</a>
+        
+        <!-- RESPONSIVE BUTTON -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- RESPONSIVE TOOLBAR -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="container-fluid d-flex justify-content-between">
+            <!-- DIV SEARCHER -->
+            <div  class="d-flex" name="searcher">
+              <!-- FILTER BUTTON -->
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li id="filterButtonHome" class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle"  id="navFilterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Filter</a>
+                  <ul class="dropdown-menu" aria-labelledby="navFilterDropdown">
+                    <li><a class="dropdown-item" onclick="FilterChange('None')">None</a></li>
+                    <li><a class="dropdown-item" onclick="FilterChange('Users')">Users</a></li>
+                    <li><a class="dropdown-item" onclick="FilterChange('NameDataset')">Name Dataset</a></li>
+                    <li><a class="dropdown-item" onclick="FilterChange('DescriptionDataset')">Description Dataset</a></li>
+                  </ul>
+              </ul>
+
+              <!-- SEARCH FORM -->
+              <!-- ID = txtSearchNavbar -->
+              <input id="txtSearchNavbar" class="form-control me-2" style="width:500px ;" type="search" placeholder="Search" aria-label="Search">
+              
+              <!-- SEARCH BUTTON -->
+              <!-- ID = searchButtonNavbar -->
+              <div>
+                <button id="searchButtonNavbar" class="btn btn-outline-success" onclick="Search()" type="submit">Search</button>
+              </div>
+            </div>
+            
+            <!-- OPTIONS -->
+            <div class="d-flex">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex">
+
+                <!-- BUTTON HOME -->
+                <li id="homeWindow" class="nav-item mx-3">
+                  <a class="nav-link" aria-current="page" href="/Home">Home</a>
+                </li>
+
+                <!-- DROPDOWN BUTTON DATASETS -->
+                <!-- ID = datasetsButtonHome -->
+                <li id="datasetsButtonHome" class="nav-item dropdown mx-3">
+                  <a class="nav-link dropdown-toggle" href="/Datasets" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Datasets
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <!-- BUTTON MYDATASETS -->
+                    <li><a class="dropdown-item" href="/MyDatasets">My datasets</a></li>
+
+                    <!-- BUTTON CREATEDATASET -->
+                    <li><a class="dropdown-item" href="/CreateDataset">Create dataset</a></li>
+                  </ul>
+                </li>
+                
+                <!-- BUTTON MESSAGES -->
+                <li id="messageButtonHome" class="nav-item mx-3">
+                  <a class="nav-link" href="/Conversations">Conversations</a>
+                </li>
+              </ul>
+            </div>
+  
+            <div class="d-flex">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                
+                <li id="datasetsButtonHome" class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle nav-link-dark" style="margin-right: 20px;" href="/MyProfile" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Account
+                  </a>
+
+                  
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <!-- BUTTON MYPROFILE -->
+                    <li><a class="dropdown-item" href="/MyProfile">Profile</a></li>
+
+                    <!-- BUTTON SIGNOUT -->
+                    <li><a class="dropdown-item" onclick="SignOut()">Sign Out</a></li>
+                  </ul>
+                </li>
+                
+                <!-- BUTTON ACCOUNT -->
+                <li>
+                  <img class="dropdown-toggle" name="imageUser" data-toggle="downtownAccount" src="Images/icons/noImage.jpg" Style="width: 40px; height: 40px;border-radius: 50%;" >
+                </li>
+
+              </ul>
+                
+            </div>
+  
+          </div>
+          
+          
+  
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- PRINCIPAL CONTAINER -->
+  <div class="container-fluid">
+    <div class="row">
+      <section class="col-12" Style="height: 600px">
+        <div class="d-flex justify-content-center" style="margin-top: 225px;">
+          <!-- USER WELCOME -->
+          <!-- ID =  usernameHome-->
+          <p class="h1">WELCOME&nbsp</p> <p class="h1 " id="usernameHome">user</p><p class="h1">!</p>
+        </div>
+        <div class="d-flex justify-content-center">
+          <p class="h4">Enjoy our site, start by creating some datasets and share them with your friends.</p>
+        </div>
+        
+      </section>
+
+      <section class="container col" style ="height: 600px; background-color: #f3f3f3;">
+        <div class="col-12 d-flex justify-content-center" style="margin-top: 70px;">
+          <p class="display-6">Functions</p>
+        </div>
+
+        <div class="d-flex justify-content-around">
+          <div class=" card col-3 mt-5 d-flex" Style="background-color: #f3f3f3; border: none;">
+            <img class="card-img-top mx-auto" src="../Images/Home/Comments.png" Style="width: 50%">
+            <p class="card-title h5 text-primary mx-auto">Create datasets</p>
+            <p class="card-text text-secondary mx-auto">.txt - .pdf - .mp4 - others</p>
+          </div>
+          <div class=" card col-3 mt-5 d-flex" Style="background-color: #f3f3f3; border: none;">
+            <img class="card-img-top mx-auto" src="../Images/Home/Comments.png" Style="width: 50%">
+            <p class="card-title h5 text-primary mx-auto">Comments datasets</p>
+            <p class="card-text text-secondary mx-auto">Write to other users</p>
+          </div>
+          <div class=" card col-3 mt-5 d-flex" Style="background-color: #f3f3f3; border: none;">
+            <img class="card-img-top mx-auto" src="../Images/Home/dataset_logo.png" Style="width: 50%">
+            <p class="card-title h5 text-primary mx-auto">Discover datasets</p>
+            <p class="card-text text-secondary mx-auto">See what your friends shared</p>
+          </div>
+        </div>
+        
+      </section>
+
+    </div>
+  </div>
+
+  <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../scripts/home.js"></script>
+  <script src="../scripts/navbar.js"></script>
+  <script src="../scripts/session.js"></script>
+  
+</body>
+</html>
