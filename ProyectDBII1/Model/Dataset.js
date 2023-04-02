@@ -5,8 +5,10 @@ const DatasetSchema = new Schema({
     name: String,
     description: String,
     archivosDataset: Array,
-    DateOfInsert: {type: Date,
-    default: new Date()},
+    DateOfInsert: {
+        type: Date,
+        default: new Date()
+    },
     PhotoDataSet: ObjectId
 });
 

@@ -14,6 +14,7 @@ const JSZIP = require('jszip');
 const fileSaver = require('file-saver');
 const Dataset = require('./Model/Dataset.js');
 const User = require('./Model/User.js');
+const Notification = require('./Model/Notification.js');
 const mongoDB = require('mongodb');
 const fs = require('fs');
 const stream = require('stream');
@@ -32,6 +33,7 @@ const Redis = require("ioredis");
 const redisDB = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1-ruling-falcon-34023.upstash.io:34023");
 
 const mysql = require('mysql2');
+const { ObjectID } = require('mongodb');
 const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
 
 
@@ -63,6 +65,7 @@ const storage = new GridFsStorage({ db: conn,
 let gfs;
 
 conn.once('open',()=>{
+    console.log('Open');
     gfs = new mongoDB.GridFSBucket(conn.db, {bucketName: 'files'});
 });
 
@@ -134,6 +137,40 @@ app.post('/encryptPassword',bodyParser.json(),async (req,res)=>{
     let arrayUsers = await searchAllUsers();
     let response = await isUser(arrayUsers,req.body.userName,req.body.Password);
     res.json({"answer": response});
+})
+
+app.post('/uploadPhotoDataset',upload.single('photoDataset'),async (req,res)=>{
+    let fileId = req.file.id;
+    res.json({"answer":fileId});
+})
+
+app.post('/uploadFilesDataset',upload.array('filesDataset'),(req,res)=>{
+    let files = req.files;
+    let ids = [];
+    for(let i =0;i<files.length;i++){
+        ids.push(files[i].id);
+    }
+    res.json({"answer":ids});
+})
+
+app.post('/uploadDataset',bodyParser.json(),async (req,res)=>{
+    let nameDataset = req.body.nameDataset;
+    let descriptionDataset = req.body.description;
+    let filesDataset = req.body.archivosDataset;
+    let photoDataSet = req.body.photoDataset;
+    let user = req.body.user;
+    console.log(nameDataset);
+    console.log(descriptionDataset);
+    console.log(filesDataset);
+    console.log(photoDataSet);
+    console.log(user);
+    let dataset = await createDataset(nameDataset,descriptionDataset,filesDataset,photoDataSet);
+    let idDatasetNeo4j = dataset.toString();
+    await userAddsDataset(user,idDatasetNeo4j,nameDataset);
+    let userFollowers = await getFollowingUsers(user);
+    console.log(userFollowers);
+    createNotifications(userFollowers,user,nameDataset);
+
 })
 
 console.log(encryptPassword('hola'));
@@ -230,17 +267,22 @@ async function createUserMongo(username,password,firstName,firstSurname,birthDat
     
 }
 
-async function createDataset(nameDataset,descriptionDataset,archivosDataset,dateInsert,
+async function createDataset(nameDataset,descriptionDataset,archivosDataset,
     photoDataSet){
-    Dataset.create(
-        {
-            Name: nameDataset,
-            Description: descriptionDataset,
-            archivosDataset: archivosDataset,
-            DateOfInsert: dateInsert,
-            PhotoDataSet: photoDataset
-        }
-    )
+    let objectIds = [];
+    for(let i =0;i<archivosDataset.length;i++){
+        objectIds.push(new mongoDB.ObjectId(archivosDataset[i]));
+    }
+    let photo = new mongoDB.ObjectId(photoDataSet)
+    console.log(objectIds)
+    let dataset = await conn.collection('datasets').insertOne({
+        name: nameDataset,
+        description: descriptionDataset,
+        archivosDataset: objectIds,
+        DateOfInsert: new Date(),
+        PhotoDataSet: photo
+    })
+    return dataset.insertedId;
 }
 
 
@@ -348,13 +390,26 @@ function encryptPassword(password){
   
 }
 
+async function createNotifications(notifiedUsers,userUploads,name){
+    let submit = new mongoDB.ObjectId(userUploads);
+    for(let i =0;i<notifiedUsers.length;i++){
+        let notified = new mongoDB.ObjectId(notifiedUsers[i].id_mongo);
+        let not = await conn.collection('notifications').insertOne({
+            id_userSubmit: submit,
+            id_userNotifier: notified,
+            nameDataSet: name,
+            dateNotifies: new Date()
+        })
+    }
+}
+
 //Algunos metodos de Neo4j.
 
 
-async function createUser(User){
+async function createUser(User,username){
     const session = driver.session({database: 'neo4j'});
     try{
-        const query = `CREATE (User {id_mongo: ${User.id},username: ${User.username}})`;
+        const query = `CREATE (User {id_mongo: "${User}",username: "${username}"})`;
         await session.executeWrite(transaction => transaction.run(query));
     }catch(error){
         console.error(error);
@@ -367,7 +422,7 @@ async function createUser(User){
 async function addUserLike(User,Dataset,Points){
     const session = driver.session({database: 'neo4j'});
     try{
-        const query = `MATCH (us:User {id_mongo: ${User.idUser}}),(dat:Dataset {id_mongo: ${Dataset.id}) 
+        const query = `MATCH (us:User {id_mongo: "${User}"}),(dat:Dataset {id_mongo: "${Dataset}") 
         CREATE (us)-[:LIKES {points: ${Points}}]->(dat)-[:LIKED_BY {points: ${Points}}]->(us)`;
         await session.executeWrite(transaction => transaction.run(query));
     }catch(error){
@@ -380,7 +435,7 @@ async function addUserLike(User,Dataset,Points){
 async function deleteUserLike(User,Dataset){
     const session = driver.session({database: 'neo4j'});
     try{
-        const query= `Match (us:User {id_mongo: ${User.idUser}})-[rel:LIKES]->(dat:Dataset {id_mongo: ${Dataset.id}}-[relTwo:LIKED_BY]->(us:User {id_mongo: ${User.idUser}}))
+        const query= `Match (us:User {id_mongo: "${User}"})-[rel:LIKES]->(dat:Dataset {id_mongo: "${Dataset}"}-[relTwo:LIKED_BY]->(us:User {id_mongo: "${User}"}))
         DELETE rel,relTwo`
         await session.executeWrite(transaction=>transaction.run(query));
     }catch(error){
@@ -394,7 +449,7 @@ async function deleteUserLike(User,Dataset){
 async function addUserFollow(UserOne,UserTwo){
     const session = driver.session({database: 'neo4j'});
     try{
-        const query = `MATCH (follow: User {id_mongo: ${UserOne.idUser}}), (followed: User {id_mongo: ${UserTwo.idUser}}) MERGE (follow)-[:FOLLOWS]->(followed)
+        const query = `MATCH (follow: User {id_mongo: "${UserOne}"}), (followed: User {id_mongo: "${UserTwo}"}) MERGE (follow)-[:FOLLOWS]->(followed)
         MERGE (followed)-[:FOLLOWED_BY]->(follow)`;
         await session.executeWrite(transaction => transaction.run(query));
     }catch(error){
@@ -408,10 +463,10 @@ async function addUserFollow(UserOne,UserTwo){
 async function deleteUserFollow(UserOne, UserTwo){
     const session = driver.session({database: 'neo4j'});
     try{
-        const firstPartQuery = `MATCH (follow: User {id: ${UserOne.idUser}})-[rel:FOLLOWS]->(followed: User {id: ${UserTwo.idUser}})
+        const firstPartQuery = `MATCH (follow: User {id_mongo: "${UserOne}"})-[rel:FOLLOWS]->(followed: User {id_mongo: "${UserTwo}"})
         DELETE rel`;
         await session.executeWrite(transaction => transaction.run(firstPartQuery));
-        const secondPartQuery =  `MATCH (followed: User {id: ${UserTwo.idUser}})-[rel:FOLLOWED_BY]->(follow: User {id: ${UserOne.idUser}})
+        const secondPartQuery =  `MATCH (followed: User {id_mongo: ${UserTwo}})-[rel:FOLLOWED_BY]->(follow: User {id_mongo: ${UserOne}})
         DELETE rel`;
         await session.executeWrite(transaction=> transaction.run(secondPartQuery));
     }catch(error){
@@ -420,12 +475,13 @@ async function deleteUserFollow(UserOne, UserTwo){
 }
 
 //Agrega una relacion de UPLOAD de un dataset a un Usuario en particular.
-async function userAddsDataset(User,Dataset){
+async function userAddsDataset(User,Dataset,nameDataSet){
     const session  = driver.session({database: 'neo4j'});
     try{
-        const query = `MATCH (us: User {id: ${User.idUser}})
-        MERGE (us)-[:UPLOADS]->(:Dataset {id_dataset: ${Dataset.id},name: "${Dataset.name}"})-[:UPLOADED_BY]->(us)`;
+        const query = `MATCH (us: User {id_mongo: "${User}"})
+        MERGE (us)-[:UPLOADS]->(:Dataset {id_mongo: "${Dataset}",name: "${nameDataSet}"})-[:UPLOADED_BY]->(us)`;
         await session.executeWrite(transaction => transaction.run(query));
+
     }catch(error){
         console.error(error);
     }finally{
@@ -437,7 +493,7 @@ async function userAddsDataset(User,Dataset){
 async function userDeletesDataset(Dataset){
     const session  = driver.session({database: 'neo4j'});
     try{
-        const query = `MATCH (data: Dataset {id: ${Dataset.id_dataset}}) DETACH data DELETE data`;
+        const query = `MATCH (data: Dataset {id_mongo: "${Dataset}"}) DETACH data DELETE data`;
         await session.executeWrite(transaction => transaction.run(query));
     }catch(error){
         console.error(error);
@@ -451,7 +507,7 @@ async function userDeletesDataset(Dataset){
 async function deleteUser(User){
     const session = driver.session({database: 'neo4j'});
     try{
-        let query = `MATCH (n:Dataset)-[:UPLOADED_BY]->(us:User {id_mongo: ${User.id}})
+        let query = `MATCH (n:Dataset)-[:UPLOADED_BY]->(us:User {id_mongo: "${User}"})
         DETACH n,us DELETE n,us`;
         await session.executeWrite(transaction=>transaction.run(query));
     }catch(error){
@@ -465,7 +521,7 @@ async function deleteUser(User){
 async function downloadDataset(User,Dataset){
     const session = driver.session({database: 'neo4j'});
     try{
-        let query = `MATCH (us:User {id_mongo: ${User.id}}),(dat:Dataset {id_mongo:${Dataset.id}})
+        let query = `MATCH (us:User {id_mongo: "${User}"}),(dat:Dataset {id_mongo:"${Dataset}"})
         CREATE (us)-[:DOWNLOADS]->(dat)-[:DOWNLOADED_BY]->(us)`
         await session.executeWrite(transaction=>transaction.run(query));
     }catch(error){
@@ -483,7 +539,7 @@ async function downloadedUserDataset(Dataset){
     //de la lista.
     let users = [];
     try{
-        let query = `MATCH (us:User)-[:DOWNLOADS]-(dat:Dataset {id_mongo:${Dataset.id}}) RETURN us`;
+        let query = `MATCH (us:User)-[:DOWNLOADS]-(dat:Dataset {id_mongo:"${Dataset}"}) RETURN us`;
         const cursor = await session.executeRead(transaction=>transaction.run(query));
         cursor.records.forEach((element)=>{
             let node = element._fields[0].properties;
@@ -502,7 +558,7 @@ async function getLikedDatasets(User){
     const session = driver.session({database: 'neo4j'});
     let likedDatasets = [];
     try{
-        let query = `MATCH (n:Dataset)-[:LIKED_BY]->(us:User {id_mongo: ${User.id}}) RETURN n`;
+        let query = `MATCH (n:Dataset)-[:LIKED_BY]->(us:User {id_mongo: "${User}"}) RETURN n`;
         const cursor = await session.executeRead(transaction=>transaction.run(query));
         cursor.records.forEach((element)=>{
             let node = element._fields[0].properties;
@@ -524,7 +580,25 @@ async function getFollowedUsers(User){
     const session = driver.session({database: 'neo4j'});
     let followedUsers = [];
     try{
-        let query = `MATCH (us:User)-[:FOLLOWED_BY]->(entry:User {id_mongo: ${User.id}}) RETURN us`;
+        let query = `MATCH (us:User)-[:FOLLOWED_BY]->(entry:User {id_mongo: "${User}"}) RETURN us`;
+        const cursor = await session.executeRead(transaction=>transaction.run(query));
+        cursor.records.forEach((element)=>{
+            let node = element._fields[0].properties;
+            followedUsers.push(node);
+        })
+        return followedUsers;
+    }catch(error){
+        console.log(error);
+    }finally{
+        session.close();
+    }
+}
+
+async function getFollowingUsers(User){
+    const session = driver.session({database: 'neo4j'});
+    let followedUsers = [];
+    try{
+        let query = `MATCH (us:User)-[:FOLLOWS]->(entry:User {id_mongo: "${User}"}) RETURN us`;
         const cursor = await session.executeRead(transaction=>transaction.run(query));
         cursor.records.forEach((element)=>{
             let node = element._fields[0].properties;
