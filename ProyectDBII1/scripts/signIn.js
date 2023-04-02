@@ -14,10 +14,13 @@ async function SignIn(){
             "Content-Type": "application/json",
         },
     })
-    let authorizeCorrect = false;
-    authorizeCorrect = await response.json();
+    let responseObject = await response.json();
+    let authorizeCorrect = responseObject.answer.isUser;
+    let user = responseObject.answer.user;
 
-    if (authorizeCorrect.answer===true){
+    console.log(authorizeCorrect)
+
+    if (authorizeCorrect===true){
          // PENDIENTE
         /*
         const name = "";

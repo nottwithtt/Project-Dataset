@@ -133,7 +133,6 @@ app.post('/encryptPassword',bodyParser.json(),async (req,res)=>{
     console.log(req.body.Password);
     let arrayUsers = await searchAllUsers();
     let response = await isUser(arrayUsers,req.body.userName,req.body.Password);
-    console.log(response);
     res.json({"answer": response});
 })
 
@@ -199,12 +198,17 @@ app.post("/getObjectId",(req,res)=>{
 })
 
 async function isUser(Users,username,password){
+    let flag = false;
+    let user;
     for(let i =0;i<Users.length;i++){
         let boolean = await bcrypt.compare(password,Users[i].password);
-        if(username===Users[i].username&&boolean) return true;
+        if(username===Users[i].username&&boolean){
+            flag = true;
+            user = Users[i];
+        }
     }
 
-    return false;
+    return {isUser: flag, user:user};
 }
 function findDataset(idDataset){
     mongoose.connect(URI);
