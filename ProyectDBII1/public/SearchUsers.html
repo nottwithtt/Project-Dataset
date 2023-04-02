@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--favicon-->
+    <link rel="icon" href="../Images/Icons/Isotipo.ico" type="ico" sizes="48x48">
+    <title>Search Datasets</title>
+    <link rel="stylesheet" href="../bootstrap-5.0.2-dist/css/bootstrap.min.css">
+</head>
+<body>
+
+  <header>
+    <!-- NAV-->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2a2d3b;">
+      <div class="container-fluid">
+        <!-- LOGO NAVBAR -->
+        <div>
+          <img src="../Images/Icons/Isotipo.png" Style="width: 2.5vw; height: 2.5vw;">
+        </div>
+        <!-- NAME NAVBAR -->
+        <a class="navbar-brand">Dataford</a>
+        
+        <!-- RESPONSIVE BUTTON -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- RESPONSIVE TOOLBAR -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="container-fluid d-flex justify-content-between">
+            <!-- DIV SEARCHER -->
+            <div  class="d-flex" name="searcher">
+              <!-- FILTER BUTTON -->
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li id="filterButtonHome" class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle"  id="navFilterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Filter</a>
+                  <ul class="dropdown-menu" aria-labelledby="navFilterDropdown">
+                    <li><a class="dropdown-item" onclick="FilterChange('None')">None</a></li>
+                    <li><a class="dropdown-item" onclick="FilterChange('Users')">Users</a></li>
+                    <li><a class="dropdown-item" onclick="FilterChange('NameDataset')">Name Dataset</a></li>
+                    <li><a class="dropdown-item" onclick="FilterChange('DescriptionDataset')">Description Dataset</a></li>
+                  </ul>
+              </ul>
+
+              <!-- SEARCH FORM -->
+              <!-- ID = txtSearchNavbar -->
+              <input id="txtSearchNavbar" class="form-control me-2" style="width:500px ;" type="search" placeholder="Search" aria-label="Search">
+              
+              <!-- SEARCH BUTTON -->
+              <!-- ID = searchButtonNavbar -->
+              <div>
+                <button id="searchButtonNavbar" class="btn btn-outline-success" onclick="Search()" type="submit">Search</button>
+              </div>
+            </div>
+            
+            <!-- OPTIONS -->
+            <div class="d-flex">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex">
+
+                <!-- BUTTON HOME -->
+                <li id="homeWindow" class="nav-item mx-3">
+                  <a class="nav-link" aria-current="page" href="/Home">Home</a>
+                </li>
+
+                <!-- DROPDOWN BUTTON DATASETS -->
+                <!-- ID = datasetsButtonHome -->
+                <li id="datasetsButtonHome" class="nav-item dropdown mx-3">
+                  <a class="nav-link dropdown-toggle" href="/Datasets" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Datasets
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <!-- BUTTON MYDATASETS -->
+                    <li><a class="dropdown-item" href="/MyDatasets">My datasets</a></li>
+
+                    <!-- BUTTON CREATEDATASET -->
+                    <li><a class="dropdown-item" href="/CreateDataset">Create dataset</a></li>
+                  </ul>
+                </li>
+                
+                <!-- BUTTON MESSAGES -->
+                <li id="messageButtonHome" class="nav-item mx-3">
+                  <a class="nav-link" href="/Conversations">Conversations</a>
+                </li>
+              </ul>
+            </div>
+  
+            <div class="d-flex">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                
+                <li id="datasetsButtonHome" class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle nav-link-dark" style="margin-right: 20px;" href="/MyProfile" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Account
+                  </a>
+
+                  
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <!-- BUTTON MYPROFILE -->
+                    <li><a class="dropdown-item" href="/MyProfile">Profile</a></li>
+
+                    <!-- BUTTON SIGNOUT -->
+                    <li><a class="dropdown-item" onclick="SignOut()">Sign Out</a></li>
+                  </ul>
+                </li>
+                
+                <!-- BUTTON ACCOUNT -->
+                <li>
+                  <img class="dropdown-toggle" name="imageUser" data-toggle="downtownAccount" src="Images/icons/noImage.jpg" Style="width: 40px; height: 40px;border-radius: 50%;" >
+                </li>
+
+              </ul>
+                
+            </div>
+  
+          </div>
+          
+          
+  
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container-fluid">
+    <div class="row">
+      <section class="col-11 mx-5 mt-4 d-flex" Style="height: 50px">
+        <div class="col-11">
+            <p class="display-6">Results</p>
+        </div>
+      </section>
+
+      <section class="container col" style ="height: 200px">
+
+        <div class="d-flex flex-wrap my-3" style="height: 350px;">
+          <div class="col-3 list-group mt-3 mx-5">
+            <a href="#" class="col-11 container d-flex flex-row list-group-item list-group-item-action " style="height: 40vm;">
+                <div class="d-flex flex-column col-6">
+                  <div class="mt-3">
+                    <h6>Nombre</h6>
+                    <display-6 class="text-secondary">Luisa</h6>
+                  </div>
+
+                  <div class="mt-3">
+                    <h6>LastName</h6>
+                    <display-6 class="">Vargas Monge</display-6>
+                  </div>
+
+                  <div class="mt-3">
+                    <h6>Username</h6>
+                    <display-6 class="">lu123vargas</display-6>
+                  </div>
+
+                  <div class="mt-3">
+                    <h6>Date of birth</h6>
+                    <display-6 class="">13/12/2000</display-6>
+                  </div>
+
+                 
+                </div>
+
+                <div class="d-flex col-5">
+                  <div>
+                    <img src="Images/Icons/noImage.jpg" style="height: 10vw; width: 10vw; border-radius: 50%;">
+                  </div>
+                </div>
+            </a>
+          </div>
+
+          <div class="col-3 list-group mt-3 mx-5">
+            <a href="#" class="col-11 container d-flex flex-row list-group-item list-group-item-action " style="height: 40vm;">
+                <div class="d-flex flex-column col-6">
+                  <div class="mt-3">
+                    <h6>Nombre</h6>
+                    <display-6 class="text-secondary">Luisa</h6>
+                  </div>
+
+                  <div class="mt-3">
+                    <h6>LastName</h6>
+                    <display-6 class="">Vargas Monge</display-6>
+                  </div>
+
+                  <div class="mt-3">
+                    <h6>Username</h6>
+                    <display-6 class="">lu123vargas</display-6>
+                  </div>
+
+                  <div class="mt-3">
+                    <h6>Date of birth</h6>
+                    <display-6 class="">13/12/2000</display-6>
+                  </div>
+
+                 
+                </div>
+
+                <div class="d-flex col-5">
+                  <div>
+                    <img src="Images/Icons/noImage.jpg" style="height: 10vw; width: 10vw; border-radius: 50%;">
+                  </div>
+                </div>
+            </a>
+          </div>
+          
+          <div class="col-3 list-group my-3 mx-5">
+            <a href="#" class="col-11 container d-flex flex-row list-group-item list-group-item-action " style="height: 40vm;">
+                <div class="d-flex flex-column col-6">
+                  <div class="mt-3">
+                    <h6>Nombre</h6>
+                    <display-6 class="text-secondary">Luisa</h6>
+                  </div>
+
+                  <div class="mt-3">
+                    <h6>LastName</h6>
+                    <display-6 class="">Vargas Monge</display-6>
+                  </div>
+
+                  <div class="mt-3">
+                    <h6>Username</h6>
+                    <display-6 class="">lu123vargas</display-6>
+                  </div>
+
+                  <div class="mt-3">
+                    <h6>Date of birth</h6>
+                    <display-6 class="">13/12/2000</display-6>
+                  </div>
+
+                 
+                </div>
+
+                <div class="d-flex col-5">
+                  <div>
+                    <img src="Images/Icons/noImage.jpg" style="height: 10vw; width: 10vw; border-radius: 50%;">
+                  </div>
+                </div>
+            </a>
+          </div>
+          
+
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../scripts/searchUsers.js"></script>
+  <script src="../scripts/session.js"></script>
+</body>
+</html>
