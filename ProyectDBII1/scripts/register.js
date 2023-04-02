@@ -3,10 +3,16 @@
 
 
 /* Change a photo in the circle in the interface */
-function ChangeRegisterImage(){
+async function ChangeRegisterImage(){
+    const formData = new FormData();
     const file = document.getElementById("buttonUploadFilePhotoRegister").files[0];
+    formData.append('photo',file);
+    const response = await fetch("/uploadCommentFile",{
+        method: "POST",
+        body: formData
+    })
     const img = URL.createObjectURL(file);
-    subirFoto(img);
+    let responseServer = await response.json();
     document.getElementById("filePhotoRegister").src= img;
 }
 

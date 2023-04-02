@@ -18,7 +18,7 @@ async function getDatasets(){
         divPrincipal.classList.add('col-3','list-group','mt-5','mx-5');
         divPrincipal.id = datasets[i].id_mongo;
         divPrincipal.innerHTML =
-        `<a href="ViewDataset.html?dataset=${datasets[i].id_mongo}&name=${datasets[i].name}" class="container d-flex flex-column list-group-item list-group-item-action ">
+        `<a href="ViewDataset?dataset=${datasets[i].id_mongo}&name=${datasets[i].name}" class="container d-flex flex-column list-group-item list-group-item-action ">
         <div class="d-flex justify-content-center">
           <img class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
         </div>

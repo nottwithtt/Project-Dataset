@@ -2,22 +2,22 @@
 
 
 /* Function that verifies what a user is authorized to do*/ 
-function SignIn(){
-    const username = document.getElementById('txtUsernameSignIn');
-    const password = document.getElementById('txtPasswordSignIn');
-    const authorizeCorrect = true;
+async function SignIn(){
+    const username = document.getElementById('txtUsernameSignIn').value;
+    const password = document.getElementById('txtPasswordSignIn').value;
     
-     // PENDIENTE
-    // Verify in the database Password and User
-    /*
-    try {
-        const idUser = authorizeAccess(username,password);
-    } catch (e) {
-        authorizeCorrect = false;
-        messageErrorInHTML
-    }
-    */
-    if (authorizeCorrect){
+    const response = await fetch('/encryptPassword',{
+        method: "POST",
+        body: JSON.stringify({userName: username,
+        Password: password}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    let authorizeCorrect = false;
+    authorizeCorrect = await response.json();
+
+    if (authorizeCorrect.answer===true){
          // PENDIENTE
         /*
         const name = "";

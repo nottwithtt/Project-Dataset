@@ -6,12 +6,14 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
+const bcrypt = require('bcrypt');
 let db;
 const URI = 'mongodb+srv://nottwithtt:Nicolita1998+@cluster0.gi2w4fi.mongodb.net/dbprojectDataSet?retryWrites=true&w=majority';
 const conn = mongoose.createConnection(URI, {useNewUrlParser: true});
 const JSZIP = require('jszip');
 const fileSaver = require('file-saver');
-//const Dataset = require('./Model/Dataset.js');
+const Dataset = require('./Model/Dataset.js');
+const User = require('./Model/User.js');
 const mongoDB = require('mongodb');
 const fs = require('fs');
 const stream = require('stream');
@@ -20,9 +22,9 @@ const { PassThrough } = stream;
 const neo4j = require('neo4j-driver');
 const archiver = require('archiver');
 const URI4J = 'neo4j+s://ae1ed961.databases.neo4j.io';
-const user = 'neo4j';
+const userNeo = 'neo4j';
 const password = 'BThhcs9ej1_LMh4HtwD8l2YgZ69pixvoDA_2ybCKxxY';
-const driver = neo4j.driver(URI4J, neo4j.auth.basic(user, password));
+const driver = neo4j.driver(URI4J, neo4j.auth.basic(userNeo, password));
 const FileSaver  = require('file-saver');
 
 //Variables para conectarse a redis
@@ -39,21 +41,15 @@ const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1w
 
 
 async function subirFoto(foto){
-    connection.query(`INSERT INTO comments(name) VALUES('Hola',${foto})`);
+    connection.query(`INSERT INTO comments(message,idPhoto) VALUES('Hola','${foto}')`);
     console.log('upload correctly!');
 }
-subirFoto();
-
+//subirFoto();
 
 app.listen(3000,()=>{
     console.log('app listening in port 3000');
 });
 
-
-
-app.use(bodyParser.urlencoded());
-
-app.use(bodyParser.json());
 
 const storage = new GridFsStorage({ db: conn,
     file:(req,file)=>{
@@ -128,9 +124,21 @@ app.get('/MyProfile',(req,res)=>{
 });
 
 
+app.post('/uploadCommentFile',upload.single('photo'), (req,res)=> {
+    let idPhoto = req.file.id.toString();
+    subirFoto(idPhoto);
+});
 
+app.post('/encryptPassword',bodyParser.json(),async (req,res)=>{
+    console.log(req.body.Password);
+    let arrayUsers = await searchAllUsers();
+    let response = await isUser(arrayUsers,req.body.userName,req.body.Password);
+    console.log(response);
+    res.json({"answer": response});
+})
+
+console.log(encryptPassword('hola'));
 // # # # # # # # END VALUES # # # # # # #
-
 
 let id;
 
@@ -163,6 +171,7 @@ app.get('/dataset/:id',async function(req,res){
     console.log(idDataset);
     const dataset = await findDataset(idDataset);
     console.log(dataset);
+    console.log('Hola');
     //Por aqui iria la llamada al metodo de mongo que busca el Dataset
     let Idsfiles = dataset.archivosDataset;
     const archive = archiver('zip',{zlib: {level: 9}});
@@ -179,7 +188,7 @@ app.get('/dataset/:id',async function(req,res){
     archive.pipe(res);
 });
 
-app.post("/datasets",async function (req,res){
+app.post("/datasets",bodyParser.json(),async function (req,res){
     let request = await getUploadedDatasets(req.body.data);
     res.json({"response": request});
 })
@@ -189,109 +198,151 @@ app.post("/getObjectId",(req,res)=>{
     res.json({"idDataset": id});
 })
 
+async function isUser(Users,username,password){
+    for(let i =0;i<Users.length;i++){
+        let boolean = await bcrypt.compare(password,Users[i].password);
+        if(username===Users[i].username&&boolean) return true;
+    }
+
+    return false;
+}
 function findDataset(idDataset){
     mongoose.connect(URI);
     const dataset = Dataset.findById(idDataset);
     return dataset;
 }
 //Querys MongoDB.
-const createUserMongo = () => {
+async function createUserMongo(username,password,firstName,firstSurname,birthDate,photoUser){
     User.create(
         {
-            Username: 'YisusHelp',
-            Password: '123',
-            FirstName: 'Esteban',
-            FirstSurname: 'Arias',
-            BirthDate: '2002-02-20',
-            PhotoUser: null,
+            Username: username,
+            Password: password,
+            FirstName: firstName,
+            FirstSurname: firstSurname,
+            BirthDate: birthDate,
+            PhotoUser: photoUser,
         }
     )
     
 }
 
-const createDataset = () => {
-    DataTransferItem.create(
+async function createDataset(nameDataset,descriptionDataset,archivosDataset,dateInsert,
+    photoDataSet){
+    Dataset.create(
         {
-            Name: 'Repository',
-            Description: 'Hola mundo.',
-            DataSets: Array,
-            DateOfInsert: '2002-02-20',
-            PhotoDataset: null,
+            Name: nameDataset,
+            Description: descriptionDataset,
+            archivosDataset: archivosDataset,
+            DateOfInsert: dateInsert,
+            PhotoDataSet: photoDataset
         }
     )
 }
 
 
 // Busca solo 1 elemento.
-const searchUserById = async () => {
-    const userdb = await user.findById('64122d7e02969be4b59c6b29')
-    console.log('EL usuario es: ', userdb);
+async function findUserById(idUser){
+    let idSearch = new mongoDB.ObjectId(idUser);
+    let userdb = await conn.collection('users').findById(idSearch)
+    let response = await userdb.toArray();
+    return response;
 }
 
 
 // Traerá solo 1, aunque hayan con más archivos con el mismo nombre.
-const searchByOne = async () => {
-    const userdb = await user.findOne({
-        username: 'nottwithtt'
+async function searchByOneUsername(username){
+    let userdb = await conn.collection('users').findOne({
+        username: username
     })
 
-    console.log('El usuario encontrado es: ', userdb);
+    let response = await userdb.toArray();
+
+    return response;
 }
 
 
 // Busca todos los usuarios con el mismo nombre.
-const searchAllUsersEqualsName = async () => {
-    const userdb = await userdb.find({
+async function searchAllUsersEqualsName(name){
+    let userdb = await conn.collection('users').find({
         FirstName: {
-            $eq: 'Tamara'
+            $eq: name
         }
     })
 
-    console.log('Los usuarios encontrados con este nombre son: ', userdb);
+    let response = await userdb.toArray();
+
+    return response;
 }
 
 // Busca todos los usuarios con el mismo apellido.
-const searchAllUsersEqualsSurname = async () => {
-    const userdb = await userdb.find({
+async function searchAllUsersEqualsSurname(firstSurname){
+    const userdb = await conn.collection('users').find({
         FirstSurname: {
-            $eq: 'Leiva'
+            $eq: firstSurname
         }
     })
 
-    console.log('Los usuarios encontrados con este apellido son: ', userdb);
+    let response = await userdb.toArray();
+
+    return response;
 }
 
 
 // Busca solo 1 elemento.
-const searchDataSetById = async () => {
-    const datasetdb = await dataSet.findById('64122e74bcbc54d0eb9087b3')
-    console.log('El Dataset es: ', datasetdb);
+async function searchDataSetById(datasetId){
+    let datasetdb = await conn.collection('datasets').findById(datasetId);
+
+    let response = await datasetdb.toArray();
+
+    return response;
 }
 
 // Busca todos por ese atributo en el documento.
 // Ejemplo si hay 3 documentos que tienen el nombre: Ardilla, los traerá.
-const searchAllDataSetByName = async () => {
-    const datasetdb = await dataSet.find({
+async function searchAllDataSetByName (criterio){
+    let datasetdb = await dataSet.find({
         name: {
-            $eq: 'Indicaciones del proyecto.'
+            $eq: criterio
         }
     })
 
-    console.log('Los dataset encontrados con este nombre son:', datasetdb);
+    let response = await datasetdb.toArray();
+
+    return response;
 }
 
 // Busca todos por ese atributo en el documento.
 // Ejemplo si hay 3 documentos que tienen el nombre: Ardilla, los traerá.
-const searchAllDataSetByDescription = async () => {
-    const datasetdb = await dataSet.find({
+async function searchAllDataSetByDescription(description){
+    let datasetdb = await dataSet.find({
         Description: {
-            $eq: 'Asuntos corelacionados al tema en cuestion.'
+            $eq: description
         }
     })
 
-    console.log('Los dataset encontrados con esta descripción son:', datasetdb);
+    let response = await datasetdb.toArray();
+
+    return response;
 }
 
+
+// Busca todos por ese atributo en el documento.
+// Ejemplo si hay 3 documentos que tienen el nombre: Ardilla, los traerá.
+async function searchAllUsers(){
+    let users = await conn.collection('users').find();
+    let userList = await users.toArray();
+
+    return userList;
+}
+
+
+//Encript password
+function encryptPassword(password){
+    const saltRounds = 10;
+    var encrypted_password = bcrypt.hashSync(password, saltRounds);
+    return encrypted_password;
+  
+}
 
 //Algunos metodos de Neo4j.
 
