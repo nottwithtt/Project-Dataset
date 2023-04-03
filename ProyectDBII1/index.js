@@ -254,7 +254,7 @@ function findDataset(idDataset){
 }
 //Querys MongoDB.
 async function createUserMongo(username,password,firstName,firstSurname,birthDate,photoUser){
-    User.create(
+    let user = await conn.collection('users').insertOne(
         {
             Username: username,
             Password: password,
@@ -264,7 +264,7 @@ async function createUserMongo(username,password,firstName,firstSurname,birthDat
             PhotoUser: photoUser,
         }
     )
-    
+    return user; 
 }
 
 async function createDataset(nameDataset,descriptionDataset,archivosDataset,
