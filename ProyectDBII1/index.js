@@ -158,11 +158,6 @@ app.post('/uploadDataset',bodyParser.json(),async (req,res)=>{
     let filesDataset = req.body.archivosDataset;
     let photoDataSet = req.body.photoDataset;
     let user = req.body.user;
-    console.log(nameDataset);
-    console.log(descriptionDataset);
-    console.log(filesDataset);
-    console.log(photoDataSet);
-    console.log(user);
     let dataset = await createDataset(nameDataset,descriptionDataset,filesDataset,photoDataSet);
     let idDatasetNeo4j = dataset.toString();
     await userAddsDataset(user,idDatasetNeo4j,nameDataset);
@@ -170,6 +165,20 @@ app.post('/uploadDataset',bodyParser.json(),async (req,res)=>{
     console.log(userFollowers);
     createNotifications(userFollowers,user,nameDataset);
 
+})
+
+app.post('/getFilesDataset',bodyParser.json(), async (req,res)=>{
+    let idDataset = new mongoDB.ObjectId(req.body.dataId);
+    let dataset = await findDataset(idDataset);
+    let filesDataset = dataset.archivosDataset;
+    let response = [];
+    for(let i =0;i<filesDataset.length;i++){
+        let metadataFile = await gfs.find({"_id": filesDataset[i]}).toArray();
+        let objectMetadata = metadataFile[0];
+        response.push(objectMetadata);
+    }
+    console.log(response);
+    res.json({"dataFiles":response});
 })
 
 console.log(encryptPassword('hola'));
@@ -335,11 +344,9 @@ async function searchAllUsersEqualsSurname(firstSurname){
 
 // Busca solo 1 elemento.
 async function searchDataSetById(datasetId){
-    let datasetdb = await conn.collection('datasets').findById(datasetId);
-
-    let response = await datasetdb.toArray();
-
-    return response;
+    mongoose.connect(URI);
+    const dataset = Dataset.findById(datasetId);
+    return dataset;
 }
 
 // Busca todos por ese atributo en el documento.
@@ -408,7 +415,7 @@ async function createNotifications(notifiedUsers,userUploads,name){
 async function createUser(User,username){
     const session = driver.session({database: 'neo4j'});
     try{
-        const query = `CREATE (User {id_mongo: "${User}",username: "${username}"})`;
+        const query = `CREATE (:User {id_mongo: "${User}",username: "${username}"})`;
         await session.executeWrite(transaction => transaction.run(query));
     }catch(error){
         console.error(error);
