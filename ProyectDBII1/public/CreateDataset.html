@@ -17,7 +17,7 @@
       <div class="container-fluid">
         <!-- LOGO NAVBAR -->
         <div>
-          <img src="../Images/Icons/Isotipo.png" Style="width: 2.5vw; height: 2.5vw;">
+          <img src="../Images/Icons/Isotipo.png" style="max-width: 2.5vw; max-height: 2.5vw;">
         </div>
         <!-- NAME NAVBAR -->
         <a class="navbar-brand">Dataford</a>
@@ -51,7 +51,7 @@
               <!-- SEARCH BUTTON -->
               <!-- ID = searchButtonNavbar -->
               <div>
-                <button id="searchButtonNavbar" class="btn btn-outline-success" onclick="Search()" style="height: 2.6vw;" type="submit">Search</button>
+                <button id="searchButtonNavbar" class="btn btn-outline-success" onclick="Search()" style="max-height: 2.5vw;" type="submit">Search</button>
               </div>
             </div>
             
@@ -176,7 +176,7 @@
 
   <div class="container-fluid">
     <div class="row">
-        <div name="title" class="col-11 d-flex" Style="margin-top: 3vw; margin-left: 4vw;">
+        <div name="title" class="col-11 d-flex" Style="margin-top: 2vw; margin-left: 4vw;">
             <div>
                 <p class="h1">Create a dataset</p>
             </div>
@@ -188,14 +188,14 @@
                     <div>
                         <form action="name">
                             <label for="txtNameDataset" class="form-label">Name</label>
-                            <input id="txtNameDataset" type="text" class="form-control" required>
+                            <textarea id="txtNameDataset" type="text" class="form-control" required></textarea>
                         </form>
                     </div>
 
                     <div class="mt-4">
                         <form action="description">
                             <label for="txtDescriptionDataset" class="form-label">Description</label>
-                            <input id="txtDescriptionDataset" type="textarea" class="form-control" style="height: 12vw;" required>
+                            <textarea id="txtDescriptionDataset" type="textarea" class="form-control" style="height: 12vw;" required></textarea>
                         </form>
                     </div>
                 </div>

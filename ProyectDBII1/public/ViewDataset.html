@@ -10,29 +10,40 @@
     <link rel="stylesheet" href="../bootstrap-5.0.2-dist/css/bootstrap.min.css">
 </head>
 <body style="background-color: white; padding-bottom: 56px;" >
-
+    
+    <!-- Navbar comments-->
     <nav class="navbar navbar-light bg-light fixed-bottom" style="border-color: #929191;">
-
         <div class="container-fluid">
           <form class="d-flex flex-row">
             <div class="d-flex">
-                <input class="form-control" type="file" id="formFile" accept=".jpg , .png, .mp4">
+
+                <!-- Comments upload File -->
+                <!-- ID = formFileComment -->
+                <input class="form-control" type="file" id="formFileComment" accept=".jpg , .png, .mp4">
             </div>
             <div class="d-flex mx-4">
-                <input class="form-control me-2" type="form-control" placeholder="Write the comment" aria-label="Search" style="width: 70vw;">
+
+                <!-- Comments message -->
+                <!-- ID = txtMessageComment-->
+                <input class="form-control me-2" id="txtMessageComment" type="form-control" placeholder="Write the comment" aria-label="Search" style="width: 70vw;">
+                
+                <!-- Button Send Message -->
                 <button class="btn btn-success" type="submit">Send</button>
             </div>
           </form>
         </div>
       </nav>
 
+    <!-- Container -->
     <div class="container-fluid">
         <div class="row">
+            <!-- Close Button -->
             <div name="closeButton" class="col">
                 <div class="d-flex justify-content-end mt-4" style="margin-right: 5vw;">
-                    <button type="button" class="btn-close" aria-label="Close"></button>
+                    <a type="button" class="btn-close" aria-label="Back" href="/Home"></a></button>
                 </div>
             </div>
+
             <div name="header" class="container-fluid col-12 d-flex flex-row justify-content-center">
                 <div class="col-10 d-flex flex-column">
                     <div name="dateInclude">
@@ -62,7 +73,7 @@
 
             <div name="buttons" class="container-fluid col-12 d-flex flex-row">
                 <div class="list-group mt-3" style="margin-left: 3vw;">
-                    <a href="#" class="container d-flex flex-row list-group-item list-group-item-action" style="height: 3vw; width: 6vw;">
+                    <a data-bs-toggle="modal" data-bs-target="#downloadUsers-modal" class="container d-flex flex-row list-group-item list-group-item-action" style="height: 3vw; width: 6vw;">
                         <div class="d-flex">
                             <p>10</p>
                         </div>
@@ -160,6 +171,39 @@
             </div>
         </div>
     </div>
+
+      <!-- Notification Modal Window  -->
+      <div class="modal fade" id="downloadUsers-modal" tabindex="-1" aria-hidden="true" aria-labelledby="label-modal-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <!-- Modal Header  -->
+            <div class="modal-header">
+              <h5 class="modal-title"> Users who have downloaded it </h5>
+              <button class="btn-close" data-bs-dismiss="modal" aria-labelledby="Back"></button>
+            </div>
+            <!-- Modal Body  -->
+            <!-- Div Users-->
+            <div class="modal-body" style="height: 200vw;">
+
+              <div class="container-fluid">
+                <!-- Example1 -->
+                <div class="row d-flex flex-row justify-content-between">
+                    <h6>User1</h6>
+                </div>
+  
+                <hr>
+
+                <!-- Example2 -->
+                <div class="row d-flex flex-row justify-content-between">
+                    <h6>User2</h6>
+                </div>
+                
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
     <script src="../scripts/viewDataset.js"></script>
