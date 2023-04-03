@@ -46,7 +46,6 @@ async function subirFoto(foto){
     connection.query(`INSERT INTO comments(message,idPhoto) VALUES('Hola','${foto}')`);
     console.log('upload correctly!');
 }
-//subirFoto();
 
 app.listen(3000,()=>{
     console.log('app listening in port 3000');

@@ -11,7 +11,7 @@
 </head>
 <body>
 
-  <header>
+  <header> 
     <!-- NAV-->
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2a2d3b;">
       <div class="container-fluid">
@@ -51,7 +51,7 @@
               <!-- SEARCH BUTTON -->
               <!-- ID = searchButtonNavbar -->
               <div>
-                <button id="searchButtonNavbar" class="btn btn-outline-success" onclick="Search()" type="submit">Search</button>
+                <button id="searchButtonNavbar" class="btn btn-outline-success" onclick="Search()" style="height: 2.6vw;" type="submit">Search</button>
               </div>
             </div>
             
@@ -85,7 +85,7 @@
                 </li>
               </ul>
             </div>
-  
+
             <div class="d-flex">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 
@@ -114,11 +114,63 @@
             </div>
   
           </div>
-          
-          
-  
+
         </div>
       </div>
+      
+      <!-- Bell notification  -->
+      <div class="list-group" >
+        <!-- Bell button  -->
+        <li class="btn list-group-item d-flex justify-content-around align-items-center" style="background-color: #2a2d3b; color: #f3f3f3;">
+          <img data-bs-toggle="modal" data-bs-target="#not-modal" src="../Images/Icons/bell.png" width="16vw">
+          <!-- Number newNotifications -->
+          <span class="badge bg-primary">0</span>
+        </li>
+      </div>
+
+      <!-- Notification Modal Window  -->
+      <div class="modal fade" id="not-modal" tabindex="-1" aria-hidden="true" aria-labelledby="label-modal-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <!-- Modal Header  -->
+            <div class="modal-header">
+              <h5 class="modal-title">Notifications</h5>
+              <button class="btn-close" data-bs-dismiss="modal" aria-labelledby="Back"></button>
+            </div>
+            <!-- Modal Body  -->
+            <div class="modal-body" style="height: 200vw;">
+              <!-- Div Notifications  -->
+              <div class="container-fluid">
+                <!-- Example1 -->
+                <div class="row d-flex flex-row justify-content-between">
+                  <div class="col-4">
+                    <h6>12-10-2023 7:00am</h6>
+                  </div>
+                  <div class="col-8" id="not-1">
+                    <h6>The user "NameUser" create a dataset about "titleDataset"</h6>
+                  </div>
+                </div>
+  
+                <hr>
+
+                <!-- Example2 -->
+                <div class="row d-flex flex-row justify-content-between">
+                  <div class="col-4">
+                    <h6>12-10-2023 7:00am</h6>
+                  </div>
+                  <div class="col-8" id="not-1">
+                    <h6>The user "NameUser" create a dataset about "titleDataset"</h6>
+                  </div>
+                </div>
+                
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     </nav>
   </header>
 
@@ -179,10 +231,8 @@
   </div>
 
   <script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../components/datasetBox.js"></script>
   <script src="../scripts/searchDatasets.js"></script>
+  <script src="../scripts/navbar.js"></script>
   <script src="../scripts/session.js"></script>
-  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 </body>
 </html>

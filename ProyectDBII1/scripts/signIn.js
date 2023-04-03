@@ -1,5 +1,6 @@
 // Functions of SignIn.html
 
+/* HELLO */
 
 /* Function that verifies what a user is authorized to do*/ 
 async function SignIn(){
