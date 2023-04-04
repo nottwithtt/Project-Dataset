@@ -35,7 +35,7 @@ const redisDB = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1
 //const mysql = require('mysql2');
 const { ObjectID } = require('mongodb');
 //const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
-const connection = mysql.createConnection(DATABASE_URL='mysql://k8w5dqlcxj8v28k02gsf:pscale_pw_1d4kuBj5aLkoednqqN5O1blIr5Mt4ml2lLJ7L5agcZR@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}');
+//const connection = mysql.createConnection(DATABASE_URL='mysql://k8w5dqlcxj8v28k02gsf:pscale_pw_1d4kuBj5aLkoednqqN5O1blIr5Mt4ml2lLJ7L5agcZR@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}');
 
 
 //Variables para conectarse a mysql
@@ -139,7 +139,6 @@ app.post('/encryptPassword',bodyParser.json(),async (req,res)=>{
     console.log(req.body.Password);
     let arrayUsers = await searchAllUsers();
     let response = await isUser(arrayUsers,req.body.userName,req.body.Password);
-    console.log(response);
     res.json({"answer": response});
 })
 
@@ -325,7 +324,27 @@ app.post('/getFollowingUsers',bodyParser.json(),async (req,res)=>{
     res.json({"users":users});
 })
 
+app.post('/updatePasswordUser',bodyParser.json(),async (req,res)=>{
+    let update = await  updatePasswordMongo(req.body.username,req.body.pass);
+    res.json({"result": update});
+})
 
+app.post('/updateNameUser',bodyParser.json(),async (req,res)=>{
+    let update = await  updateNameMongo(req.body.username,req.body.name);
+    res.json({"result": update});
+})
+
+app.post('/updateLastNameUser',bodyParser.json(),async (req,res)=>{
+    let update = await  updateLastNameMongo(req.body.username,req.body.lastName);
+    res.json({"result": update});
+})
+
+app.post('/updatePhotoIdUser',bodyParser.json(),async (req,res)=>{
+    let idPhoto = req.body.photo;
+    let username =  req.body.username;
+    let response = await updatePhotoMongo(username,idPhoto);
+    res.json({"result":response});
+})
 
 console.log(encryptPassword('hola'));
 // # # # # # # # END VALUES # # # # # # #
@@ -457,12 +476,38 @@ async function findUserById(idUser){
 // Traerá solo 1, aunque hayan con más archivos con el mismo nombre.
 async function searchByOneUsername(username){
     let userdb = await conn.collection('users').findOne({
-        username: username
+        username: {$eq: username}
     })
 
     let response = await userdb.toArray();
 
     return response;
+}
+
+
+//Actualiza la contra en MongoDB
+async function updatePasswordMongo(username,password){
+    let result = await conn.collection('users').updateOne({username: username},{$set: {password: password}});
+    return result;
+}
+
+//Actualiza el nombre en MongoDB
+async function updateNameMongo(username,name){
+    let result = await conn.collection('users').updateOne({username: username},{$set: {firstName: name}});
+    return result;
+}
+
+//Actualiza la contra en MongoDB
+async function updateLastNameMongo(username,lastName){
+    let result = await conn.collection('users').updateOne({username: username},{$set: {firstSurname: lastName}});
+    return result;
+}
+
+//Actualiza la contra en MongoDB
+async function updatePhotoMongo(username,idPhoto){
+    let idUpdate = new mongoDB.ObjectId(idPhoto);
+    let result = await conn.collection('users').updateOne({username: username},{$set: {photo: idUpdate}});
+    return result;
 }
 
 

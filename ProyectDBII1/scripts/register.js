@@ -106,7 +106,7 @@ async function Register(event){
         
          //const idUser = createUser(name,lastname,username,birthday,photo);
         //Ver como sacamos el objeto de la foto
-        updateActiveUser(responseUser._id,responseUser.firstName,responseUser.firstSurname,responseUser.username,responseUser.birthDate,responseUser.photo)
+        updateActiveUser(responseUser._id,responseUser.firstName,responseUser.firstSurname,responseUser.username,responseUser.birthDate,responseUser.photo);
         window.location.href ="/Home";
         // Insert the password and infoUser in the database.
         // RegisterUser(name,lastName,username,birthday,idPhoto); 

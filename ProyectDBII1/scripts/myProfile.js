@@ -1,5 +1,22 @@
+
 const idPhoto = sessionStorage.getItem('photo');
 const idUser = sessionStorage.getItem('id');
+const userFirstName = sessionStorage.getItem('name');
+const userLastName = sessionStorage.getItem('lastName');
+const userName = sessionStorage.getItem('username');
+const birthday = sessionStorage.getItem('birthday');
+
+
+const dateObj = new Date(birthday);
+const formattedDate = dateObj.toISOString().substring(0, 10);
+
+
+document.getElementById("txtIdUser").value = idUser;
+document.getElementById("txtName").value = userFirstName;
+document.getElementById("txtLastName").value = userLastName;
+document.getElementById("profileBirthdayDate").value = formattedDate;
+document.getElementById("profileUsername").textContent =userName;
+
 
 async function uploadPhoto (){
     const response = await fetch('/getPhotoUser',{
@@ -20,7 +37,6 @@ async function uploadPhoto (){
     newImage.src = url;
     newImage.style = "width: 8vw; height: 8vw;border-radius: 50%;"
     container.appendChild(newImage);
-    
 
 }
 
@@ -121,10 +137,110 @@ function editProfile(ActionButton){
     }    
 }
 
+async function ChangeImageProfile(){
+    
+    const newImage = document.getElementById("buttonUploadPhotoProfile").files[0];
+    const imagePreview = document.getElementById("profilePhoto");
+ 
+    if (newImage) {
+        const reader = new FileReader();
+        reader.addEventListener("load", function () {
+          imagePreview.setAttribute("src", reader.result);
+        });
+        reader.readAsDataURL(newImage);
+    }
+}
 
-function saveChanges(ActionButton){
+async function saveChanges(ActionButton){
     if (ActionButton == "btnSaveChanges"){
-        /*Desactive the button SaveChanges*/
+        let txtPassword = document.getElementById("txtPassword").value;
+        let name = document.getElementById("txtName").value;
+        let lastName = document.getElementById('txtLastName').value;
+        let replyPassword = document.getElementById("txtReplyPassword").value;
+        let photo = document.getElementById("buttonUploadPhotoProfile").files[0];
+
+        if(txtPassword&&replyPassword&&txtPassword==replyPassword){
+            const responsePassword = await fetch("/encryptPasswordRegister",{
+                method: "POST",
+                body: JSON.stringify({pass: txtPassword}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+
+            let responseServerPassword = await responsePassword.json();
+
+            //Trae la contra ya encriptada con hash y salt.
+            let encryptedPassword = responseServerPassword.encrypted;
+
+            let result = await fetch('/updatePasswordUser',{
+                method: "POST",
+                body: JSON.stringify({username: userName,
+                    pass: encryptedPassword}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+
+            let formatedResult = await result.json();
+
+        }else{
+            //Codigo a implementar de aviso
+        }
+
+        if(name){
+            let result = await fetch('/updateNameUser',{
+                method: "POST",
+                body: JSON.stringify({username: userName,
+                    name: name}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+
+            let formatedResult = await result.json();
+
+            sessionStorage.setItem("name",name);
+        }
+
+        if(lastName){
+            let result = await fetch('/updateLastNameUser',{
+                method: "POST",
+                body: JSON.stringify({username: userName,
+                    lastName: lastName}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+
+            let formatedResult = await result.json();
+
+            sessionStorage.setItem("lastName",lastName);
+        }
+
+        if(photo){
+            const formData = new FormData();
+            formData.append('photoUser',photo);
+            const response = await fetch("/uploadUserPhoto",{
+            method: "POST",
+            body: formData
+            })
+            let responseServer = await response.json();
+            let idPhotoUpdate = responseServer.idPhoto;
+
+            const responseUpdate = await fetch('/updatePhotoIdUser',{
+                method: "POST",
+                body: JSON.stringify({username: userName,photo: idPhotoUpdate}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+
+            let formatedResult = await responseUpdate.json();
+
+            sessionStorage.setItem("photo",idPhotoUpdate);
+        }
+        /*Dectivate the button SaveChanges*/
         document.getElementById('btnSaveChanges').style.display='none';
         /*Active the button EditProfile*/
         document.getElementById('btnEditProfile').disabled=false;
@@ -133,6 +249,7 @@ function saveChanges(ActionButton){
 
         /*Desactive the text field Reply Password*/
         document.getElementById('actionReplyPassword').style.display='none';
+
         /*Active fields*/
         document.getElementById('txtName').disabled=true;
         document.getElementById('txtLastName').disabled=true;
