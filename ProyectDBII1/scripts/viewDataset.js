@@ -22,13 +22,12 @@ async function uploadPhoto (){
     const container = document.getElementById("contenedorFoto");
     newImage.id = "imageDataset";
     newImage.src = url;
-    newImage.style = "height: 8vw; width: 8vw; border-radius: 50%;"
+    newImage.style = "height: 12vw; width: 12vw; border-radius: 5%;"
     container.appendChild(newImage);
     
 
 }
 
-uploadPhoto();
 
 async function getInfoDataset(){
     const response = await fetch('/getInfoDataset',{
@@ -39,23 +38,28 @@ async function getInfoDataset(){
         },
     });
 
+    uploadPhoto();
+
     const datasetInfo = await response.json();
     console.log(datasetInfo);
     const container = document.getElementById("description");
     let child = document.createElement("p");
-    child.classList.add("h6","mx-5","col-9");
+    child.classList.add("h6");
+    child.style= "margin-left: 3vw";
     child.textContent = datasetInfo.description;
     container.appendChild(child);
 
     const containerName = document.getElementById("contenedorName");
     let childName = document.createElement("p");
-    childName.classList.add("h4", "mx-5");
+    childName.classList.add("h4");
+    childName.style= "margin-left: 3vw";
     childName.textContent= datasetInfo.name;
     containerName.appendChild(childName);
 
     const containerDate = document.getElementById("containerDate");
     let childDate = document.createElement("p");
-    childDate.classList.add("text-secondary", "mx-5", "mt-5");
+    childDate.classList.add("text-secondary", "mt-1");
+    childDate.style= "margin-left: 3vw";
     childDate.textContent = datasetInfo.dateOfInsert;
     containerDate.appendChild(childDate);
 

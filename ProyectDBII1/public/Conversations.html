@@ -11,168 +11,132 @@
   </head>
   <body onload="">
     
-    <header> 
-      <!-- NAV-->
-      <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2a2d3b;">
-        <div class="container-fluid">
-          <!-- LOGO NAVBAR -->
-          <div>
-            <img src="../Images/Icons/Isotipo.png" style="max-width: 2.5vw; max-height: 2.5vw;">
-          </div>
-          <!-- NAME NAVBAR -->
-          <a class="navbar-brand">Dataford</a>
-          
-          <!-- RESPONSIVE BUTTON -->
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-  
-          <!-- RESPONSIVE TOOLBAR -->
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <div class="container-fluid d-flex justify-content-between">
-              <!-- DIV SEARCHER -->
-              <div  class="d-flex" name="searcher">
-                <!-- FILTER BUTTON -->
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li id="filterButtonHome" class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle"  id="navFilterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Filter</a>
-                    <ul class="dropdown-menu" aria-labelledby="navFilterDropdown">
-                      <li><a class="dropdown-item" onclick="FilterChange('None')">None</a></li>
-                      <li><a class="dropdown-item" onclick="FilterChange('Users')">Users</a></li>
-                      <li><a class="dropdown-item" onclick="FilterChange('NameDataset')">Name Dataset</a></li>
-                      <li><a class="dropdown-item" onclick="FilterChange('DescriptionDataset')">Description Dataset</a></li>
-                    </ul>
-                </ul>
-  
-                <!-- SEARCH FORM -->
-                <!-- ID = txtSearchNavbar -->
-                <input id="txtSearchNavbar" class="form-control me-2" style="width:500px ;" type="search" placeholder="Search" aria-label="Search">
-                
-                <!-- SEARCH BUTTON -->
-                <!-- ID = searchButtonNavbar -->
-                <div>
-                  <button id="searchButtonNavbar" class="btn btn-outline-success" onclick="Search()" style="max-height: 2.5vw;" type="submit">Search</button>
-                </div>
-              </div>
-              
-              <!-- OPTIONS -->
-              <div class="d-flex">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex">
-  
-                  <!-- BUTTON HOME -->
-                  <li id="homeWindow" class="nav-item mx-3">
-                    <a class="nav-link" aria-current="page" href="/Home">Home</a>
-                  </li>
-  
-                  <!-- DROPDOWN BUTTON DATASETS -->
-                  <!-- ID = datasetsButtonHome -->
-                  <li id="datasetsButtonHome" class="nav-item dropdown mx-3">
-                    <a class="nav-link dropdown-toggle" href="/Datasets" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Datasets
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <!-- BUTTON MYDATASETS -->
-                      <li><a class="dropdown-item" href="/MyDatasets">My datasets</a></li>
-  
-                      <!-- BUTTON CREATEDATASET -->
-                      <li><a class="dropdown-item" href="/CreateDataset">Create dataset</a></li>
-                    </ul>
-                  </li>
-                  
-                  <!-- BUTTON MESSAGES -->
-                  <li id="messageButtonHome" class="nav-item mx-3">
-                    <a class="nav-link" href="/Conversations">Conversations</a>
-                  </li>
-                </ul>
-              </div>
-  
-              <div class="d-flex">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  
-                  <li id="datasetsButtonHome" class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle nav-link-dark" style="margin-right: 20px;" href="/MyProfile" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Account
-                    </a>
-  
-                    
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <!-- BUTTON MYPROFILE -->
-                      <li><a class="dropdown-item" href="/MyProfile">Profile</a></li>
-  
-                      <!-- BUTTON SIGNOUT -->
-                      <li><a class="dropdown-item" onclick="SignOut()">Sign Out</a></li>
-                    </ul>
-                  </li>
-                  
-                  <!-- BUTTON ACCOUNT -->
-                  <li>
-                    <img class="dropdown-toggle" name="imageUser" data-toggle="downtownAccount" src="Images/icons/noImage.jpg" Style="width: 40px; height: 40px;border-radius: 50%;" >
-                  </li>
-  
-                </ul>
-                  
-              </div>
-    
-            </div>
-  
-          </div>
+  <!-- NAV VAR -->
+  <header> 
+    <!-- NAV-->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2a2d3b;">
+      <div class="container-fluid">
+        <!-- LOGO NAVBAR -->
+        <div>
+          <img src="../Images/Icons/Isotipo.png" style="max-width: 2.5vw; max-height: 2.5vw;">
         </div>
+        <!-- NAME NAVBAR -->
+        <a class="navbar-brand">Dataford</a>
         
-        <!-- Bell notification  -->
-        <div class="list-group" >
-          <!-- Bell button  -->
-          <li class="btn list-group-item d-flex justify-content-around align-items-center" style="background-color: #2a2d3b; color: #f3f3f3;">
-            <img data-bs-toggle="modal" data-bs-target="#not-modal" src="../Images/Icons/bell.png" width="16vw">
-            <!-- Number newNotifications -->
-            <span class="badge bg-primary">0</span>
-          </li>
-        </div>
-  
-        <!-- Notification Modal Window  -->
-        <div class="modal fade" id="not-modal" tabindex="-1" aria-hidden="true" aria-labelledby="label-modal-1">
-          <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-              <!-- Modal Header  -->
-              <div class="modal-header">
-                <h5 class="modal-title">Notifications</h5>
-                <button class="btn-close" data-bs-dismiss="modal" aria-labelledby="Back"></button>
-              </div>
-              <!-- Modal Body  -->
-              <div class="modal-body" style="height: 200vw;">
-                <!-- Div Notifications  -->
-                <div class="container-fluid">
-                  <!-- Example1 -->
-                  <div class="row d-flex flex-row justify-content-between">
-                    <div class="col-4">
-                      <h6>12-10-2023 7:00am</h6>
-                    </div>
-                    <div class="col-8" id="not-1">
-                      <h6>The user "NameUser" create a dataset about "titleDataset"</h6>
-                    </div>
-                  </div>
-    
-                  <hr>
-  
-                  <!-- Example2 -->
-                  <div class="row d-flex flex-row justify-content-between">
-                    <div class="col-4">
-                      <h6>12-10-2023 7:00am</h6>
-                    </div>
-                    <div class="col-8" id="not-1">
-                      <h6>The user "NameUser" create a dataset about "titleDataset"</h6>
-                    </div>
-                  </div>
-                  
-                  
-                </div>
+        <!-- RESPONSIVE BUTTON -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- RESPONSIVE TOOLBAR -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="container-fluid d-flex justify-content-between">
+            <!-- DIV SEARCHER -->
+            <div  class="d-flex" name="searcher">
+              <!-- FILTER BUTTON -->
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li id="filterButtonHome" class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle"  id="navFilterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Filter</a>
+                  <ul class="dropdown-menu" aria-labelledby="navFilterDropdown">
+                    <li><a class="dropdown-item" onclick="FilterChange('None')">None</a></li>
+                    <li><a class="dropdown-item" onclick="FilterChange('Users')">Users</a></li>
+                    <li><a class="dropdown-item" onclick="FilterChange('NameDataset')">Name Dataset</a></li>
+                    <li><a class="dropdown-item" onclick="FilterChange('DescriptionDataset')">Description Dataset</a></li>
+                  </ul>
+              </ul>
+
+              <!-- SEARCH FORM -->
+              <!-- ID = txtSearchNavbar -->
+              <input id="txtSearchNavbar" class="form-control me-2" style="width:500px ;" type="search" placeholder="Search" aria-label="Search">
+              
+              <!-- SEARCH BUTTON -->
+              <!-- ID = searchButtonNavbar -->
+              <div>
+                <button id="searchButtonNavbar" class="btn btn-outline-success" onclick="Search()"  type="submit">Search</button>
               </div>
             </div>
+            
+            <!-- OPTIONS -->
+            <div class="d-flex">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex">
+
+                <!-- BUTTON HOME -->
+                <li id="homeWindow" class="nav-item mx-3">
+                  <a class="nav-link" aria-current="page" href="/Home">Home</a>
+                </li>
+
+                <!-- DROPDOWN BUTTON DATASETS -->
+                <!-- ID = datasetsButtonHome -->
+                <li id="datasetsButtonHome" class="nav-item dropdown mx-3">
+                  <a class="nav-link dropdown-toggle" href="/Datasets" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Datasets
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <!-- BUTTON MYDATASETS -->
+                    <li><a class="dropdown-item" href="/MyDatasets">My datasets</a></li>
+
+                    <!-- BUTTON CREATEDATASET -->
+                    <li><a class="dropdown-item" href="/CreateDataset">Create dataset</a></li>
+
+                    <!-- BUTTON FAVORITE DATASETS -->
+                    <li><a class="dropdown-item" href="/FavoriteDatasets">Favorite datasets</a></li>
+                  </ul>
+                </li>
+                
+                <!-- BUTTON MESSAGES -->
+                <li id="messageButtonHome" class="nav-item mx-3">
+                  <a class="nav-link" href="/Conversations">Conversations</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="d-flex">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                
+                <li id="datasetsButtonHome" class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle nav-link-dark" style="margin-right: 20px;" href="/MyProfile" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Account
+                  </a>
+
+                  
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <!-- BUTTON MYPROFILE -->
+                    <li><a class="dropdown-item" href="/MyProfile">Profile</a></li>
+
+                    <!-- BUTTON SIGNOUT -->
+                    <li><a class="dropdown-item" onclick="SignOut()">Sign Out</a></li>
+                  </ul>
+                </li>
+                
+                <!-- BUTTON ACCOUNT -->
+                <li>
+                  <img class="dropdown-toggle" name="imageUser" data-toggle="downtownAccount" src="Images/icons/noImage.jpg" Style="width: 40px; height: 40px;border-radius: 50%;" >
+                </li>
+
+              </ul>
+                
+            </div>
+  
           </div>
+
         </div>
-  
-  
-      </nav>
-    </header>
+      </div>
+      
+      <!-- Bell notification  -->
+      <div class="list-group" >
+        <!-- Bell button  -->
+        <li class="btn list-group-item d-flex justify-content-around align-items-center" style="background-color: #2a2d3b; color: #f3f3f3;">
+          <img data-bs-toggle="modal" data-bs-target="#not-modal" src="../Images/Icons/bell.png" width="16vw">
+          <!-- Number newNotifications -->
+          <span class="badge bg-primary">0</span>
+        </li>
+      </div>
+
+      
+
+
+    </nav>
+  </header>
 
     <div class="container-fluid">
       <div class="row">
@@ -205,6 +169,48 @@
         </div>
       </div>
     </div>
+
+      <!-- Notification Modal Window  -->
+  <div class="modal fade" id="not-modal" tabindex="-1" aria-hidden="true" aria-labelledby="label-modal-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <!-- Modal Header  -->
+        <div class="modal-header">
+          <h5 class="modal-title">Notifications</h5>
+          <button class="btn-close" data-bs-dismiss="modal" aria-labelledby="Back"></button>
+        </div>
+        <!-- Modal Body  -->
+        <div class="modal-body" style="height: 200vw;">
+          <!-- Div Notifications  -->
+          <div class="container-fluid">
+            <!-- Example1 -->
+            <div class="row d-flex flex-row justify-content-between">
+              <div class="col-4">
+                <h6>12-10-2023 7:00am</h6>
+              </div>
+              <div class="col-8" id="not-1">
+                <h6>The user "NameUser" create a dataset about "titleDataset"</h6>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Example2 -->
+            <div class="row d-flex flex-row justify-content-between">
+              <div class="col-4">
+                <h6>12-10-2023 7:00am</h6>
+              </div>
+              <div class="col-8" id="not-1">
+                <h6>The user "NameUser" create a dataset about "titleDataset"</h6>
+              </div>
+            </div>
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
     <script src="../bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
     <script src="../scripts/conversation.js"></script>
