@@ -1,7 +1,5 @@
 // Functions of SignIn.html
 
-/* HELLO */
-
 /* Function that verifies what a user is authorized to do*/ 
 async function SignIn(){
     const username = document.getElementById('txtUsernameSignIn').value;
@@ -21,24 +19,10 @@ async function SignIn(){
 
     if (authorizeCorrect===true){
 
-         // PENDIENTE
-        /*
-        const name = "";
-        const lastName = "";
-        const birthday = "";
-        const photo = "";
-        */
         updateActiveUser(user._id,user.firstName,user.firstSurname,user.username,user.birthDate,user.photo)
 
-         // PENDIENTE
-        /*updateActiveUser(name,lastName,username,birthday,photo);*/
         window.location.href ="/Home";
         
     }
     
-}
-
-/* Function that consult in the dabase if a user is authorized to do*/ 
-function authorizeAccess(){
-    // PENDIENTE
 }

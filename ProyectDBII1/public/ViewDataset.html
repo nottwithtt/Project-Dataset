@@ -44,23 +44,30 @@
                 </div>
             </div>
 
-            <div name="header" class="container-fluid col-12 d-flex flex-row justify-content-center">
-                <div class="col-10 d-flex flex-column">
-                    <div name="dateInclude" id="containerDate">
-                       
+            <div name="header" class="container-fluid col-12 d-flex flex-row justify-content-between" >
+                <div class="col-9 d-flex flex-column justify-content-start" >
+
+                    <!-- DateIncludeDataset -->
+                    <!-- ID = contenedorDate -->
+                    <div id="containerDate">
                     </div>
-                    <div name="nameDataset" id="contenedorName">
-                        
+
+                    <!-- Name dataset -->
+                    <!-- ID = contenedorName -->
+                    <div id="contenedorName">
+                    </div>
+
+                    <div id="description">
                     </div>
                 </div>
+
                 <div name="imageUserAuthor" class="col d-flex mx-5 mt-5">
                     <div id ="contenedorFoto"> 
                     </div>
                 </div>
             </div>
 
-            <div name="descriptionDataset" id="description" class="container-fluid col-12 d-flex">
-            </div>
+            
 
             <div name="buttons" class="container-fluid col-12 d-flex flex-row">
                 <div class="list-group mt-3" style="margin-left: 3vw;">
@@ -94,11 +101,6 @@
                 <div class="">
                     <div name="filesgroup" id="divContenedor" class="btn-group mx-5 mt-3 d-flex flex-wrap" role="group" aria-label="Basic checkbox toggle button group">
 
-                      
-                      
-                      
-                        
-                        
                     </div>
                 </div>
 
@@ -112,14 +114,17 @@
                 </div>
             </div>
 
+            <!-- Div comments -->
             <div name="comments" class="container-fluid col-12 d-flex flex-column mt-5" style="background-color: #f3f3f3; height: 30vw;">
+                <!-- Title-->
                 <div>
                     <p class="h4 mt-4 mx-5">Comments</p>
                 </div>
                     
+                <!-- Comments Body -->
                 <div name="commentBox" class="container-fluid" style="background-color: white; margin-left: 3vw; margin-right: 3vw; width: 90vw; height: 23vw; overflow: scroll; position: relative;">
                     <div class="row d-flex flex-column align-items-start">
-
+                        <!-- Messages -->
                         <div name="message0" style="width: auto; height: auto; ">
                             <div class="card d-flex flex-row mt-3" style="width: auto; height: auto;">
                                 <div class="mx-2 mb-1 mt-1">
@@ -170,12 +175,6 @@
             <div class="modal-body" style="height: 200vw;">
 
               <div class="container-fluid" id="likedUsers">
-                <!-- Example1 -->
-                
-
-                <!-- Example2 -->
-                
-                
               </div>
             </div>
           </div>

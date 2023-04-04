@@ -75,7 +75,6 @@ app.set('view engine','html');
 
 app.use(express.static(__dirname+'/'));
 
-// # # # # # # # VALUES HTML # # # # # # #
 
 app.get('/',(req,res)=>{
     res.sendFile(__dirname+'/public/SignIn.html');
@@ -123,6 +122,10 @@ app.get('/Messages',(req,res)=>{
 
 app.get('/MyProfile',(req,res)=>{
     res.sendFile(__dirname+'/public/MyProfile.html');
+});
+
+app.get('/FavoriteDatasets',(req,res)=>{
+    res.sendFile(__dirname+'/public/FavoriteDatasets.html');
 });
 
 

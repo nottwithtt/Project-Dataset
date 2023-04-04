@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--favicon-->
     <link rel="icon" href="../Images/Icons/Isotipo.ico" type="ico" sizes="48x48">
-    <title>Home</title>
+    <title>My Favorite Datasets</title>
     <link rel="stylesheet" href="bootstrap-5.0.2-dist/css/bootstrap.min.css">
 </head>
-<body onload= "changeInfoUser()">
+<body>
   <!-- NAV VAR -->
   <header> 
     <!-- NAV-->
@@ -137,95 +137,108 @@
     </nav>
   </header>
 
-  <!-- Notification Modal Window  -->
-  <div class="modal fade" id="not-modal" tabindex="-1" aria-hidden="true" aria-labelledby="label-modal-1">
-    <div class="modal-dialog modal-dialog-scrollable">
-      <div class="modal-content">
-        <!-- Modal Header  -->
-        <div class="modal-header">
-          <h5 class="modal-title">Notifications</h5>
-          <button class="btn-close" data-bs-dismiss="modal" aria-labelledby="Back"></button>
+  <div class="container-fluid">
+    <div class="row">
+      <section class="col-11 mx-5 mt-4 d-flex" Style="height: 50px">
+        <div class="col-11 mt-3">
+            <p class="h2">Favorite Datasets</p>
         </div>
-        <!-- Modal Body  -->
-        <div class="modal-body" style="height: 200vw;">
-          <!-- Div Notifications  -->
-          <div class="container-fluid">
-            <!-- Example1 -->
-            <div class="row d-flex flex-row justify-content-between">
-              <div class="col-4">
-                <h6>12-10-2023 7:00am</h6>
-              </div>
-              <div class="col-8" id="not-1">
-                <h6>The user "NameUser" create a dataset about "titleDataset"</h6>
+      </section>
+
+      <section class="container col" style ="height: 200px">
+
+        <div id="cardDiv" class="d-flex flex-wrap justify-content-start" Style="height: 350px;">
+
+          <div id="dataSetCard" class="col-3 list-group mt-5 mx-5">
+            <a href="#" onclick="" class="container d-flex flex-column list-group-item list-group-item-action ">
+                <div class="d-flex justify-content-center">
+                  <img id="datasetImage" class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
+                </div>
+                <div>
+                  <p id="nameD1" class="card-title h6 mx-3">Dataset1</p>
+                  <p id="descriptionD1" class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
+                </div>
+
+                <hr class="mt-2">
+                <div class="col-12 d-flex">
+                  <div class="col-8 d-flex flex-column justify-content-around">
+                    <div><p id="dateIncludeD1" class="text-secondary mx-3">Include 16th march 2023</p></div>
+                    <div><p id="countFilesD1" class="text-secondary mx-3">1 File</p></div>
+                  </div>
+
+                  <div class="col-3 d-flex flex-column justify-content-around">
+                    <div><p id="sizeD1" class="text-secondary mx-3">34mb</p></div>
+
+                    <div class="mx-3">
+                        <div class="card" style="height: 30px; width: 70px;">
+                          <div class=" col-12 d-flex flex-row ">
+                            <div class="col-6" >
+                              <p id="dataSetLikes" class="text-secondary mt-1 mx-2">4</p>
+                            </div>
+                            <div class="class=6">
+                              <img src="Images/Icons/like.png" style="width: 20px;">
+                            </div>
+                          </div>
+                          
+                        </div>
+                    </div>
+                  </div>
+                  
+                </div>
+            </a>
+          </div>
+          
+        </div>
+      </section>
+
+        <!-- Notification Modal Window  -->
+      <div class="modal fade" id="not-modal" tabindex="-1" aria-hidden="true" aria-labelledby="label-modal-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <!-- Modal Header  -->
+            <div class="modal-header">
+              <h5 class="modal-title">Notifications</h5>
+              <button class="btn-close" data-bs-dismiss="modal" aria-labelledby="Back"></button>
+            </div>
+            <!-- Modal Body  -->
+            <div class="modal-body" style="height: 200vw;">
+              <!-- Div Notifications  -->
+              <div class="container-fluid">
+                <!-- Example1 -->
+                <div class="row d-flex flex-row justify-content-between">
+                  <div class="col-4">
+                    <h6>12-10-2023 7:00am</h6>
+                  </div>
+                  <div class="col-8" id="not-1">
+                    <h6>The user "NameUser" create a dataset about "titleDataset"</h6>
+                  </div>
+                </div>
+
+                <hr>
+
+                <!-- Example2 -->
+                <div class="row d-flex flex-row justify-content-between">
+                  <div class="col-4">
+                    <h6>12-10-2023 7:00am</h6>
+                  </div>
+                  <div class="col-8" id="not-1">
+                    <h6>The user "NameUser" create a dataset about "titleDataset"</h6>
+                  </div>
+                </div>
+                
+                
               </div>
             </div>
-
-            <hr>
-
-            <!-- Example2 -->
-            <div class="row d-flex flex-row justify-content-between">
-              <div class="col-4">
-                <h6>12-10-2023 7:00am</h6>
-              </div>
-              <div class="col-8" id="not-1">
-                <h6>The user "NameUser" create a dataset about "titleDataset"</h6>
-              </div>
-            </div>
-            
-            
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- PRINCIPAL CONTAINER -->
-  <div class="container-fluid">
-    <div class="row">
-      <section class="col-12" Style="height: 600px">
-        <div class="d-flex justify-content-center" style="margin-top: 225px;">
-          <!-- USER WELCOME -->
-          <!-- ID =  usernameHome-->
-          <p class="h1">WELCOME&nbsp</p> <p class="h1 " id="usernameHome">user</p><p class="h1">!</p>
-        </div>
-        <div class="d-flex justify-content-center">
-          <p class="h4">Enjoy our site, start by creating some datasets and share them with your friends.</p>
-        </div>
-        
-      </section>
-
-      <section class="container col" style ="height: 600px; background-color: #f3f3f3;">
-        <div class="col-12 d-flex justify-content-center" style="margin-top: 70px;">
-          <p class="display-6">Functions</p>
-        </div>
-
-        <div class="d-flex justify-content-around">
-          <div class=" card col-3 mt-5 d-flex" Style="background-color: #f3f3f3; border: none;">
-            <img class="card-img-top mx-auto" src="../Images/Home/Comments.png" Style="width: 50%">
-            <p class="card-title h5 text-primary mx-auto">Create datasets</p>
-            <p class="card-text text-secondary mx-auto">.txt - .pdf - .mp4 - others</p>
-          </div>
-          <div class=" card col-3 mt-5 d-flex" Style="background-color: #f3f3f3; border: none;">
-            <img class="card-img-top mx-auto" src="../Images/Home/Comments.png" Style="width: 50%">
-            <p class="card-title h5 text-primary mx-auto">Comments datasets</p>
-            <p class="card-text text-secondary mx-auto">Write to other users</p>
-          </div>
-          <div class=" card col-3 mt-5 d-flex" Style="background-color: #f3f3f3; border: none;">
-            <img class="card-img-top mx-auto" src="../Images/Home/dataset_logo.png" Style="width: 50%">
-            <p class="card-title h5 text-primary mx-auto">Discover datasets</p>
-            <p class="card-text text-secondary mx-auto">See what your friends shared</p>
-          </div>
-        </div>
-        
-      </section>
-
-    </div>
-  </div>
 
   <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
   <script src="../scripts/home.js"></script>
-  <script src="../scripts/navbar.js"></script>
+  <script src="../scripts/favoriteDatasets.js"></script>
   <script src="../scripts/session.js"></script>
-  
 </body>
 </html>
