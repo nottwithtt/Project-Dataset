@@ -19,9 +19,8 @@ async function SignIn(){
     let authorizeCorrect = responseObject.answer.isUser;
     let user = responseObject.answer.user;
 
-    console.log(authorizeCorrect)
-
     if (authorizeCorrect===true){
+
          // PENDIENTE
         /*
         const name = "";
@@ -29,8 +28,8 @@ async function SignIn(){
         const birthday = "";
         const photo = "";
         */
+        updateActiveUser(user._id,user.firstName,user.firstSurname,user.username,user.birthDate,user.photo)
 
-        exampleSession();
          // PENDIENTE
         /*updateActiveUser(name,lastName,username,birthday,photo);*/
         window.location.href ="/Home";

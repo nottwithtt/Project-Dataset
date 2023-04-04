@@ -135,6 +135,7 @@ app.post('/encryptPassword',bodyParser.json(),async (req,res)=>{
     console.log(req.body.Password);
     let arrayUsers = await searchAllUsers();
     let response = await isUser(arrayUsers,req.body.userName,req.body.Password);
+    console.log(response);
     res.json({"answer": response});
 })
 
@@ -162,7 +163,6 @@ app.post('/uploadDataset',bodyParser.json(),async (req,res)=>{
     let idDatasetNeo4j = dataset.toString();
     await userAddsDataset(user,idDatasetNeo4j,nameDataset);
     let userFollowers = await getFollowingUsers(user);
-    console.log(userFollowers);
     createNotifications(userFollowers,user,nameDataset);
 
 })
@@ -219,6 +219,19 @@ app.post('/getInfoDataset',bodyParser.json(),async (req,res)=>{
     res.json({"name": name, "description": description,
     "dateOfInsert": date});
 });
+
+app.post('/getLikedUsers',bodyParser.json(),async(req,res)=>{
+    let idDataset = req.body.data
+    let users =  await downloadedUserDataset(idDataset);
+    res.json({"users":users});
+})
+
+app.post('/addUserDownload',bodyParser.json(),async (req,res)=>{
+    let idDataset = req.body.data;
+    let idUser = req.body.user;
+    let response = await downloadDataset(idUser,idDataset);
+    res.json({"answer": true});
+})
 
 console.log(encryptPassword('hola'));
 // # # # # # # # END VALUES # # # # # # #
@@ -454,7 +467,7 @@ async function createNotifications(notifiedUsers,userUploads,name){
 async function createUser(User,username){
     const session = driver.session({database: 'neo4j'});
     try{
-        const query = `CREATE (:User {id_mongo: "${User}",username: "${username}"})`;
+        const query = `CREATE (:User {id_mongo: "${User}", username: "${username}"})`;
         await session.executeWrite(transaction => transaction.run(query));
     }catch(error){
         console.error(error);
@@ -567,7 +580,7 @@ async function downloadDataset(User,Dataset){
     const session = driver.session({database: 'neo4j'});
     try{
         let query = `MATCH (us:User {id_mongo: "${User}"}),(dat:Dataset {id_mongo:"${Dataset}"})
-        CREATE (us)-[:DOWNLOADS]->(dat)-[:DOWNLOADED_BY]->(us)`
+        MERGE (us)-[:DOWNLOADS]->(dat)-[:DOWNLOADED_BY]->(us)`
         await session.executeWrite(transaction=>transaction.run(query));
     }catch(error){
         console.log(error)

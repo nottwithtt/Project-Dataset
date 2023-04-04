@@ -1,6 +1,7 @@
 const parameters = new URLSearchParams(window.location.search);
 const idDataset = parameters.get('dataset');
 const nameDataset = parameters.get('name');
+const userId = sessionStorage.getItem('id');
 sessionStorage.setItem
 const buttons = [];
 
@@ -133,12 +134,52 @@ async function validaCheckBox(){
 
 }
 
-function getDataset(){
+async function getDownloadedUsers(){
+    const response = await fetch('/getLikedUsers',{
+        method: "POST",
+        body: JSON.stringify({data: idDataset}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+
+    const answer = await response.json();
+    let users = answer.users;
+    console.log(users);
+    let container = document.getElementById("likedUsers");
+    for(let i =0;i<users.length;i++){
+        let divPrincipal = document.createElement('div');
+        divPrincipal.classList.add("row", "d-flex", "flex-row", "justify-content-between");
+
+        divPrincipal.innerHTML = `<h6>${users[i].username}</h6>
+                                      <hr>`;
+        container.appendChild(divPrincipal);
+    }
+    let counterNumber = users.length;
+    let containerCounter = document.getElementById("counter");
+    let textCounter = document.createElement('p');
+    textCounter.textContent = `${counterNumber}`;
+    containerCounter.appendChild(textCounter);
+
+}
+
+getDownloadedUsers();
+
+async function getDataset(){
     const currentUrl = window.location.href;
 
     // Construct the download URL with the current URL in the query string
     const downloadUrl = `/dataset/${idDataset}?returnUrl=${encodeURIComponent(currentUrl)}`;
-  
-    // Redirect to the download URL
+    
     window.location.href = downloadUrl;
+
+    const response = await fetch('/addUserDownload',{
+        method: "POST",
+        body: JSON.stringify({data:idDataset,
+                              user:userId}),
+        headers: {
+                "Content-Type": "application/json",
+        },
+    })
+
 }
