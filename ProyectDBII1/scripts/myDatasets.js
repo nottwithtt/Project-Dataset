@@ -1,4 +1,4 @@
-let user = "64277f67adeb58cdfe1fe141";
+let user = sessionStorage.getItem("id");
 let container = document.getElementById('datasetContenedor');
 
 async function getDatasets(){
