@@ -34,7 +34,7 @@ const redisDB = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1
 
 const mysql = require('mysql2');
 const { ObjectID } = require('mongodb');
-const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
+const connection = mysql.createConnection(DATABASE_URL='mysql://k8w5dqlcxj8v28k02gsf:pscale_pw_1d4kuBj5aLkoednqqN5O1blIr5Mt4ml2lLJ7L5agcZR@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}');
 
 
 //Variables para conectarse a mysql
@@ -209,14 +209,42 @@ app.post('/getPhotoDataset',bodyParser.json(),async (req,res)=>{
     let idDataset = req.body.data;
     let dataset = await findDataset(idDataset);
     let idPhoto = dataset.PhotoDataSet;
+    console.log(idPhoto);
     let metadataFile = await gfs.find({"_id": idPhoto}).toArray();
     let objectMetadata = metadataFile[0];
     let downloadStream = await gfs.openDownloadStream(idPhoto);
     res.set('Content-Type',objectMetadata.contentType);
     res.set('Content-Disposition', `attachment; filename=${objectMetadata.filename}`);
     downloadStream.pipe(res);
-
 })
+
+app.post('/getPhoto',bodyParser.json(),async (req,res)=>{
+    /*let idPhoto = new mongoDB.ObjectId(req.body.idPhotoUser);
+    console.log(idPhoto);*/
+
+    let idUser = req.body.data;
+    let user = await findUserById(idUser);
+    let idPhoto = user.photo;
+    
+    let metadataFile = await gfs.find({"_id": idPhoto}).toArray();
+    let objectMetadata = metadataFile[0];
+    
+    let downloadStream = await gfs.openDownloadStream(idPhoto);
+    //res.set('Content-Type',objectMetadata.contentType);
+    res.set('Content-Disposition', `attachment; filename=${objectMetadata.filename}`);
+    downloadStream.pipe(res);
+})
+
+app.post('/createConversation',bodyParser.json(),async (req,res)=>{
+    let idUser1 = req.body.actualUser;
+    let idUser2 = req.body.otherUser;
+
+    let conversation = await createConversation(idUser1,idUser2);
+
+    res.json({"res" : conversation});    
+})
+
+
 
 app.post('/getInfoDataset',bodyParser.json(),async (req,res)=>{
     let idDataset = new mongoDB.ObjectId(req.body.data);
@@ -734,30 +762,13 @@ async function getUploadedDatasets(User){
     }
 }
 
-async function connectToRedis() {
-  
-  /*await client.hset('Comentarios',{'user1': '12345',Map<string | Number>;
-  let x = await client.get(foo);
-  console.log(x);*/
-
-  //createConversation('1234', '12345');
-  //createMessage('con-1','2312','Bueno Papiola','none');
-  //let conver = consultConversation(client,'1234','4321');
-  //console.log(conver);
-  //let list = await consultConversationsOfUser('1234');
-  //console.log(list);
-
-  let conversations = await consultConversationsOfUser('1234');
-  console.log(conversations);
-  
-}
 
 /*
   Function that creates a conversation between two users and verifies that it is not created.
 */
 async function createConversation(idUser1,idUser2){
   if(idUser1 != idUser2){
-    let x = await client.keys('*');
+    let x = await redisDB.keys('*');
     let isCreate = false;
     let idExistConversation = '';
     
@@ -765,8 +776,8 @@ async function createConversation(idUser1,idUser2){
       let keyName = x[i];
       if (keyName.substring(0,3) == 'con'){
         
-        let u1 = await client.hget(x[i],'user1');
-        let u2 = await client.hget(x[i],'user2');
+        let u1 = await redisDB.hget(x[i],'user1');
+        let u2 = await redisDB.hget(x[i],'user2');
       
         if((u1 == idUser1 && u2 == idUser2) || (u1 == idUser2 && u2 == idUser1)){
           isCreate = true;
@@ -781,16 +792,16 @@ async function createConversation(idUser1,idUser2){
       let i = 0;
       let name = 'con-';
   
-      while(await client.exists(name+i) == true){
+      while(await redisDB.exists(name+i) == true){
           i += 1;
       }
       name = name + i;
-      await client.hmset(name,'user1',idUser1,'user2', idUser2);
-      return name;
-   }
-   else{
-      loadConversation(idExistConversation);
-   }
+      await redisDB.hmset(name,'user1',idUser1,'user2', idUser2);
+      return {isCreate: isCreate, nameConversation : name};
+    }
+    else{
+        return {isCreate: isCreate, nameConversation : idExistConversation};
+    }
   }
 }
 
@@ -801,11 +812,11 @@ async function createMessage(conversation,idAuthor,content,image){
   let name = 'mes-' + conversation + '-';
   let i = 0;
 
-  while(await client.exists(name+i) == true){
+  while(await redisDB.exists(name+i) == true){
     i += 1;
   }
   name = name + i;
-  await client.hmset(name,'idAuthor',idAuthor,'content',content,'image',image);
+  await redisDB.hmset(name,'idAuthor',idAuthor,'content',content,'image',image);
 }
 
 
@@ -813,14 +824,14 @@ async function createMessage(conversation,idAuthor,content,image){
 Consult name to Conversation of two users
 */
 async function consultConversation(idUser1, idUser2){
-  let x = await client.keys('*');
+  let x = await redisDB.keys('*');
   let nameConversation = '';
 
   for(let i = 0; i < x.length;i++){
     let keyName = x[i];
     if (keyName.substring(0,3) == 'con'){
-      let u1 = await client.hget(x[i],'user1');
-      let u2 = await client.hget(x[i],'user2');
+      let u1 = await redisDB.hget(x[i],'user1');
+      let u2 = await redisDB.hget(x[i],'user2');
       if(u1 == idUser1 && u2 == idUser2){
         nameConversation = x[i];
         break;
@@ -831,7 +842,7 @@ async function consultConversation(idUser1, idUser2){
 }
 
 async function consultConversationsOfUser(idUser){
-  let x = await client.keys('*');
+  let x = await redisDB.keys('*');
   let conversationsUser = new Map();
 
 
@@ -839,8 +850,8 @@ async function consultConversationsOfUser(idUser){
     let keyName = x[i];
     if (keyName.substring(0,3) == 'con'){
       let key = x[i];
-      let u1 = await client.hget(key,'user1');
-      let u2 = await client.hget(key,'user2');
+      let u1 = await redisDB.hget(key,'user1');
+      let u2 = await redisDB.hget(key,'user2');
       if(idUser == u1 || idUser == u2){
         conversationsUser.set(key,{"user1":u1,"user2":u2});
       }
@@ -854,16 +865,16 @@ async function loadMessages(idConversation){
     
     let keyName = 'mes-' + idConversation + '-';
     let i = 0;
-    let x = await client.hvals(keyName + i);
+    let x = await redisDB.hvals(keyName + i);
 
     while(x.length != 0){
-      let x1 = await client.hget(keyName+i,"idAuthor");
-      let x2 = await client.hget(keyName+i,"content");
-      let x3 = await client.hget(keyName+i,"image");
+      let x1 = await redisDB.hget(keyName+i,"idAuthor");
+      let x2 = await redisDB.hget(keyName+i,"content");
+      let x3 = await redisDB.hget(keyName+i,"image");
 
       mapMessages.set(i,{"idAuthor": x1, "content": x2, "image": x3});
       i ++;
-      x = await client.hvals(keyName + i);
+      x = await redisDB.hvals(keyName + i);
     }
 
     return mapMessages;
