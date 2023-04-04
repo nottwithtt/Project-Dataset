@@ -142,6 +142,11 @@ app.post('/encryptPassword',bodyParser.json(),async (req,res)=>{
     res.json({"answer": response});
 })
 
+app.post('/getUser',bodyParser.json(),async (req,res)=>{
+    let response = await findUserById(req.body.idUser);
+    res.json({"user": response});
+})
+
 app.post('/uploadPhotoDataset',upload.single('photoDataset'),async (req,res)=>{
     let fileId = req.file.id;
     res.json({"answer":fileId});
