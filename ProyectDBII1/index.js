@@ -233,6 +233,36 @@ app.post('/addUserDownload',bodyParser.json(),async (req,res)=>{
     res.json({"answer": true});
 })
 
+app.post("/encryptPasswordRegister",bodyParser.json(),(req,res)=>{
+    let unencryptedPassword = req.body.pass;
+    let encryptedPassword = encryptPassword(unencryptedPassword);
+    res.json({"encrypted":encryptedPassword});
+})
+
+app.post('/insertUser',bodyParser.json(), async (req,res)=>{
+    let firstName = req.body.name;
+    let firstSurname = req.body.lastName;
+    let username = req.body.username;
+    let photo = new mongoDB.ObjectId(req.body.photo);
+    let password = req.body.password;
+    let birthDate = req.body.birthday;
+    let user =  await createUserMongo(username,password,firstName,firstSurname,birthDate,photo);
+    let responseUser = await findUserById(user.insertedId);
+    let idNeo4j = user.insertedId.toString();
+    let writeNeo4j = await createUser(idNeo4j,username);
+    res.json({"user":responseUser});
+})
+
+app.post("/getUsers",async (req,res)=>{
+    let users = await searchAllUsers();
+    res.json({"answer":users});
+})
+
+app.post('/uploadUserPhoto',upload.single('photoUser'), (req,res)=> {
+    let idPhoto = req.file.id;
+    res.json({"idPhoto":idPhoto});
+});
+
 console.log(encryptPassword('hola'));
 // # # # # # # # END VALUES # # # # # # #
 
@@ -254,6 +284,8 @@ app.post('/upload',upload.array('file'),(req,res)=>{
     });
     res.json({body: req.body});
 });
+
+
 
 
 //Funciona
@@ -294,6 +326,7 @@ app.post("/getObjectId",(req,res)=>{
     res.json({"idDataset": id});
 })
 
+
 async function isUser(Users,username,password){
     let flag = false;
     let user;
@@ -314,14 +347,16 @@ function findDataset(idDataset){
 }
 //Querys MongoDB.
 async function createUserMongo(username,password,firstName,firstSurname,birthDate,photoUser){
+    let photo = new mongoDB.ObjectId(photoUser);
+    let birthday = new Date(birthDate);
     let user = await conn.collection('users').insertOne(
         {
-            Username: username,
-            Password: password,
-            FirstName: firstName,
-            FirstSurname: firstSurname,
-            BirthDate: birthDate,
-            PhotoUser: photoUser,
+            username: username,
+            password: password,
+            firstName: firstName,
+            firstSurname: firstSurname,
+            birthDate: birthday,
+            photo: photo,
         }
     )
     return user; 
@@ -465,6 +500,7 @@ async function createNotifications(notifiedUsers,userUploads,name){
 
 
 async function createUser(User,username){
+    console.log("Here");
     const session = driver.session({database: 'neo4j'});
     try{
         const query = `CREATE (:User {id_mongo: "${User}", username: "${username}"})`;

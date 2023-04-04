@@ -1,4 +1,4 @@
-
+const idUser = sessionStorage.getItem('id');
 
 function uploadPhoto (){
     
@@ -19,7 +19,6 @@ async function createDataSetTest (){
     let datasetDescription = document.getElementById("txtDescriptionDataset").value;
     let datasetImage = document.getElementById("imageDataSetForm").files[0];
     let datasetFiles = document.getElementById("fileDataset").files;
-    let idUser = "64277f67adeb58cdfe1fe141";
     if(datasetImage&&datasetFiles){
         let formDataOne = new FormData();
         formDataOne.append('photoDataset',datasetImage)
