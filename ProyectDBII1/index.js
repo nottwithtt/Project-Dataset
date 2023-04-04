@@ -32,9 +32,9 @@ const FileSaver  = require('file-saver');
 const Redis = require("ioredis");
 const redisDB = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1-ruling-falcon-34023.upstash.io:34023");
 
-const mysql = require('mysql2');
+//const mysql = require('mysql2');
 const { ObjectID } = require('mongodb');
-const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
+//const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
 
 
 //Variables para conectarse a mysql
@@ -213,6 +213,19 @@ app.post('/getPhotoDataset',bodyParser.json(),async (req,res)=>{
 
 })
 
+
+app.post('/getPhotoUser',bodyParser.json(),async (req,res)=>{
+    let idPhotoUser = req.body.photo;
+    let idPhoto = new mongoDB.ObjectId(idPhotoUser);
+    let metadataFile = await gfs.find({"_id": idPhoto}).toArray();
+    let objectMetadata = metadataFile[0];
+    let downloadStream = await gfs.openDownloadStream(idPhoto);
+    res.set('Content-Type',objectMetadata.contentType);
+    res.set('Content-Disposition', `attachment; filename=${objectMetadata.filename}`);
+    downloadStream.pipe(res);
+
+})
+
 app.post('/getInfoDataset',bodyParser.json(),async (req,res)=>{
     let idDataset = new mongoDB.ObjectId(req.body.data);
     let dataset = await findDataset(idDataset);
@@ -265,6 +278,20 @@ app.post('/uploadUserPhoto',upload.single('photoUser'), (req,res)=> {
     let idPhoto = req.file.id;
     res.json({"idPhoto":idPhoto});
 });
+
+app.post('/getFollowedUsers',bodyParser.json(),async (req,res)=>{
+    let idUser = req.body.user;
+    let users = await getFollowedUsers(idUser);
+    res.json({"users":users});
+})
+
+app.post('/getFollowingUsers',bodyParser.json(),async (req,res)=>{
+    let idUser = req.body.user;
+    let users = await getFollowingUsers(idUser);
+    res.json({"users":users});
+})
+
+
 
 console.log(encryptPassword('hola'));
 // # # # # # # # END VALUES # # # # # # #
@@ -503,10 +530,9 @@ async function createNotifications(notifiedUsers,userUploads,name){
 
 
 async function createUser(User,username){
-    console.log("Here");
     const session = driver.session({database: 'neo4j'});
     try{
-        const query = `CREATE (:User {id_mongo: "${User}", username: "${username}"})`;
+        const query = `CREATE (:User {id_mongo: ${User}, username: ${username}})`;
         await session.executeWrite(transaction => transaction.run(query));
     }catch(error){
         console.error(error);
@@ -546,8 +572,7 @@ async function deleteUserLike(User,Dataset){
 async function addUserFollow(UserOne,UserTwo){
     const session = driver.session({database: 'neo4j'});
     try{
-        const query = `MATCH (follow: User {id_mongo: "${UserOne}"}), (followed: User {id_mongo: "${UserTwo}"}) MERGE (follow)-[:FOLLOWS]->(followed)
-        MERGE (followed)-[:FOLLOWED_BY]->(follow)`;
+        const query = `MATCH (follow: User {id_mongo: "${UserOne}"}), (followed: User {id_mongo: "${UserTwo}"}) MERGE (follow)-[:FOLLOWS]->(followed)-[:FOLLOWED_BY]->(follow)`
         await session.executeWrite(transaction => transaction.run(query));
     }catch(error){
         console.error(error);
@@ -691,6 +716,7 @@ async function getFollowedUsers(User){
     }
 }
 
+//Devuelve todos los usuarios que siguen al usuario de entrada
 async function getFollowingUsers(User){
     const session = driver.session({database: 'neo4j'});
     let followedUsers = [];

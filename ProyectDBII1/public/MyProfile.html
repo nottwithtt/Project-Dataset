@@ -22,10 +22,10 @@
             
             <div name="header" class="col-12 d-flex flex-row  justify-content-around" >
                 <div class="d-flex flex-column col-1">
-                    <div>
+                    <div id="containerPhoto">
                         <!-- Photo User -->
                         <!-- ID = profilePhoto -->
-                        <img id="profilePhoto"  src="Images/Icons/noImage.jpg" Style="width: 8vw; height: 8vw;border-radius: 50%;">
+                        
                     </div>
 
                     <div >
@@ -47,7 +47,7 @@
                     </div>
                     <!-- Followers -->
                     <!-- ID = profileFollowers -->
-                    <div><p id="profileFollowers" style="font-size:larger;">1</p></div>
+                    <div id="containerFollowers"></div>
                 </div>
         
                 <div name="following" class="col-2 d-flex flex-column"  style="margin-top: 3vw;">
@@ -57,7 +57,7 @@
                     </div>
                     <!-- Following -->
                     <!-- ID = profileFollowing -->
-                    <div><p style="font-size:larger;">1</p></div>
+                    <div id="containerCounter"></div>
                 </div>
             </div>
 
@@ -163,20 +163,7 @@
         <!-- Div Users-->
         <div class="modal-body" style="height: 200vw;">
 
-            <div class="container-fluid">
-              <!-- Example1 -->
-              <div class="row d-flex flex-row justify-content-between">
-                  <h6>User1</h6>
-              </div>
-
-              <hr>
-
-              <!-- Example2 -->
-              <div class="row d-flex flex-row justify-content-between">
-                  <h6>User2</h6>
-              </div>
-              
-              
+            <div class="container-fluid" id="followingUsers">
             </div>
         </div>
 
@@ -197,20 +184,7 @@
             <!-- Div Users-->
             <div class="modal-body" style="height: 200vw;">
 
-                <div class="container-fluid">
-                <!-- Example1 -->
-                <div class="row d-flex flex-row justify-content-between">
-                    <h6>User1</h6>
-                </div>
-
-                <hr>
-
-                <!-- Example2 -->
-                <div class="row d-flex flex-row justify-content-between">
-                    <h6>User2</h6>
-                </div>
-                
-                
+                <div class="container-fluid" id="followedUsers">
                 </div>
             </div>
 
