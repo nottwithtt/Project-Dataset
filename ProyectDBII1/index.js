@@ -177,9 +177,48 @@ app.post('/getFilesDataset',bodyParser.json(), async (req,res)=>{
         let objectMetadata = metadataFile[0];
         response.push(objectMetadata);
     }
-    console.log(response);
     res.json({"dataFiles":response});
 })
+
+app.post('/getSomeFiles',bodyParser.json(),async (req,res)=>{
+    let Ids = req.body.data;
+    const archive = archiver('zip',{zlib: {level: 9}});
+    res.set('Content-Type', 'zip');
+    res.set('Content-Disposition', `attachment; filename="archivos.zip"`);
+    for(let i = 0;i<Ids.length;i++){
+        let idMongo =  new mongoDB.ObjectId(Ids[i]);
+        let metadataFile = await gfs.find({"_id": idMongo}).toArray();
+        let objectMetadata = metadataFile[0];
+        let filename = objectMetadata.filename;
+        let downloadStream = await gfs.openDownloadStream(idMongo);
+        archive.append(downloadStream,{name:filename});
+    }
+    archive.finalize();
+    archive.pipe(res);
+});
+
+app.post('/getPhotoDataset',bodyParser.json(),async (req,res)=>{
+    let idDataset = req.body.data;
+    let dataset = await findDataset(idDataset);
+    let idPhoto = dataset.PhotoDataSet;
+    let metadataFile = await gfs.find({"_id": idPhoto}).toArray();
+    let objectMetadata = metadataFile[0];
+    let downloadStream = await gfs.openDownloadStream(idPhoto);
+    res.set('Content-Type',objectMetadata.contentType);
+    res.set('Content-Disposition', `attachment; filename=${objectMetadata.filename}`);
+    downloadStream.pipe(res);
+
+})
+
+app.post('/getInfoDataset',bodyParser.json(),async (req,res)=>{
+    let idDataset = new mongoDB.ObjectId(req.body.data);
+    let dataset = await findDataset(idDataset);
+    let name = dataset.name;
+    let description = dataset.description;
+    let date = dataset.DateOfInsert;
+    res.json({"name": name, "description": description,
+    "dateOfInsert": date});
+});
 
 console.log(encryptPassword('hola'));
 // # # # # # # # END VALUES # # # # # # #
@@ -297,7 +336,7 @@ async function createDataset(nameDataset,descriptionDataset,archivosDataset,
 // Busca solo 1 elemento.
 async function findUserById(idUser){
     let idSearch = new mongoDB.ObjectId(idUser);
-    let userdb = await conn.collection('users').findById(idSearch)
+    let userdb = await conn.collection('users').find({_id:idSearch})
     let response = await userdb.toArray();
     return response;
 }

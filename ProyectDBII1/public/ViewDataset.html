@@ -46,29 +46,20 @@
 
             <div name="header" class="container-fluid col-12 d-flex flex-row justify-content-center">
                 <div class="col-10 d-flex flex-column">
-                    <div name="dateInclude">
-                        <p class="text-secondary mx-5 mt-5">Include 16th march 2023</p>
+                    <div name="dateInclude" id="containerDate">
+                       
                     </div>
-                    <div name="nameDataset">
-                        <p class="h4 mx-5">Lorem, ipsum dolor sit 
-                            amet consectetur adipisicing elit. Deleniti, quod quidem.
-                            Exercitationem architecto sint harum in! Repellat laudantium nam officia! </p>
+                    <div name="nameDataset" id="contenedorName">
+                        
                     </div>
                 </div>
                 <div name="imageUserAuthor" class="col d-flex mx-5 mt-5">
-                    <div>
-                        <img src="Images/Icons/noImage.jpg" style="height: 8vw; width: 8vw; border-radius: 50%;">
+                    <div id ="contenedorFoto"> 
                     </div>
                 </div>
             </div>
 
-            <div name="descriptionDataset" class="container-fluid col-12 d-flex">
-                <p class="h6 mx-5 col-9">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. At esse optio, ut voluptatem delectus
-                     natus dignissimos illum officiis, nam dolores quos enim quod? Delectus eveniet, optio similique in inventore,
-                      aspernatur perferendis iste maxime ipsum omnis molestias suscipit eos laboriosam ab quisquam veniam iure veritatis
-                       neque assumenda dicta. Sint, sapiente provident!
-                </p>
+            <div name="descriptionDataset" id="description" class="container-fluid col-12 d-flex">
             </div>
 
             <div name="buttons" class="container-fluid col-12 d-flex flex-row">
@@ -102,18 +93,12 @@
                 </div>
 
                 <div class="">
-                    <div name="filesgroup" class="btn-group mx-5 mt-3 d-flex flex-wrap" role="group" aria-label="Basic checkbox toggle button group">
-                        <input type="checkbox" class="mb-0 btn-check" id="btncheck1" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btncheck1">Home.py  30MB</label>
-                      
-                        <input type="checkbox" class="mb-0 btn-check" id="btncheck2" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btncheck2">Documentation.pdf  60MB</label>
-                      
-                        <input type="checkbox" class="mb-0 btn-check" id="btncheck3" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btncheck3">Color.txt  1MB</label>
+                    <div name="filesgroup" id="divContenedor" class="btn-group mx-5 mt-3 d-flex flex-wrap" role="group" aria-label="Basic checkbox toggle button group">
 
-                        <input type="checkbox" class="mb-0 btn-check" id="btncheck3" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btncheck3">Color.txt  1MB</label>
+                      
+                      
+                      
+                        
                         
                     </div>
                 </div>
@@ -122,9 +107,9 @@
 
             <div name="buttonsDataset" class="container-fluid col-12 d-flex flex-column mt-5" >
                 <div class="d-flex flex-row">
-                    <input id="submitSignIn" onclick = "getDataset()" type="submit" class="btn btn-primary mt-3" value="Download All" style="margin-left: 3vw;" >
-                    <input id="submitSignIn" type="submit" class="btn btn-primary mt-3" value="Download Some" style="margin-left: 3vw;" >
-                    <input id="submitSignIn" type="submit" class="btn btn-primary mt-3" value="Clone Dataset" style="margin-left: 3vw;" >
+                    <input id="downloadAll" onclick = "getDataset()" type="submit" class="btn btn-primary mt-3" value="Download All" style="margin-left: 3vw;" >
+                    <input id="downloadSome"  onclick = "validaCheckBox()"type="submit" class="btn btn-primary mt-3" value="Download Some" style="margin-left: 3vw;" >
+                    <input id="cloneDataset" type="submit" class="btn btn-primary mt-3" value="Clone Dataset" style="margin-left: 3vw;" >
                 </div>
             </div>
 
@@ -159,7 +144,7 @@
                         <div name="message0" style="width: auto; height: auto; margin-left: 3vw; ">
                             <div class="card d-flex flex-row mt-3" style="width: auto; height: auto;">
                                 <div class="mx-2 mb-1 mt-1">
-                                    <img src="Images/Icons/noImage.jpg" style="height: 2vw; width: 2vw; border-radius: 50%;">
+                                    
                                 </div>
                                 <div class="mx-4" style="margin-top: 0.6vw;font-size: small;"> <p>Hola</p></div>
                             </div>
