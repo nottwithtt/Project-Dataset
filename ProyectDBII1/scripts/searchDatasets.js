@@ -28,6 +28,30 @@ async function getDatasets(){
       let answerLikes = await likes.json();
       let counter = answerLikes.result.length;
 
+      
+      const filesDataset = await fetch('/getFilesDataset',{
+          method: "POST",
+          body : JSON.stringify({dataId: searchResults[i]._id}),
+          headers: {
+                     "Content-Type": "application/json",
+                   },
+      });
+
+      let size = 0;
+
+      const files = await filesDataset.json();
+      const arrayData = files.dataFiles;
+      for (let i =0;i<arrayData.length;i++){
+        size+= arrayData[i].length;
+      }
+
+      if(size<1000){
+        size = size.toString()+" B";
+      }else if(1000<=size<=1000000){
+         size = (size/1000).toString()+ " MB";
+      }else{
+        size = (size/10000).toString()+ " GB";
+      }
 
       //Convierte la foto del dataset en blob.
       const blob = await response.blob();
@@ -60,7 +84,7 @@ async function getDatasets(){
                   </div>
 
                   <div class="col-3 d-flex flex-column justify-content-around">
-                    <div><p id="sizeD1" class="text-secondary mx-3">34mb</p></div>
+                    <div><p id="sizeD1" class="text-secondary mx-3">${size}</p></div>
 
                     <div class="mx-3">
                         <div class="card" style="height: 30px; width: 70px;">
