@@ -1,4 +1,5 @@
 
+
 async function loadConversations () {
     /* functions to get all Conversations */
     /* for cicle to get the conversations one by one */
@@ -19,18 +20,21 @@ async function loadConversations () {
 
     //console.log(Object.entries(conversations)[0][1]['user1']);
     //console.log(Object.entries(conversations)[1][1]);
-
-    for(let i = 0; i < keysConversations.length; i++){
+    let i = 0;
+    for(i = 0; i < keysConversations.length; i++){
         if(Object.entries(conversations)[i][1]['user1'] == idActualUser){
-            await createBox(idActualUser, Object.entries(conversations)[i][1]['user2']);
+            await createBox(i,idActualUser, Object.entries(conversations)[i][1]['user2']);
         }
         else{
-            await createBox(idActualUser,Object.entries(conversations)[i][1]['user1']);
+            await createBox(i,idActualUser,Object.entries( conversations)[i][1]['user1']);
         }
     }
+
 }
 
-async function createBox(actualUser, idOtherUser){
+
+
+async function createBox(i, actualUser, idOtherUser){
 
     const response = await fetch('/getUser',{
         method: "POST",
@@ -48,7 +52,6 @@ async function createBox(actualUser, idOtherUser){
     const username = user[0].username;
     
     //const photoUser = await uploadPhoto (idPhotoUser);
-    const photoUser = "../Images/Icons/noImage.jpg";
 
     //Agregar nuevo cuadro de conversacion
     const appendTo = document.querySelector("#conversationBoxesDiv");
@@ -56,17 +59,36 @@ async function createBox(actualUser, idOtherUser){
     const divPrincipal = document.createElement('div');
     divPrincipal.classList = "d-flex justify-content-start";
     divPrincipal.style = "border-radius: 6px; margin-bottom: 1vw; width: 75vw;";
-    divPrincipal.id = idOtherUser;
     divPrincipal.innerHTML = `
     <a href="Messages?actualUser=${actualUser}&otherUser=${idOtherUser}" class="d-flex flex-row list-group-item list-group-item-action">
         
-        <div> <img src=${photoUser} style="border-radius: 50%; width: 2.7vw; height: 2.7vw; margin-right: 1vw;"> </div>
+        <div> <img id= "${idOtherUser}" src="" style="border-radius: 50%; width: 2.7vw; height: 2.7vw; margin-right: 1vw;"> </div>
         
         <div> <p class="h5 mt-2">${username}</p> </div>
     </a>
     `
+
     appendTo.appendChild(divPrincipal);
-    
+
+    const photoUser = document.getElementById(idOtherUser);
+    loadImageConver(photoUser, idPhotoUser);
+}
+
+async function loadImageConver(photoUser, idPhoto){
+
+    const response = await fetch('/getPhotoUser',{
+        method: "POST",
+        body: JSON.stringify({photo: idPhoto}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+
+    const blob = await response.blob();
+    console.log(blob);
+    const url = URL.createObjectURL(blob);
+
+    photoUser.src= url;
 }
 
 async function createNewConversationBox() {
