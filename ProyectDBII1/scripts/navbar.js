@@ -32,8 +32,32 @@ async function Search(){
         let arrayResults = answer.result;
         window.location.href= `/SearchUsers?results=${encodeURIComponent(JSON.stringify(arrayResults))}`;
     }
-    else if (filter.innerHTML == "Name Dataset" || filter.innerHTML == "Description Dataset"){
-        window.location.href= "/SearchDatasets";
+    else if (filter.innerHTML == "Name Dataset"){
+        const results = await fetch('/nameDatasetSearch',{
+            method: "POST",
+            body: JSON.stringify({query: query}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+        })
+
+        let answer = await results.json();
+        let arrayResults = answer.result;
+        window.location.href= `/SearchDatasets?results=${encodeURIComponent(JSON.stringify(arrayResults))}`;
+    }else if(filter.innerHTML == "Description Dataset"){
+        const results = await fetch('/descriptionDatasetSearch',{
+            method: "POST",
+            body: JSON.stringify({query: query}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+        })
+
+        let answer = await results.json();
+        let arrayResults = answer.result;
+        window.location.href= `/SearchDatasets?results=${encodeURIComponent(JSON.stringify(arrayResults))}`;
     }
 }
 

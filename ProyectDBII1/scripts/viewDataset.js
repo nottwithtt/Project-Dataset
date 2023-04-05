@@ -139,7 +139,7 @@ async function validaCheckBox(){
 }
 
 async function getDownloadedUsers(){
-    const response = await fetch('/getLikedUsers',{
+    const response = await fetch('/getDownloadedUsers',{
         method: "POST",
         body: JSON.stringify({data: idDataset}),
         headers: {
@@ -150,7 +150,7 @@ async function getDownloadedUsers(){
     const answer = await response.json();
     let users = answer.users;
     console.log(users);
-    let container = document.getElementById("likedUsers");
+    let container = document.getElementById("downloadedUsers");
     for(let i =0;i<users.length;i++){
         let divPrincipal = document.createElement('div');
         divPrincipal.classList.add("row", "d-flex", "flex-row", "justify-content-between");
@@ -168,6 +168,26 @@ async function getDownloadedUsers(){
 }
 
 getDownloadedUsers();
+
+
+async function getLikedUsers(){
+    const response = await fetch('/getLikesDataset',{
+        method: "POST",
+        body: JSON.stringify({data: idDataset}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+
+    const answer = await response.json();
+    let users = answer.result;
+    let container = document.getElementById("counterLikes");
+    let counterUsers = users.length;
+    container.innerHTML = `<p>${counterUsers}</p>`
+}
+
+getLikedUsers();
+
 
 async function getDataset(){
     const currentUrl = window.location.href;
