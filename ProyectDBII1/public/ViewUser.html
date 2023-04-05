@@ -16,18 +16,16 @@
         <div class="row">
             <div name="closeButton" class="col-12">
                 <div class="d-flex justify-content-end mt-4" style="margin-right: 5vw;">
-                    <button type="button" class="btn-close" aria-label="Close"></button>
+                  <a type="button" class="btn-close" aria-label="Back" href="/Home"></a></button>
                 </div>
             </div>
 
             <div name="header" class="col-12 d-flex flex-row justify-content-around">
                 <div name="imageUser" class="col d-flex mx-5 mt-2">
-                    <div>
-                        <img src="Images/Icons/noImage.jpg" style="height: 8vw; width: 8vw; border-radius: 50%;">
+                    <div id="containerPhoto">
                     </div>
                 </div>
-                <div name="nameUser" class="col-3 m-auto">
-                    <p class="h2 mx-5">lu123Vargas</p>
+                <div name="nameUser" id="divUsername" class="col-3 m-auto">
                 </div>
 
                 <div class="col-2 m-auto">
@@ -36,16 +34,17 @@
         
                 <div name="followers" class="col-2 d-flex flex-column" style="margin-top: 2.3vw;">
                     <div>
-                        <p class="h4">Followers</p>
+                      <p class="h4" data-bs-toggle="modal" data-bs-target="#followers-modal">Followers</p>
                     </div>
-                    <div><p style="font-size:larger;">1</p></div>
+
+                    <div id="containerFollowers"></div>
                 </div>
         
                 <div name="following" class="col-2 d-flex flex-column"  style="margin-top: 2.3vw;">
                     <div>
-                        <p class="h4">Following</p>
+                      <p class="h4" data-bs-toggle="modal" data-bs-target="#following-modal">Following</p>
                     </div>
-                    <div><p style="font-size:larger;">1</p></div>
+                    <div id="containerCounter"></div>
                 </div>
             </div>
 
@@ -54,8 +53,7 @@
                     <div>
                         <p class="h4">Name</p>
                     </div>
-                    <div>
-                        <p style="font-size:large"> Luisa</p>
+                    <div id="divName">
                     </div>
                 </div>
 
@@ -63,8 +61,7 @@
                     <div>
                         <p class="h4">LastName</p>
                     </div>
-                    <div>
-                        <p style="font-size:large"> Vargas Monge</p>
+                    <div id="divLastname">
                     </div>
                 </div>
 
@@ -72,8 +69,7 @@
                     <div>
                         <p class="h4">Date of birth</p>
                     </div>
-                    <div>
-                        <p style="font-size:large"> 13/11/2000</p>
+                    <div id="divBirth">
                     </div>
                 </div>
             </div>
@@ -85,145 +81,56 @@
                     <p class="h3" style="margin-left: 4vw; margin-top: 2vw;">User datasets</p>
                 </div>
                 
-                <div name="datasets" class="d-flex flex-row justify-content-around" Style="height: 350px;">
-                    <div class="col-3 list-group mt-5 mx-5">
-                        <a href="#" class="container d-flex flex-column list-group-item list-group-item-action ">
-                            <div class="d-flex justify-content-center">
-                              <img class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
-                            </div>
-                            <div class="col-12 d-flex flex-row">
-                              <div class="col-10 d-flex flex-column">
-                                <p id="nameD1" class="card-title h6 mx-3">Dataset1</p>
-                                <p id="descriptionD1" class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
-                              </div>
-                              <div class="col-1 ">
-                                <img src="Images/Icons/noImage.jpg" style="width: 4vw; height: 4vw; border-radius: 50%; ">
-                              </div>
-                            </div>
-            
-                            <hr class="mt-2">
-                            <div class="col-12 d-flex">
-                              <div class="col-8 d-flex flex-column justify-content-around">
-                                <div><p id="dateIncludeD1" class="text-secondary mx-3">Include 16th march 2023</p></div>
-                                <div><p id="countFilesD1" class="text-secondary mx-3">1 File</p></div>
-                              </div>
-            
-                              <div class="col-3 d-flex flex-column justify-content-around">
-                                <div><p id="sizeD1" class="text-secondary mx-3">34mb</p></div>
-            
-                                <div class="mx-3">
-                                    <div class="card" style="height: 30px; width: 70px;">
-                                      <div class=" col-12 d-flex flex-row ">
-                                        <div class="col-6">
-                                          <p class="text-secondary mt-1 mx-2">4</p>
-                                        </div>
-                                        <div class="class=6">
-                                          <img src="Images/Icons/like.png" style="width: 20px;">
-                                        </div>
-                                      </div>
-                                      
-                                    </div>
-                                </div>
-                              </div>
-                              
-                            </div>
-                        </a>
-                    </div>
-          
-                    <div class="col-3 list-group mt-5 mx-5">
-                        <a href="#" class="container d-flex flex-column list-group-item list-group-item-action ">
-                            <div class="d-flex justify-content-center">
-                              <img class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
-                            </div>
-                            <div class="col-12 d-flex flex-row">
-                              <div class="col-10 d-flex flex-column">
-                                <p id="nameD1" class="card-title h6 mx-3">Dataset1</p>
-                                <p id="descriptionD1" class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
-                              </div>
-                              <div class="col-1 ">
-                                <img src="Images/Icons/noImage.jpg" style="width: 4vw; height: 4vw; border-radius: 50%; ">
-                              </div>
-                            </div>
-            
-                            <hr class="mt-2">
-                            <div class="col-12 d-flex">
-                              <div class="col-8 d-flex flex-column justify-content-around">
-                                <div><p id="dateIncludeD1" class="text-secondary mx-3">Include 16th march 2023</p></div>
-                                <div><p id="countFilesD1" class="text-secondary mx-3">1 File</p></div>
-                              </div>
-            
-                              <div class="col-3 d-flex flex-column justify-content-around">
-                                <div><p id="sizeD1" class="text-secondary mx-3">34mb</p></div>
-            
-                                <div class="mx-3">
-                                    <div class="card" style="height: 30px; width: 70px;">
-                                      <div class=" col-12 d-flex flex-row ">
-                                        <div class="col-6">
-                                          <p class="text-secondary mt-1 mx-2">4</p>
-                                        </div>
-                                        <div class="class=6">
-                                          <img src="Images/Icons/like.png" style="width: 20px;">
-                                        </div>
-                                      </div>
-                                      
-                                    </div>
-                                </div>
-                              </div>
-                              
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <div class="col-3 list-group mt-5 mx-5">
-                        <a href="#" class="container d-flex flex-column list-group-item list-group-item-action ">
-                            <div class="d-flex justify-content-center">
-                              <img class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
-                            </div>
-                            <div class="col-12 d-flex flex-row">
-                              <div class="col-10 d-flex flex-column">
-                                <p id="nameD1" class="card-title h6 mx-3">Dataset1</p>
-                                <p id="descriptionD1" class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
-                              </div>
-                              <div class="col-1 ">
-                                <img src="Images/Icons/noImage.jpg" style="width: 4vw; height: 4vw; border-radius: 50%; ">
-                              </div>
-                            </div>
-            
-                            <hr class="mt-2">
-                            <div class="col-12 d-flex">
-                              <div class="col-8 d-flex flex-column justify-content-around">
-                                <div><p id="dateIncludeD1" class="text-secondary mx-3">Include 16th march 2023</p></div>
-                                <div><p id="countFilesD1" class="text-secondary mx-3">1 File</p></div>
-                              </div>
-            
-                              <div class="col-3 d-flex flex-column justify-content-around">
-                                <div><p id="sizeD1" class="text-secondary mx-3">34mb</p></div>
-            
-                                <div class="mx-3">
-                                    <div class="card" style="height: 30px; width: 70px;">
-                                      <div class=" col-12 d-flex flex-row ">
-                                        <div class="col-6">
-                                          <p class="text-secondary mt-1 mx-2">4</p>
-                                        </div>
-                                        <div class="class=6">
-                                          <img src="Images/Icons/like.png" style="width: 20px;">
-                                        </div>
-                                      </div>
-                                      
-                                    </div>
-                                </div>
-                              </div>
-                              
-                            </div>
-                        </a>
-                    </div>
+                <div name="datasets" id="datasetContenedor"class="d-flex flex-wrap justify-content-start" Style="height: 350px;">
                     
                   </div>
 
             </div>
 
         </div>
-    </div>        
+    </div>    
+    
+    <!-- Followers Modal Window  -->
+    <!-- ID = followers-modal  -->
+    <div class="modal fade" id="followers-modal" tabindex="-1" aria-hidden="true" aria-labelledby="label-modal-1">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <!-- Modal Header  -->
+          <div class="modal-header">
+            <h5 class="modal-title">Followers</h5>
+            <button class="btn-close" data-bs-dismiss="modal" aria-labelledby="Back"></button>
+          </div>
+          <!-- Div Users-->
+          <div class="modal-body" style="height: 200vw;">
+  
+              <div class="container-fluid" id="followingUsers">
+              </div>
+          </div>
+  
+        </div>
+      </div>
+      </div>
+  
+      <!-- Following Modal Window  -->
+      <!-- ID = following-modal  -->
+      <div class="modal fade" id="following-modal" tabindex="-1" aria-hidden="true" aria-labelledby="label-modal-1">
+          <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+              <!-- Modal Header  -->
+              <div class="modal-header">
+              <h5 class="modal-title">Following</h5>
+              <button class="btn-close" data-bs-dismiss="modal" aria-labelledby="Back"></button>
+              </div>
+              <!-- Div Users-->
+              <div class="modal-body" style="height: 200vw;">
+  
+                  <div class="container-fluid" id="followedUsers">
+                  </div>
+              </div>
+  
+          </div>
+          </div>
+      </div>
     
     <script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
     <script src="../scripts/viewUser.js"></script>

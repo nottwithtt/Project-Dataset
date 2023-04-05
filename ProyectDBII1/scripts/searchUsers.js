@@ -31,18 +31,18 @@ async function getUsers(){
         `<a href="ViewUser?user=${searchResults[i]._id}" class="col-11 container d-flex flex-row list-group-item list-group-item-action " style="height: 40vm;">
         <div class="d-flex flex-column col-6">
           <div class="mt-3">
-            <h6>${searchResults[i].firstName}</h6>
-            <display-6 class="text-secondary">Luisa</h6>
+            <h6>First name</h6>
+            <display-6 class="text-secondary">${searchResults[i].firstName}</h6>
           </div>
 
           <div class="mt-3">
-            <h6>${searchResults[i].firstSurname}</h6>
-            <display-6 class="">Vargas Monge</display-6>
+            <h6>Last name</h6>
+            <display-6 class="">${searchResults[i].firstSurname}</display-6>
           </div>
 
           <div class="mt-3">
-            <h6>${searchResults[i].username}</h6>
-            <display-6 class="">lu123vargas</display-6>
+            <h6>Username</h6>
+            <display-6 class="">${searchResults[i].username}</display-6>
           </div>
 
           <div class="mt-3">
