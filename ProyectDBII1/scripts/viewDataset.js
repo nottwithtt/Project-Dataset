@@ -151,7 +151,7 @@ async function getDownloadedUsers(){
     let users = answer.users;
     console.log(users);
     let container = document.getElementById("downloadedUsers");
-    document.innerHTML = ``;
+    container.innerHTML = ``;
     for(let i =0;i<users.length;i++){
         let divPrincipal = document.createElement('div');
         divPrincipal.classList.add("row", "d-flex", "flex-row", "justify-content-between");

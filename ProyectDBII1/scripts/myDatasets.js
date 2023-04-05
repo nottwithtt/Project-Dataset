@@ -79,10 +79,10 @@ async function getDatasets(){
       let formattedDate = dateObj.toISOString().substring(0, 10);
 
       let contador = arrayData.length;
-        let divPrincipal = document.createElement('div');
-        divPrincipal.classList.add('col-3','list-group','mt-5','mx-5');
-        divPrincipal.id = datasets[i].id_mongo;
-        divPrincipal.innerHTML =
+      let divPrincipal = document.createElement('div');
+      divPrincipal.classList.add('col-3','list-group','mt-5','mx-5');
+      divPrincipal.id = datasets[i].id_mongo;
+      divPrincipal.innerHTML =
         `<a href="ViewDataset?dataset=${datasets[i].id_mongo}&name=${datasets[i].name}" class="container d-flex flex-column list-group-item list-group-item-action ">
         <div class="d-flex justify-content-center">
           <img class="card-img-top mx-auto" src="Images/Home/dataset_logo.png" Style="width: 55%">
