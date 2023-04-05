@@ -2,6 +2,8 @@
 async function loadConversations () {
     /* functions to get all Conversations */
     /* for cicle to get the conversations one by one */
+    await loadPhotoUser();
+
     const idActualUser = sessionStorage.getItem("id");
 
     const response = await fetch('/getConversationsOfUser',{

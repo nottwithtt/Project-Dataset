@@ -231,23 +231,6 @@ app.post('/getPhotoUser',bodyParser.json(),async (req,res)=>{
 
 })
 
-app.post('/getPhoto',bodyParser.json(),async (req,res)=>{
-    /*let idPhoto = new mongoDB.ObjectId(req.body.idPhotoUser);
-    console.log(idPhoto);*/
-
-    let idUser = req.body.data;
-    let user = await findUserById(idUser);
-    let idPhoto = user.photo;
-    
-    let metadataFile = await gfs.find({"_id": idPhoto}).toArray();
-    let objectMetadata = metadataFile[0];
-    
-    let downloadStream = await gfs.openDownloadStream(idPhoto);
-    //res.set('Content-Type',objectMetadata.contentType);
-    res.set('Content-Disposition', `attachment; filename=${objectMetadata.filename}`);
-    downloadStream.pipe(res);
-})
-
 /* Conversations */
 
 app.post('/createConversation',bodyParser.json(),async (req,res)=>{
