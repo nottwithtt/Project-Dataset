@@ -1,9 +1,10 @@
-
+const followingUsers = [];
 
 async function loadConversations () {
     /* functions to get all Conversations */
     /* for cicle to get the conversations one by one */
     await loadPhotoUser();
+    await getFollowingUsersConver();
 
     const idActualUser = sessionStorage.getItem("id");
 
@@ -97,7 +98,10 @@ async function createNewConversationBox() {
 
     //Users
     const actualUser = sessionStorage.getItem("id");
-    const otherUser = '642bd04620f9e4e0ca49a286';
+
+    const selectedUser = document.getElementById("comboFollowing").selectedIndex;
+    const otherUser = followingUsers[selectedUser]["id"];
+    console.log(otherUser);
 
     const conversation = await createConversation(actualUser,otherUser);
     const conver = conversation.nameConversation;
@@ -172,4 +176,27 @@ async function createConversation(user1,user2){
     })
     let responseObject = await response.json();
     return responseObject.res;
+}
+
+async function getFollowingUsersConver(){
+    const followings = document.getElementById("comboFollowing");
+    const idUser = sessionStorage.getItem("id");
+    
+    const response = await fetch('/getFollowedUsers',{
+        method: "POST",
+        body: JSON.stringify({user: idUser}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+
+    const answer = await response.json();
+    let users = answer.users;
+
+    for(let i =0;i<users.length;i++){
+        followings.innerHTML = `<option id ="${i.toString()}">${users[i]['username']}</option>`;
+        followingUsers.push({"id":users[i]['id_mongo'], "username": users[i]['username']});
+    }
+    console.log(followingUsers);
+
 }
