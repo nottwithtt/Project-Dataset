@@ -1,23 +1,86 @@
 
-function loadConversations () {
+async function loadConversations () {
     /* functions to get all Conversations */
     /* for cicle to get the conversations one by one */
-    createNewConversationBox(); // (inside the for) create a box for each conversation
+    const idActualUser = sessionStorage.getItem("id");
+
+    const response = await fetch('/getConversationsOfUser',{
+        method: "POST",
+        body: JSON.stringify({idUser: idActualUser}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    let responseObject = await response.json();
+    let conversations = responseObject.conver;
+    let keysConversations = Object.keys(conversations);
+
+    //console.log(Object.entries(conversations)[0][1]['user1']);
+    //console.log(Object.entries(conversations)[1][1]);
+
+    for(let i = 0; i < keysConversations.length; i++){
+        if(Object.entries(conversations)[i][1]['user1'] == idActualUser){
+            await createBox(idActualUser, Object.entries(conversations)[i][1]['user2']);
+        }
+        else{
+            await createBox(idActualUser,Object.entries(conversations)[i][1]['user1']);
+        }
+    }
+}
+
+async function createBox(actualUser, idOtherUser){
+
+    const response = await fetch('/getUser',{
+        method: "POST",
+        body: JSON.stringify({idUser: idOtherUser}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    let responseObject = await response.json();
+
+    let user = responseObject.user;
+    
+    //Info User
+    const idPhotoUser = user[0].photo;
+    const username = user[0].username;
+    
+    //const photoUser = await uploadPhoto (idPhotoUser);
+    const photoUser = "../Images/Icons/noImage.jpg";
+
+    //Agregar nuevo cuadro de conversacion
+    const appendTo = document.querySelector("#conversationBoxesDiv");
+
+    const divPrincipal = document.createElement('div');
+    divPrincipal.classList = "d-flex justify-content-start";
+    divPrincipal.style = "border-radius: 6px; margin-bottom: 1vw; width: 75vw;";
+    divPrincipal.id = idOtherUser;
+    divPrincipal.innerHTML = `
+    <a href="Messages?actualUser=${actualUser}&otherUser=${idOtherUser}" class="d-flex flex-row list-group-item list-group-item-action">
+        
+        <div> <img src=${photoUser} style="border-radius: 50%; width: 2.7vw; height: 2.7vw; margin-right: 1vw;"> </div>
+        
+        <div> <p class="h5 mt-2">${username}</p> </div>
+    </a>
+    `
+    appendTo.appendChild(divPrincipal);
+    
 }
 
 async function createNewConversationBox() {
 
     const modal = document.getElementById("conversationModal");
-    const appendTo = document.querySelector("#conversationBoxesDiv");
 
     //Users
     const actualUser = sessionStorage.getItem("id");
-    const otherUser = '64277f67adeb58cdfe1fe141';
+    const otherUser = '642bd04620f9e4e0ca49a286';
 
     const conversation = await createConversation(actualUser,otherUser);
-    console.log(conversation);
 
-    if (conversation.isCreate){
+    
+    if (conversation.isCreate == false){
+        const appendTo = document.querySelector("#conversationBoxesDiv");
+
         //obtenerInformacionUsuario
         const response = await fetch('/getUser',{
             method: "POST",
