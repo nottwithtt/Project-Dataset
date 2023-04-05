@@ -14,12 +14,23 @@ function FilterChange(filterUser){
         filter.innerHTML = 'Filter';
 }
 
-function Search(){
+async function Search(){
     const filter = document.getElementById('navFilterDropdown');
     console.log(filter.innerHTML);
-    
+    const query = document.getElementById('txtSearchNavbar').value;
     if(filter.innerHTML == "Users"){
-        window.location.href= "/SearchUsers";
+        const results = await fetch('/usersSearch',{
+            method: "POST",
+            body: JSON.stringify({query: query}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+        })
+
+        let answer = await results.json();
+        let arrayResults = answer.result;
+        window.location.href= `/SearchUsers?results=${encodeURIComponent(JSON.stringify(arrayResults))}`;
     }
     else if (filter.innerHTML == "Name Dataset" || filter.innerHTML == "Description Dataset"){
         window.location.href= "/SearchDatasets";
