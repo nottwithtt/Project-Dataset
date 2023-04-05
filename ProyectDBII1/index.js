@@ -260,11 +260,11 @@ app.post('/createConversation',bodyParser.json(),async (req,res)=>{
 })
 
 app.post('/getConversationsOfUser',bodyParser.json(),async (req,res)=>{
-    let user = req.body.user;
+    let idUser = req.body.idUser;
+    
 
     let conversations = new Map();
-    conversations = consultConversationsOfUser(user);
-
+    conversations = await consultConversationsOfUser(idUser);
     res.json({"conver" : conversations});
 })
 
@@ -277,7 +277,7 @@ app.post('/createMessage',bodyParser.json(),async (req,res)=>{
     let idFile = req.body.idFile;
 
     let message = new Map();
-    message = createMessage(idConversation,idAuthorUser,content,idFile);
+    message = await createMessage(idConversation,idAuthorUser,content,idFile);
 
     res.json({"message" : message});
 })
@@ -946,7 +946,8 @@ async function consultConversation(idUser1, idUser2){
 
 async function consultConversationsOfUser(idUser){
   let x = await redisDB.keys('*');
-  let conversationsUser = new Map();
+  let conversationsUser = {};
+  //let conversationsUser = new Map();
 
 
   for(let i = 0; i < x.length ; i++){
@@ -956,7 +957,8 @@ async function consultConversationsOfUser(idUser){
       let u1 = await redisDB.hget(key,'user1');
       let u2 = await redisDB.hget(key,'user2');
       if(idUser == u1 || idUser == u2){
-        conversationsUser.set(key,{"user1":u1,"user2":u2});
+        conversationsUser[key] = {"user1": u1, user2: u2};
+        //conversationsUser.set(key,{"user1":u1,"user2":u2});
       }
     }
   }
