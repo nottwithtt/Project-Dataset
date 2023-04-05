@@ -389,6 +389,40 @@ app.post('/descriptionDatasetSearch',bodyParser.json(),async (req,res)=>{
     res.json({"result":response});
 })
 
+app.post('/getUserLikedDatasets',bodyParser.json(),async(req,res)=>{
+    let idUser = req.body.user;
+    let response = await getLikedDatasets(idUser);
+    res.json({"result":response});
+})
+
+app.post('/deleteUserLike',bodyParser.json(),async(req,res)=>{
+    let idUser = req.body.user;
+    let idDataset = req.body.dataset;
+    await deleteUserLike(idUser,idDataset);
+    res.json({"result": true});
+})
+
+app.post('/addUserLike',bodyParser.json(),async (req,res)=>{
+    let idUser = req.body.user;
+    let idDataset = req.body.dataset;
+    await addUserLike(idUser,idDataset);
+    res.json({"result":true});
+})
+
+app.post('/addUserFollow',bodyParser.json(),async (req,res)=>{
+    let idUserFollows = req.body.follows;
+    let idUserFollowed = req.body.followed;
+    await addUserFollow(idUserFollows,idUserFollowed);
+    res.json({"result":true});
+})
+
+app.post('/deleteUserFollow',bodyParser.json(),async (req,res)=>{
+    let idUserFollows = req.body.follows;
+    let idUserFollowed = req.body.followed;
+    await deleteUserFollow(idUserFollows,idUserFollowed);
+    res.json({"result":true});
+})
+
 console.log(encryptPassword('hola'));
 // # # # # # # # END VALUES # # # # # # #
 
@@ -679,6 +713,9 @@ async function createUser(User,username){
 //Metodo que agrega una relacion de like entre un usuario y un dataset
 //Agrega relacion en ambos sentidos con los puntos dados por el usuario.
 async function addUserLike(User,Dataset){
+    console.log(User);
+    console.log(Dataset);
+    console.log("Addlike");
     const session = driver.session({database: 'neo4j'});
     try{
         const query = `MATCH (us:User {id_mongo: "${User}"}),(dat:Dataset {id_mongo: "${Dataset}"}) 
@@ -692,9 +729,11 @@ async function addUserLike(User,Dataset){
 }
 
 async function deleteUserLike(User,Dataset){
+    console.log(User);
+    console.log(Dataset);
     const session = driver.session({database: 'neo4j'});
     try{
-        const query= `Match (us:User {id_mongo: "${User}"})-[rel:LIKES]->(dat:Dataset {id_mongo: "${Dataset}"}-[relTwo:LIKED_BY]->(us:User {id_mongo: "${User}"}))
+        const query= `Match (us:User {id_mongo: "${User}"})-[rel:LIKES]->(dat:Dataset {id_mongo: "${Dataset}"})-[relTwo:LIKED_BY]->(us:User {id_mongo: "${User}"})
         DELETE rel,relTwo`
         await session.executeWrite(transaction=>transaction.run(query));
     }catch(error){
@@ -706,6 +745,9 @@ async function deleteUserLike(User,Dataset){
 
 //Funcion que crea una relacion de FOLLOW y FOLLOWED BY entre dos nodos.
 async function addUserFollow(UserOne,UserTwo){
+    console.log(UserOne);
+    console.log(UserTwo);
+    console.log("Add");
     const session = driver.session({database: 'neo4j'});
     try{
         const query = `MATCH (follow: User {id_mongo: "${UserOne}"}), (followed: User {id_mongo: "${UserTwo}"}) MERGE (follow)-[:FOLLOWS]->(followed)-[:FOLLOWED_BY]->(follow)`
@@ -719,12 +761,15 @@ async function addUserFollow(UserOne,UserTwo){
 
 //Elimina una relacion en ambos sentidos de seguimiento entre usuarios.
 async function deleteUserFollow(UserOne, UserTwo){
+    console.log(UserOne);
+    console.log(UserTwo);
+    console.log("Delete")
     const session = driver.session({database: 'neo4j'});
     try{
         const firstPartQuery = `MATCH (follow: User {id_mongo: "${UserOne}"})-[rel:FOLLOWS]->(followed: User {id_mongo: "${UserTwo}"})
         DELETE rel`;
         await session.executeWrite(transaction => transaction.run(firstPartQuery));
-        const secondPartQuery =  `MATCH (followed: User {id_mongo: ${UserTwo}})-[rel:FOLLOWED_BY]->(follow: User {id_mongo: ${UserOne}})
+        const secondPartQuery =  `MATCH (followed: User {id_mongo: "${UserTwo}"})-[rel:FOLLOWED_BY]->(follow: User {id_mongo: "${UserOne}"})
         DELETE rel`;
         await session.executeWrite(transaction=> transaction.run(secondPartQuery));
     }catch(error){

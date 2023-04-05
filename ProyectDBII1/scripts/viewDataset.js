@@ -85,9 +85,9 @@ async function getFiles(){
         if(arrayData[i].length<1000){
             size = arrayData[i].length.toString()+" B";
         }else if(1000<=arrayData[i].length<=1000000){
-             size = arrayData[i].length.toString()+ " MB";
+             size = ((arrayData[i].length)/1000).toString()+ " MB";
         }else{
-            size = arrayData[i].length.toString()+ " GB";
+            size = (arrayData[i].length/10000).toString()+ " GB";
         }
         let child = document.createElement("input");
         child.type = 'checkbox';
@@ -151,6 +151,7 @@ async function getDownloadedUsers(){
     let users = answer.users;
     console.log(users);
     let container = document.getElementById("downloadedUsers");
+    container.innerHTML = ``;
     for(let i =0;i<users.length;i++){
         let divPrincipal = document.createElement('div');
         divPrincipal.classList.add("row", "d-flex", "flex-row", "justify-content-between");
@@ -161,7 +162,7 @@ async function getDownloadedUsers(){
     }
     let counterNumber = users.length;
     let containerCounter = document.getElementById("counter");
-    let textCounter = document.createElement('p');
+    let textCounter = document.getElementById("counterText");
     textCounter.textContent = `${counterNumber}`;
     containerCounter.appendChild(textCounter);
 
@@ -183,6 +184,7 @@ async function getLikedUsers(){
     let users = answer.result;
     let container = document.getElementById("counterLikes");
     let counterUsers = users.length;
+    console.log(counterUsers)
     container.innerHTML = `<p>${counterUsers}</p>`
 }
 
@@ -206,4 +208,48 @@ async function getDataset(){
         },
     })
 
+    await getDownloadedUsers();
+
+}
+
+async function likeUser(){
+    const response = await fetch('/getUserLikedDatasets',{
+        method: "POST",
+        body: JSON.stringify({user: userId}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+
+    const answer = await response.json();
+    let likes = answer.result;
+    let flag = false;
+    for(let i = 0;i<likes.length;i++){
+        if(likes[i].id_mongo==idDataset){
+            let responseDelete = await fetch('/deleteUserLike',{
+                method: "POST",
+                body: JSON.stringify({user: userId,
+                dataset: idDataset}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            let answer = await responseDelete.json();
+            flag =  answer.result;
+            await getLikedUsers();
+        }
+    }
+    if(!flag){
+        let responseAdd =await fetch('/addUserLike',{
+            method: "POST",
+            body: JSON.stringify({user: userId,
+            dataset: idDataset}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        let answer = await responseAdd.json();
+        if(answer.result)
+            await getLikedUsers();
+   }
 }

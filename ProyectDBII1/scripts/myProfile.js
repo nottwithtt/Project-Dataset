@@ -115,7 +115,7 @@ async function getFollowedUsers(){
 getFollowedUsers();
 
 function viewClickedProfile(element){
-    console.log(element);
+    window.location.href = `ViewUser?user=${element}`
 }
 
 function editProfile(ActionButton){
