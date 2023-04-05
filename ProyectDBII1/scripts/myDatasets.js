@@ -14,6 +14,71 @@ async function getDatasets(){
     let datasets = responseJason.response;
     let appendTo = document.getElementById("datasetContenedor");
     for(let i =0;i<datasets.length;i++){
+      console.log(datasets[i].id_mongo);
+      const response = await fetch('/getPhotoDataset',{
+        method: "POST",
+        body: JSON.stringify({data: datasets[i].id_mongo}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+      })
+
+     //Trae un array con la lista de usuarios que han dado like
+      const likes = await fetch('/getLikesDataset',{
+        method: "POST",
+        body: JSON.stringify({data: datasets[i].id_mongo}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+      })
+
+      let answerLikes = await likes.json();
+      let counter = answerLikes.result.length;
+
+      
+      const filesDataset = await fetch('/getFilesDataset',{
+          method: "POST",
+          body : JSON.stringify({dataId: datasets[i].id_mongo}),
+          headers: {
+                     "Content-Type": "application/json",
+                   },
+      });
+
+      let size = 0;
+
+      const files = await filesDataset.json();
+      const arrayData = files.dataFiles;
+      for (let i =0;i<arrayData.length;i++){
+        size+= arrayData[i].length;
+      }
+
+      if(size<1000){
+        size = size.toString()+" B";
+      }else if(1000<=size<=1000000){
+         size = (size/1000).toString()+ " MB";
+      }else{
+        size = (size/10000).toString()+ " GB";
+      }
+
+      //Convierte la foto del dataset en blob.
+      const blob = await response.blob();
+      console.log(blob);
+      const url = URL.createObjectURL(blob);
+
+      const responseInfo = await fetch('getInfoDataset',{
+        method:"POST",
+        body: JSON.stringify({data: datasets[i].id_mongo}),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+
+      let answerInfo = await responseInfo.json();
+      
+      let dateObj = new Date(answerInfo.dateOfInsert);
+      let formattedDate = dateObj.toISOString().substring(0, 10);
+
+      let contador = arrayData.length;
         let divPrincipal = document.createElement('div');
         divPrincipal.classList.add('col-3','list-group','mt-5','mx-5');
         divPrincipal.id = datasets[i].id_mongo;
@@ -25,28 +90,28 @@ async function getDatasets(){
         <div class="col-12 d-flex flex-row">
           <div class="col-10 d-flex flex-column">
             <p id="nameD1" class="card-title h6 mx-3">${datasets[i].name}</p>
-            <p id="descriptionD1" class="card-text text-secondary mx-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, blanditiis.</p>
+            <p id="descriptionD1" class="card-text text-secondary mx-3">${answerInfo.description}</p>
           </div>
           <div class="col-1 ">
-            <img src="Images/Icons/noImage.jpg" style="width: 4vw; height: 4vw; border-radius: 50%; ">
+            <img src=${url} style="width: 4vw; height: 4vw; border-radius: 50%; ">
           </div>
         </div>
         
         <hr class="mt-2">
         <div class="col-12 d-flex">
           <div class="col-8 d-flex flex-column justify-content-around">
-            <div><p id="dateIncludeD1" class="text-secondary mx-3">Include 16th march 2023</p></div>
-            <div><p id="countFilesD1" class="text-secondary mx-3">1 File</p></div>
+            <div><p id="dateIncludeD1" class="text-secondary mx-3">${formattedDate}</p></div>
+            <div><p id="countFilesD1" class="text-secondary mx-3">${contador}</p></div>
           </div>
         
           <div class="col-3 d-flex flex-column justify-content-around">
-            <div><p id="sizeD1" class="text-secondary mx-3">34mb</p></div>
+            <div><p id="sizeD1" class="text-secondary mx-3">${size}</p></div>
         
             <div class="mx-3">
                 <div class="card" style="height: 30px; width: 70px;">
                   <div class=" col-12 d-flex flex-row ">
                     <div class="col-6">
-                      <p class="text-secondary mt-1 mx-2">4</p>
+                      <p class="text-secondary mt-1 mx-2">${counter}</p>
                     </div>
                     <div class="class=6">
                       <img src="Images/Icons/like.png" style="width: 20px;">
