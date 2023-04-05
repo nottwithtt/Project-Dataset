@@ -409,6 +409,20 @@ app.post('/addUserLike',bodyParser.json(),async (req,res)=>{
     res.json({"result":true});
 })
 
+app.post('/addUserFollow',bodyParser.json(),async (req,res)=>{
+    let idUserFollows = req.body.follows;
+    let idUserFollowed = req.body.followed;
+    await addUserFollow(idUserFollows,idUserFollowed);
+    res.json({"result":true});
+})
+
+app.post('/deleteUserFollow',bodyParser.json(),async (req,res)=>{
+    let idUserFollows = req.body.follows;
+    let idUserFollowed = req.body.followed;
+    await deleteUserFollow(idUserFollows,idUserFollowed);
+    res.json({"result":true});
+})
+
 console.log(encryptPassword('hola'));
 // # # # # # # # END VALUES # # # # # # #
 
@@ -731,6 +745,9 @@ async function deleteUserLike(User,Dataset){
 
 //Funcion que crea una relacion de FOLLOW y FOLLOWED BY entre dos nodos.
 async function addUserFollow(UserOne,UserTwo){
+    console.log(UserOne);
+    console.log(UserTwo);
+    console.log("Add");
     const session = driver.session({database: 'neo4j'});
     try{
         const query = `MATCH (follow: User {id_mongo: "${UserOne}"}), (followed: User {id_mongo: "${UserTwo}"}) MERGE (follow)-[:FOLLOWS]->(followed)-[:FOLLOWED_BY]->(follow)`
@@ -744,12 +761,15 @@ async function addUserFollow(UserOne,UserTwo){
 
 //Elimina una relacion en ambos sentidos de seguimiento entre usuarios.
 async function deleteUserFollow(UserOne, UserTwo){
+    console.log(UserOne);
+    console.log(UserTwo);
+    console.log("Delete")
     const session = driver.session({database: 'neo4j'});
     try{
         const firstPartQuery = `MATCH (follow: User {id_mongo: "${UserOne}"})-[rel:FOLLOWS]->(followed: User {id_mongo: "${UserTwo}"})
         DELETE rel`;
         await session.executeWrite(transaction => transaction.run(firstPartQuery));
-        const secondPartQuery =  `MATCH (followed: User {id_mongo: ${UserTwo}})-[rel:FOLLOWED_BY]->(follow: User {id_mongo: ${UserOne}})
+        const secondPartQuery =  `MATCH (followed: User {id_mongo: "${UserTwo}"})-[rel:FOLLOWED_BY]->(follow: User {id_mongo: "${UserOne}"})
         DELETE rel`;
         await session.executeWrite(transaction=> transaction.run(secondPartQuery));
     }catch(error){

@@ -1,7 +1,73 @@
 const parameters = new URLSearchParams(window.location.search);
 const idUser = parameters.get('user');
+const idUserLogged = sessionStorage.getItem('id');
 
 
+function checkLoggedUser(){
+    if(sessionStorage.getItem('id')==idUser) window.location.href = '/myProfile'
+}
+
+checkLoggedUser();
+
+async function checkFollowingUser(){
+
+    const response = await fetch('/getFollowedUsers',{
+        method: "POST",
+        body: JSON.stringify({user: idUserLogged}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+
+    const answer = await response.json();
+    let users = answer.users;
+    let flag = false;
+    for(let i =0;i<users.length;i++){
+        if(users[i].id_mongo==idUser) flag = true;
+    }
+    let buttonFollow = document.getElementById('btnEditProfile');
+    buttonFollow.value = "";
+    if(flag){
+        buttonFollow.value = "Following"
+    }else{
+        buttonFollow.value = "Follow"
+    }
+}
+
+checkFollowingUser();
+
+async function follow(){
+    let buttonFollow = document.getElementById('btnEditProfile');
+    if(buttonFollow.value == "Following"){
+        let response = await fetch('/deleteUserFollow',{
+            method: "POST",
+            body: JSON.stringify({follows: idUserLogged,
+            followed: idUser}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+
+        let answer = await response.json();
+        console.log(answer.result);
+        await checkFollowingUser()
+        await getFollowedUsers();
+    }else{
+        let response = await fetch('/addUserFollow',{
+            method: "POST",
+            body: JSON.stringify({follows: idUserLogged,
+            followed: idUser}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+
+        let answer = await response.json();
+        console.log(answer.result);
+        await checkFollowingUser()
+        await getFollowedUsers();
+    }
+}
 async function uploadPhoto (){
     const userResponse = await fetch('/getUser',{
         method: "POST",
@@ -109,6 +175,7 @@ async function getFollowedUsers(){
     let users = answer.users;
     console.log(users);
     let container = document.getElementById("followingUsers");
+    container.innerHTML = '';
     for(let i =0;i<users.length;i++){
         let divPrincipal = document.createElement('div');
         divPrincipal.classList.add("row", "d-flex", "flex-row" ,"justify-content-between");
@@ -122,6 +189,7 @@ async function getFollowedUsers(){
     }
     let counterNumber = users.length;
     let containerCounter = document.getElementById("containerFollowers");
+    containerCounter.innerHTML = '';
     let textCounter = document.createElement('p');
     textCounter.textContent = `${counterNumber}`;
     textCounter.style = "font-size:larger;";
