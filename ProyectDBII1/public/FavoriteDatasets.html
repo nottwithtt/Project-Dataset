@@ -9,7 +9,7 @@
     <title>My Favorite Datasets</title>
     <link rel="stylesheet" href="bootstrap-5.0.2-dist/css/bootstrap.min.css">
 </head>
-<body>
+<body onload="loadPhotoUser()">
   <!-- NAV VAR -->
   <header> 
     <!-- NAV-->
@@ -107,9 +107,9 @@
                   </ul>
                 </li>
                 
-                <!-- BUTTON ACCOUNT -->
+                <!-- PHOTO USER -->
                 <li>
-                  <img class="dropdown-toggle" name="imageUser" data-toggle="downtownAccount" src="Images/icons/noImage.jpg" Style="width: 40px; height: 40px;border-radius: 50%;" >
+                  <img id="photoUser" data-toggle="downtownAccount" src="Images/icons/noImage.jpg" Style="width: 40px; height: 40px;border-radius: 50%;" >
                 </li>
 
               </ul>
@@ -237,8 +237,8 @@
 
 
   <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../scripts/home.js"></script>
   <script src="../scripts/favoriteDatasets.js"></script>
+  <script src="../scripts/navbar.js"></script>
   <script src="../scripts/session.js"></script>
 </body>
 </html>

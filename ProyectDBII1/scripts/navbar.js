@@ -14,6 +14,25 @@ function FilterChange(filterUser){
         filter.innerHTML = 'Filter';
 }
 
+async function loadPhotoUser(){
+    const photoUser = document.getElementById("photoUser");
+
+    const idPhoto = sessionStorage.getItem("photo");
+    const response = await fetch('/getPhotoUser',{
+        method: "POST",
+        body: JSON.stringify({photo: idPhoto}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+
+    const blob = await response.blob();
+    console.log(blob);
+    const url = URL.createObjectURL(blob);
+
+    photoUser.src= url;
+}
+
 async function Search(){
     const filter = document.getElementById('navFilterDropdown');
     console.log(filter.innerHTML);
