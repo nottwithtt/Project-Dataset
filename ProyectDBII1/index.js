@@ -371,6 +371,12 @@ app.post('/updatePhotoIdUser',bodyParser.json(),async (req,res)=>{
     res.json({"result":response});
 })
 
+app.post('/usersSearch',bodyParser.json(),async (req,res)=>{
+    let query = req.body.query;
+    let response = await searchUsernames(query);
+    res.json({"result":response});
+
+})
 console.log(encryptPassword('hola'));
 // # # # # # # # END VALUES # # # # # # #
 
@@ -510,6 +516,7 @@ async function searchByOneUsername(username){
 }
 
 
+
 //Actualiza la contra en MongoDB
 async function updatePasswordMongo(username,password){
     let result = await conn.collection('users').updateOne({username: username},{$set: {password: password}});
@@ -573,16 +580,30 @@ async function searchDataSetById(datasetId){
 // Busca todos por ese atributo en el documento.
 // Ejemplo si hay 3 documentos que tienen el nombre: Ardilla, los traerá.
 async function searchAllDataSetByName (criterio){
-    let datasetdb = await dataSet.find({
-        name: {
-            $eq: criterio
-        }
-    })
-
-    let response = await datasetdb.toArray();
-
-    return response;
+  let regex = new RegExp(criterio.split(" ").join("|"), "i");
+  let datasetdb = await conn.collection('datasets').find({
+    name: {
+      $regex: regex
+    }
+  });
+  let response = await datasetdb.toArray();
+  return response;
 }
+
+async function searchUsernames(username){
+    let regex = new RegExp(username.split(" ").join(".+"), "i");
+    let userdb = await conn.collection('users').find({
+     username: {
+       $regex: regex
+     }
+   });
+   let response = await userdb.toArray();
+   console.log(response);
+   return response;
+ }
+
+
+
 
 // Busca todos por ese atributo en el documento.
 // Ejemplo si hay 3 documentos que tienen el nombre: Ardilla, los traerá.
