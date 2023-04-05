@@ -23,10 +23,10 @@ async function loadConversations () {
     let i = 0;
     for(i = 0; i < keysConversations.length; i++){
         if(Object.entries(conversations)[i][1]['user1'] == idActualUser){
-            await createBox(i,idActualUser, Object.entries(conversations)[i][1]['user2']);
+            await createBox(keysConversations[i],idActualUser, Object.entries(conversations)[i][1]['user2']);
         }
         else{
-            await createBox(i,idActualUser,Object.entries( conversations)[i][1]['user1']);
+            await createBox(keysConversations[i],idActualUser,Object.entries( conversations)[i][1]['user1']);
         }
     }
 
@@ -34,7 +34,7 @@ async function loadConversations () {
 
 
 
-async function createBox(i, actualUser, idOtherUser){
+async function createBox(conver, actualUser, idOtherUser){
 
     const response = await fetch('/getUser',{
         method: "POST",
@@ -60,7 +60,7 @@ async function createBox(i, actualUser, idOtherUser){
     divPrincipal.classList = "d-flex justify-content-start";
     divPrincipal.style = "border-radius: 6px; margin-bottom: 1vw; width: 75vw;";
     divPrincipal.innerHTML = `
-    <a href="Messages?actualUser=${actualUser}&otherUser=${idOtherUser}" class="d-flex flex-row list-group-item list-group-item-action">
+    <a href="Messages?actualUser=${actualUser}&otherUser=${idOtherUser}&conver=${conver}" class="d-flex flex-row list-group-item list-group-item-action">
         
         <div> <img id= "${idOtherUser}" src="" style="border-radius: 50%; width: 2.7vw; height: 2.7vw; margin-right: 1vw;"> </div>
         
@@ -100,7 +100,7 @@ async function createNewConversationBox() {
     const otherUser = '642bd04620f9e4e0ca49a286';
 
     const conversation = await createConversation(actualUser,otherUser);
-
+    const conver = conversation.nameConversation;
     
     if (conversation.isCreate == false){
         const appendTo = document.querySelector("#conversationBoxesDiv");
@@ -128,7 +128,7 @@ async function createNewConversationBox() {
         divPrincipal.style = "border-radius: 6px; margin-bottom: 1vw; width: 75vw;";
         divPrincipal.id = otherUser;
         divPrincipal.innerHTML = `
-        <a href="Messages?actualUser=${actualUser}&otherUser=${otherUser}" class="d-flex flex-row list-group-item list-group-item-action">
+        <a href="Messages?actualUser=${actualUser}&otherUser=${otherUser}%conver=${conver}" class="d-flex flex-row list-group-item list-group-item-action">
             
             <div> <img src=${photoUser} style="border-radius: 50%; width: 2.7vw; height: 2.7vw; margin-right: 1vw;"> </div>
             

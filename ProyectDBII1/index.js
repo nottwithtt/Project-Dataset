@@ -253,6 +253,7 @@ app.post('/getConversationsOfUser',bodyParser.json(),async (req,res)=>{
 
 /* Messages */
 
+
 app.post('/createMessage',bodyParser.json(),async (req,res)=>{
     let idAuthorUser = req.body.user;
     let idConversation = req.body.idConver;
@@ -265,6 +266,14 @@ app.post('/createMessage',bodyParser.json(),async (req,res)=>{
     res.json({"message" : message});
 })
 
+app.post('/getMessagesConversation',bodyParser.json(),async (req,res)=>{
+    let idConversation = req.body.conversation;
+
+    messages = await loadMessages(idConversation);
+    console.log(messages);
+
+    res.json({"messages" : messages});
+})
 
 
 app.post('/getInfoDataset',bodyParser.json(),async (req,res)=>{
@@ -950,21 +959,24 @@ Function that creates a message in a conversation with a specified id
 */
 async function createMessage(conversation,idAuthor,content,file){
   let name = 'mes-' + conversation + '-';
-  let message = new Map();
+  let message = {};
   let i = 0;
 
   while(await redisDB.exists(name+i) == true){
     i += 1;
   }
   name = name + i;
-  message.set(conver,conversation);
-  message.set(name,name);
-  message.set(idAuthor,idAuthor);
-  message.set(content,content);
-  message.set(file,file);
-  await redisDB.hmset(name,'idAuthor',idAuthor,'content',content,'file',file);
-}
 
+  message.conver = conversation;
+  message.name = name;
+  message.idAuthor = idAuthor;
+  message.content = content;
+  message.file = file;
+  console.log(message);
+  
+  await redisDB.hmset(name,'idAuthor',idAuthor,'content',content,'file',file);
+  return message;
+}
 
 /*
 Consult name to Conversation of two users
@@ -990,7 +1002,6 @@ async function consultConversation(idUser1, idUser2){
 async function consultConversationsOfUser(idUser){
   let x = await redisDB.keys('*');
   let conversationsUser = {};
-  //let conversationsUser = new Map();
 
 
   for(let i = 0; i < x.length ; i++){
@@ -1000,8 +1011,7 @@ async function consultConversationsOfUser(idUser){
       let u1 = await redisDB.hget(key,'user1');
       let u2 = await redisDB.hget(key,'user2');
       if(idUser == u1 || idUser == u2){
-        conversationsUser[key] = {"user1": u1, user2: u2};
-        //conversationsUser.set(key,{"user1":u1,"user2":u2});
+        conversationsUser[key] = {"user1": u1, "user2": u2};
       }
     }
   }
@@ -1009,7 +1019,7 @@ async function consultConversationsOfUser(idUser){
 }
 
 async function loadMessages(idConversation){
-    let mapMessages = new Map();
+    let messages = {};
     
     let keyName = 'mes-' + idConversation + '-';
     let i = 0;
@@ -1018,14 +1028,14 @@ async function loadMessages(idConversation){
     while(x.length != 0){
       let x1 = await redisDB.hget(keyName+i,"idAuthor");
       let x2 = await redisDB.hget(keyName+i,"content");
-      let x3 = await redisDB.hget(keyName+i,"image");
+      let x3 = await redisDB.hget(keyName+i,"file");
 
-      mapMessages.set(i,{"idAuthor": x1, "content": x2, "image": x3});
+      messages[i] = {"idAuthor": x1, "content": x2, "file": x3};
       i ++;
       x = await redisDB.hvals(keyName + i);
     }
 
-    return mapMessages;
+    return messages;
 
     /*mapMessages.set(0,{'idAuthor': '1234','content':'Hola'});
     let mapMessage = mapMessages.get(0);
