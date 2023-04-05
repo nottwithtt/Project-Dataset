@@ -277,7 +277,7 @@ app.post('/getInfoDataset',bodyParser.json(),async (req,res)=>{
     "dateOfInsert": date});
 });
 
-app.post('/getLikedUsers',bodyParser.json(),async(req,res)=>{
+app.post('/getDownloadedUsers',bodyParser.json(),async(req,res)=>{
     let idDataset = req.body.data
     let users =  await downloadedUserDataset(idDataset);
     res.json({"users":users});
@@ -360,6 +360,26 @@ app.post('/usersSearch',bodyParser.json(),async (req,res)=>{
     res.json({"result":response});
 
 })
+
+app.post('/getLikesDataset',bodyParser.json(),async (req,res)=>{
+    let idDataset = req.body.data;
+    let response  = await getLikesDataset(idDataset);
+    console.log(response);
+    res.json({"result":response});
+})
+
+app.post('/nameDatasetSearch',bodyParser.json(), async (req,res)=>{
+    let query = req.body.query;
+    let response = await searchAllDataSetByName(query);
+    res.json({"result":response});
+})
+
+app.post('/descriptionDatasetSearch',bodyParser.json(),async (req,res)=>{
+    let query = req.body.query;
+    let response = await searchAllDataSetByDescription(query);
+    res.json({"result":response});
+})
+
 console.log(encryptPassword('hola'));
 // # # # # # # # END VALUES # # # # # # #
 
@@ -591,14 +611,13 @@ async function searchUsernames(username){
 // Busca todos por ese atributo en el documento.
 // Ejemplo si hay 3 documentos que tienen el nombre: Ardilla, los traerá.
 async function searchAllDataSetByDescription(description){
-    let datasetdb = await dataSet.find({
-        Description: {
-            $eq: description
-        }
-    })
-
+    let regex = new RegExp(description.split(" ").join("|"), "i");
+    let datasetdb = await conn.collection('datasets').find({
+      description: {
+        $regex: regex
+      }
+    });
     let response = await datasetdb.toArray();
-
     return response;
 }
 
@@ -650,11 +669,11 @@ async function createUser(User,username){
 }
 //Metodo que agrega una relacion de like entre un usuario y un dataset
 //Agrega relacion en ambos sentidos con los puntos dados por el usuario.
-async function addUserLike(User,Dataset,Points){
+async function addUserLike(User,Dataset){
     const session = driver.session({database: 'neo4j'});
     try{
-        const query = `MATCH (us:User {id_mongo: "${User}"}),(dat:Dataset {id_mongo: "${Dataset}") 
-        CREATE (us)-[:LIKES {points: ${Points}}]->(dat)-[:LIKED_BY {points: ${Points}}]->(us)`;
+        const query = `MATCH (us:User {id_mongo: "${User}"}),(dat:Dataset {id_mongo: "${Dataset}"}) 
+        MERGE (us)-[:LIKES {points: ${1}}]->(dat)-[:LIKED_BY {points: ${1}}]->(us)`;
         await session.executeWrite(transaction => transaction.run(query));
     }catch(error){
         console.error(error);
@@ -856,6 +875,26 @@ async function getUploadedDatasets(User){
             dataSets.push(node);
         })
         return dataSets;
+    }catch(error){
+        console.log(error);
+    }finally{
+        session.close();
+    }
+}
+
+//Devuelve la cantidad de likes de un dataset
+async function getLikesDataset(dataset){
+    const session = driver.session({database: 'neo4j'});
+    let users = [];
+    try{
+        let query = `MATCH (us:User)-[:LIKES]->(dat:Dataset {id_mongo:"${dataset}"}) RETURN us`;
+        const cursor = await session.executeRead(transaction=>transaction.run(query));
+        cursor.records.forEach((element)=>{
+            let node = element._fields[0].properties;
+            users.push(node);
+        })
+        console.log(users);
+        return users;
     }catch(error){
         console.log(error);
     }finally{
