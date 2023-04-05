@@ -4,8 +4,28 @@ const otherUser = parameters.get("otherUser");
 const conver = parameters.get("conver");
 const appendTo = document.getElementById("messages");
 
-async function loadMessages () {
+async function createMessage(){
+    const content = document.getElementById("txtContent").value;
+    const idFile = "none";
+    const response = await fetch('/createMessage',{
+        method: "POST",
+        body: JSON.stringify({user:actualUser,idConver:conver,content: content,idFile:idFile}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
 
+    let responseObject = await response.json();
+    let message = responseObject.message;
+    console.log(message);
+
+    loadMessages();
+}
+
+
+async function loadMessages () {
+    //eliminar los mensajes actuales
+    appendTo.innerHTML = ``;
     //Traer los mensajes de la base de datos
     const response = await fetch('/getMessagesConversation',{
         method: "POST",
@@ -33,7 +53,6 @@ async function loadMessages () {
 
     await loadImageMessages();
 }
-
 
 async function createRightMessageBox(message){
     const divPrincipal = document.createElement('div');

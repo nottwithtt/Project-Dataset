@@ -260,8 +260,8 @@ app.post('/createMessage',bodyParser.json(),async (req,res)=>{
     let content = req.body.content;
     let idFile = req.body.idFile;
 
-    let message = new Map();
-    message = await createMessage(idConversation,idAuthorUser,content,idFile);
+
+    let message = await createMessage(idConversation,idAuthorUser,content,idFile);
 
     res.json({"message" : message});
 })
@@ -972,7 +972,6 @@ async function createMessage(conversation,idAuthor,content,file){
   message.idAuthor = idAuthor;
   message.content = content;
   message.file = file;
-  console.log(message);
   
   await redisDB.hmset(name,'idAuthor',idAuthor,'content',content,'file',file);
   return message;
