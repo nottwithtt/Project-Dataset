@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--favicon-->
+    <link rel="icon" href="../Images/Icons/Isotipo.ico" type="ico" sizes="48x48">
+    <title>Profile</title>
+    <link rel="stylesheet" href="../bootstrap-5.0.2-dist/css/bootstrap.min.css">
+</head>
+<body>
+
+    <!-- Container -->
+    <div class="container-fluid" >
+        <div class="row">
+            <div name="closeButton" class="col-12">
+                <div class="d-flex justify-content-end mt-3" style="margin-right: 5vw;">
+                    <a type="button" class="btn-close" aria-label="Back" href="/Home"></a></button>
+                </div>
+            </div>
+            
+            <div name="header" class="col-12 d-flex flex-row  justify-content-around" >
+                <div class="d-flex flex-column col-1">
+                    <div>
+                        <!-- Photo User -->
+                        <!-- ID = profilePhoto -->
+                        <img id="profilePhoto"  src="Images/Icons/noImage.jpg" Style="width: 8vw; height: 8vw;border-radius: 50%;">
+                    </div>
+
+                    <div >
+                        <!-- Upload Photo User -->
+                        <!-- ID = profilePhoto -->
+                        <input id="buttonUploadPhotoProfile" type="file" onchange="" class="form-control form-control-sm mt-3"  style="display: none;" accept=".jpg , .png"  >
+                    </div>
+                </div>
+
+                <div class="col-3" style="margin-top: 2vw;">
+                    <!-- Username -->
+                    <!-- ID = profileUsername -->
+                    <p class="display-4" id="profileUsername">User</p>
+                </div>
+
+                <div name="followers" class="col-2 d-flex flex-column" style="margin-top: 3vw;">
+                    <div>
+                        <p class="h4" data-bs-toggle="modal" data-bs-target="#followers-modal">Followers</p>
+                    </div>
+                    <!-- Followers -->
+                    <!-- ID = profileFollowers -->
+                    <div><p id="profileFollowers" style="font-size:larger;">1</p></div>
+                </div>
+        
+                <div name="following" class="col-2 d-flex flex-column"  style="margin-top: 3vw;">
+                    <div>
+                        <p class="h4" data-bs-toggle="modal" data-bs-target="#following-modal">Following</p>
+                        
+                    </div>
+                    <!-- Following -->
+                    <!-- ID = profileFollowing -->
+                    <div><p style="font-size:larger;">1</p></div>
+                </div>
+            </div>
+
+            
+
+            <div class="col-11 d-flex mt-4 mx-5">
+                <div class="d-flex">
+                    <form action="idUser">
+                        <div>
+                            <label for="txtIdUser" class="form-label h5">Id User</label>
+                        </div>
+                        <div>
+                            <input id="txtIdUser" type="text" class="form-control" disabled value="28918289128" style="width: 600px;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-11 d-flex mt-3 mx-5">
+                <div class="d-flex">
+                    <form action="name">
+                        <div>
+                            <label for="txtName" class="form-label h5">Name</label>
+                        </div>
+                        <div>
+                            <input id="txtName" type="text" class="form-control" disabled value="Luisa" style="width: 600px;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-11 d-flex mt-3 mx-5">
+                <div class="d-flex">
+                    <form action="lastName">
+                        <div>
+                            <label for="txtLastName" class="form-label h5">Last Name</label>
+                        </div>
+                        <div>
+                            <input id="txtLastName" type="text" class="form-control" disabled value="Vargas Monge" style="width: 600px;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-11 d-flex mt-3 mx-5">
+                <div class="col-6 d-flex">
+                    <form action="password">
+                        <div>
+                            <label for="txtPassword" class="form-label h5">Password</label>
+                        </div>
+                        <div>
+                            <input id="txtPassword" type="password" class="form-control" disabled value="password" style="width: 600px;">
+                        </div>
+                    </form>
+                </div>
+                <div class="col-5 d-flex">
+                    <form id="actionReplyPassword" action="replyPassword" style="display:none;">
+                        <div>
+                            <label for="txtReplyPassword" class="form-label h5">Reply Password</label>
+                        </div>
+                        <div>
+                            <input id="txtReplyPassword" type="password" class="form-control" disabled style="width: 600px;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-11 d-flex mt-3 mx-5">
+                <div class="d-flex">
+                        <form action="birthday">
+                            <label for="birthday" class="form-label h5">Birthday</label>
+                            <div>
+                                <input id="profileBirthdayDate" type="date" class="date" value="2005-10-22" style="width: 600px; height: 40px;" disabled>
+                            </div>
+                        </form>
+                </div>
+            </div>
+
+            <div class="col-11 d-flex flex-row justify-content-start mt-5">
+                <div class="d-flex col-1" style="margin-left: 2.7vw;" >
+                        <input onclick="editProfile('btnEditProfile')" value="Edit Profile"  id="btnEditProfile" class="btn btn-primary" type="button" >
+                </div>
+
+                <div class="d-flex col-1 mx-1" style="margin-left: 3vw;">
+                    <button onclick="saveChanges('btnSaveChanges')"  id="btnSaveChanges" class="btn btn-success" type="button" style="display: none;" >Save Changes</button>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Followers Modal Window  -->
+    <!-- ID = followers-modal  -->
+    <div class="modal fade" id="followers-modal" tabindex="-1" aria-hidden="true" aria-labelledby="label-modal-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <!-- Modal Header  -->
+        <div class="modal-header">
+          <h5 class="modal-title">Followers</h5>
+          <button class="btn-close" data-bs-dismiss="modal" aria-labelledby="Back"></button>
+        </div>
+        <!-- Div Users-->
+        <div class="modal-body" style="height: 200vw;">
+
+            <div class="container-fluid">
+              <!-- Example1 -->
+              <div class="row d-flex flex-row justify-content-between">
+                  <h6>User1</h6>
+              </div>
+
+              <hr>
+
+              <!-- Example2 -->
+              <div class="row d-flex flex-row justify-content-between">
+                  <h6>User2</h6>
+              </div>
+              
+              
+            </div>
+        </div>
+
+      </div>
+    </div>
+    </div>
+
+    <!-- Following Modal Window  -->
+    <!-- ID = following-modal  -->
+    <div class="modal fade" id="following-modal" tabindex="-1" aria-hidden="true" aria-labelledby="label-modal-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <!-- Modal Header  -->
+            <div class="modal-header">
+            <h5 class="modal-title">Following</h5>
+            <button class="btn-close" data-bs-dismiss="modal" aria-labelledby="Back"></button>
+            </div>
+            <!-- Div Users-->
+            <div class="modal-body" style="height: 200vw;">
+
+                <div class="container-fluid">
+                <!-- Example1 -->
+                <div class="row d-flex flex-row justify-content-between">
+                    <h6>User1</h6>
+                </div>
+
+                <hr>
+
+                <!-- Example2 -->
+                <div class="row d-flex flex-row justify-content-between">
+                    <h6>User2</h6>
+                </div>
+                
+                
+                </div>
+            </div>
+
+        </div>
+        </div>
+    </div>
+
+
+    <script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../scripts/myProfile.js"></script>
+    <script src="../scripts/navbar.js"></script>
+    <script src="../scripts/session.js"></script>
+</body>
+</html>
