@@ -110,7 +110,8 @@
                 <div class="d-flex flex-row">
                     <input id="downloadAll" onclick = "getDataset()" type="submit" class="btn btn-primary mt-3" value="Download All" style="margin-left: 3vw;" >
                     <input id="downloadSome"  onclick = "validaCheckBox()"type="submit" class="btn btn-primary mt-3" value="Download Some" style="margin-left: 3vw;" >
-                    <input id="cloneDataset" type="submit" class="btn btn-primary mt-3" value="Clone Dataset" style="margin-left: 3vw;" >
+                    <input id="cloneDataset" data-bs-toggle="modal" data-bs-target="#clone"  type="button" class="btn btn-primary mt-3" value="Clone Dataset" style="margin-left: 3vw;">
+                    
                 </div>
             </div>
 
@@ -152,10 +153,35 @@
         </div>
       </div>
     </div>
-  </div>
+    </div>
 
-      <!-- Notification Modal Window  -->
-  <div class="modal fade" id="not-modal" tabindex="-1" aria-hidden="true" aria-labelledby="label-modal-1">
+    <!-- Clone Dataset Modal -->
+    <div class="modal fade" id="clone" tabindex="-1" aria-hidden="true" aria-labelledby="label-modal-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <!-- Modal Header  -->
+            <div class="modal-header">
+              <h5 class="modal-title">Clone dataset</h5>
+              <button class="btn-close" data-bs-dismiss="modal" aria-labelledby="Back"></button>
+            </div>
+            <!-- Modal Body  -->
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newNameDataset">Enter the new dataset name</label>
+                    <input class="form-control" type="form-control" id="newNameDataset">
+                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Confirm clone dataset</button>
+            </div>
+          </div>
+        </div>
+        </div>
+  
+
+    <!-- Notification Modal Window  -->
+    <div class="modal fade" id="not-modal" tabindex="-1" aria-hidden="true" aria-labelledby="label-modal-1">
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <!-- Modal Header  -->
@@ -172,7 +198,7 @@
         </div>
       </div>
     </div>
-  </div>
+    </div>
 
     <script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
     <script src="../scripts/viewDataset.js"></script>

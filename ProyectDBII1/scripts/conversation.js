@@ -93,7 +93,7 @@ async function loadImageConver(photoUser, idPhoto){
 }
 
 async function createNewConversationBox() {
-
+    
     const modal = document.getElementById("conversationModal");
 
     //Users
@@ -123,9 +123,9 @@ async function createNewConversationBox() {
         //Info User
         const idPhotoUser = user[0].photo;
     
-        //const photoUser = await uploadPhoto (idPhotoUser);
-        const photoUser = await loadImageConver(idPhotoUser);
+        //const photoUser = "../Images/Icons/noImage.jpg";
         const username = user[0].username;
+        const idOtherUser = user[0].idUser;
     
         const divPrincipal = document.createElement('div');
         divPrincipal.classList = "d-flex justify-content-start";
@@ -134,12 +134,15 @@ async function createNewConversationBox() {
         divPrincipal.innerHTML = `
         <a href="Messages?actualUser=${actualUser}&otherUser=${otherUser}%conver=${conver}" class="d-flex flex-row list-group-item list-group-item-action">
             
-            <div> <img src=${photoUser} style="border-radius: 50%; width: 2.7vw; height: 2.7vw; margin-right: 1vw;"> </div>
+            <div> <img id=${idOtherUser} src="" style="border-radius: 50%; width: 2.7vw; height: 2.7vw; margin-right: 1vw;"> </div>
             
             <div> <p class="h5 mt-2">${username}</p> </div>
         </a>
         `
         appendTo.appendChild(divPrincipal);
+
+        const photoUser = document.getElementById(idOtherUser);
+        await loadImageConver(photoUser, idPhotoUser);        
     }
     else{
         //presente un mensaje de error
