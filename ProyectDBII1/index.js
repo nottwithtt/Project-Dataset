@@ -39,9 +39,8 @@ const { ObjectID } = require('mongodb');
 
 
 //Variables para conectarse a mysql
-const mysql = require('mysql2')
-const connection = mysql.createConnection(DATABASE_URL='mysql://venzpryxbz9s1aczjacm:pscale_pw_THsxsvSbfAbmpNLOYR7wDzwkvM19I6yXyd18w1d7KL6@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
-
+const mysql = require('mysql2');
+const connection = mysql.createConnection(DATABASE_URL='mysql://y2mwym9l7m74esstdecs:pscale_pw_QEDQAOyFPYML89jzmSCYWpBtFb1U99bLtuUSkIVm8F8@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}');
 
 app.listen(3000,()=>{
     console.log('app listening in port 3000');
@@ -447,6 +446,17 @@ app.post('/deleteUserFollow',bodyParser.json(),async (req,res)=>{
     res.json({"result":true});
 })
 
+app.post('/getNotificationsUser',bodyParser.json(),async (req,res)=>{
+    let idUser = req.body.userId;
+    let response = await getUserNotifications(idUser);
+    res.json({"result":response});
+})
+
+app.post('/deleteNotification',bodyParser.json(),async (req,res)=>{
+    let idDelete = req.body.idNotification;
+    await deleteNotification(idDelete);
+    res.json({"result":true});
+})
 console.log(encryptPassword('hola'));
 // # # # # # # # END VALUES # # # # # # #
 
@@ -698,6 +708,18 @@ async function searchAllUsers(){
     return userList;
 }
 
+//Buscar notificaciones de un usuario y ordenarlas por fecha
+async function getUserNotifications(idUser){
+    let idObject = new mongoDB.ObjectId(idUser);
+    let notifications = await conn.collection('notifications').find(
+        {
+            id_userNotifier: idObject
+        },
+        {sort: {dateNotifies: 1}}
+    );
+    let result = await notifications.toArray();
+    return result;
+}
 
 //Encript password
 function encryptPassword(password){
@@ -720,6 +742,11 @@ async function createNotifications(notifiedUsers,userUploads,name){
     }
 }
 
+async function deleteNotification(idDelete){
+    let submit = new mongoDB.ObjectId(idDelete);
+    await conn.collection('notifications').deleteOne({_id:submit});
+    console.log("Listo");
+}
 //Algunos metodos de Neo4j.
 
 
