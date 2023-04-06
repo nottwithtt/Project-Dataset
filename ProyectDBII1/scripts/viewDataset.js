@@ -55,9 +55,6 @@ async function createNewComment() {
     })
     const answer = await response.json();
     newCommentBox(answer.idComment, answer.content);
-    getComments();
-
-    
 }
 
 async function getComments() {
