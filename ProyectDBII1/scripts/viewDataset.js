@@ -2,8 +2,84 @@ const parameters = new URLSearchParams(window.location.search);
 const idDataset = parameters.get('dataset');
 const nameDataset = parameters.get('name');
 const userId = sessionStorage.getItem('id');
+const photoUser = sessionStorage.getItem('photo');
 sessionStorage.setItem
 const buttons = [];
+
+/* Comments */
+async function newCommentBox (idComment, commentContent) {
+    let container = document.getElementById("commentsContainer");
+
+    let divPrincipal = document.createElement('div');
+    divPrincipal.style = "width: auto; height: auto;";
+    divPrincipal.id = idComment;
+    divPrincipal.innerHTML =
+    `<div class="card d-flex flex-row mt-3" style="width: auto; height: auto;">
+        <div class="mx-2 mb-1 mt-1">
+            <img src="Images/Icons/noImage.jpg" style="height: 2vw; width: 2vw; border-radius: 50%;">
+        </div>
+        <div class="mx-4" style="margin-top: 0.6vw;font-size: small;"> <p>${commentContent}</p></div>
+    </div>
+    <a class="text-secondary mx-1" style="font-size: small">Reply</a>`;
+
+    container.appendChild(divPrincipal);
+
+    console.log(divPrincipal.id);
+
+
+}
+
+async function createNewComment() {
+    getComments();
+    let p_idUser = sessionStorage.getItem("id");
+    let p_idComment = 1;
+    let p_idCommentResponse = null;
+    let p_creationDate = new Date();
+    let p_content = document.getElementById("txtMessageComment").value;
+    let p_file = null;
+    console.log(p_creationDate);
+
+    const response = await fetch('/createComment',{
+        method: "POST",
+        body: JSON.stringify({idUser: p_idUser,
+                            photo: photoUser,
+                            idComment: p_idComment,
+                            idCommentResponse: p_idCommentResponse,
+                            idDataset: idDataset,
+                            creationDate: p_creationDate,
+                            content: p_content,
+                            file: p_file}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    const answer = await response.json();
+    newCommentBox(answer.idComment, answer.content);
+    getComments();
+
+    
+}
+
+async function getComments() {
+
+    const response = await fetch('/getDatasetComments',{
+        method: "POST",
+        body: JSON.stringify({datasetId: idDataset}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    
+    let answer = await response.json();
+    let commentsDataset = answer["commentList"];
+    //console.log(commentsDataset["0"]);
+    
+    for (let i = 0; i < commentsDataset.length; i++){
+
+        await newCommentBox (commentsDataset[i].idComment, commentsDataset[i].content);
+
+    }
+}
 
 async function uploadPhoto (){
     const response = await fetch('/getPhotoDataset',{

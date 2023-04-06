@@ -9,7 +9,7 @@
     <title>View Dataset</title>
     <link rel="stylesheet" href="../bootstrap-5.0.2-dist/css/bootstrap.min.css">
 </head>
-<body style="background-color: white; padding-bottom: 56px;" >
+<body onload="getComments()" style="background-color: white; padding-bottom: 56px;" >
     
     <!-- Navbar comments-->
     <nav class="navbar navbar-light bg-light fixed-bottom" style="border-color: #929191;">
@@ -28,7 +28,7 @@
                 <input class="form-control me-2" id="txtMessageComment" type="form-control" placeholder="Write the comment" aria-label="Search" style="width: 70vw;">
                 
                 <!-- Button Send Message -->
-                <button class="btn btn-success" type="submit">Send</button>
+                <div onclick = "createNewComment()" class="btn btn-success">Send</div>
             </div>
           </form>
         </div>
@@ -123,32 +123,12 @@
                     
                 <!-- Comments Body -->
                 <div name="commentBox" class="container-fluid" style="background-color: white; margin-left: 3vw; margin-right: 3vw; width: 90vw; height: 23vw; overflow: scroll; position: relative;">
-                    <div class="row d-flex flex-column align-items-start">
+                    <div id="commentsContainer" class="row d-flex flex-column align-items-start">
                         <!-- Messages -->
                         <div name="message0" style="width: auto; height: auto; ">
                             <div class="card d-flex flex-row mt-3" style="width: auto; height: auto;">
                                 <div class="mx-2 mb-1 mt-1">
                                     <img src="Images/Icons/noImage.jpg" style="height: 2vw; width: 2vw; border-radius: 50%;">
-                                </div>
-                                <div class="mx-4" style="margin-top: 0.6vw;font-size: small;"> <p>Hola</p></div>
-                            </div>
-                            <a class="text-secondary mx-1" style="font-size: small">Reply</a>
-                        </div>
-                        
-                        <div name="message0" style="width: auto; height: auto; margin-left: 3vw; ">
-                            <div class="card d-flex flex-row mt-3" style="width: auto; height: auto;">
-                                <div class="mx-2 mb-1 mt-1">
-                                    <img src="Images/Icons/noImage.jpg" style="height: 2vw; width: 2vw; border-radius: 50%;">
-                                </div>
-                                <div class="mx-4" style="margin-top: 0.6vw;font-size: small;"> <p>Hola</p></div>
-                            </div>
-                            <a class="text-secondary mx-1" style="font-size: small">Reply</a>
-                        </div>
-
-                        <div name="message0" style="width: auto; height: auto; margin-left: 3vw; ">
-                            <div class="card d-flex flex-row mt-3" style="width: auto; height: auto;">
-                                <div class="mx-2 mb-1 mt-1">
-                                    
                                 </div>
                                 <div class="mx-4" style="margin-top: 0.6vw;font-size: small;"> <p>Hola</p></div>
                             </div>
