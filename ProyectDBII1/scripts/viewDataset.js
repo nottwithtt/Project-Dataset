@@ -287,12 +287,16 @@ async function getDownloadedUsers(){
     /*if (container != null){
     }*/
     container.innerHTML = ``;
+    console.log(users);
     for(let i =0;i<users.length;i++){
         let divPrincipal = document.createElement('div');
         divPrincipal.classList.add("row", "d-flex", "flex-row", "justify-content-between");
 
         divPrincipal.innerHTML = `<h6>${users[i].username}</h6>
                                       <hr>`;
+        divPrincipal.onclick = function() {
+                            viewClickedProfile(users[i].id_mongo);
+        }
         container.appendChild(divPrincipal);
     }
     let counterNumber = users.length;
@@ -304,6 +308,11 @@ async function getDownloadedUsers(){
 }
 
 getDownloadedUsers();
+
+
+function viewClickedProfile(element){
+    window.location.href = `ViewUser?user=${element}`
+}
 
 
 async function getLikedUsers(){

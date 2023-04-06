@@ -32,16 +32,15 @@ const FileSaver  = require('file-saver');
 const Redis = require("ioredis");
 const redisDB = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1-ruling-falcon-34023.upstash.io:34023");
 
-//const mysql = require('mysql2');
+const mysql = require('mysql2');
 const { ObjectID } = require('mongodb');
 //const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
-//const connection = mysql.createConnection(DATABASE_URL='mysql://k8w5dqlcxj8v28k02gsf:pscale_pw_1d4kuBj5aLkoednqqN5O1blIr5Mt4ml2lLJ7L5agcZR@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}');
+const connection = mysql.createConnection(DATABASE_URL='mysql://ihgcitgdgufvt0017uf1:pscale_pw_S1PX58KiEOfeRKtCZiEMFdV4v9QZu6pWo4VVJIuwV9s@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
 
 
 //Variables para conectarse a mysql
-const mysql = require('mysql2');
-const connection = mysql.createConnection(DATABASE_URL='mysql://e4mcvoqeb8j2yr1ftp97:pscale_pw_aMBO9UDKPDTNhzmnWikiqmN4q8U3We6fPxfAKwrGS8j@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}'
-);
+//const mysql = require('mysql2');
+//const connection = mysql.createConnection(DATABASE_URL='mysql://y2mwym9l7m74esstdecs:pscale_pw_QEDQAOyFPYML89jzmSCYWpBtFb1U99bLtuUSkIVm8F8@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}');
 
 app.listen(3000,()=>{
     console.log('app listening in port 3000');

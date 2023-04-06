@@ -101,7 +101,7 @@ async function getDatasets(){
         <div class="col-12 d-flex">
           <div class="col-8 d-flex flex-column justify-content-around">
             <div><p id="dateIncludeD1" class="text-secondary mx-3">${formattedDate}</p></div>
-            <div><p id="countFilesD1" class="text-secondary mx-3">${contador}</p></div>
+            <div><p id="countFilesD1" class="text-secondary mx-3">${contador} files</p></div>
           </div>
         
           <div class="col-3 d-flex flex-column justify-content-around">
