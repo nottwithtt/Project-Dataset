@@ -298,6 +298,14 @@ app.post("/getDatasetComments",bodyParser.json(), async (req,res)=>{
     });
 })
 
+app.post("/getCommentsResponse",bodyParser.json(), async (req,res)=>{
+    let idComment = req.body.idComment;
+    let queryGet = `SELECT * FROM comment where idCommentResponse = ${idComment};`;
+    connection.query(queryGet, function (err, result){
+        if (err) throw err;
+        res.json({"commentsResponse" : Object.assign(result)});
+    });
+})
 
 app.post('/getInfoDataset',bodyParser.json(),async (req,res)=>{
     let idDataset = new mongoDB.ObjectId(req.body.data);
