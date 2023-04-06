@@ -60,7 +60,7 @@ const storage = new GridFsStorage({ db: conn,
 
 let gfs;
 
-//Warns thatthe connection has been opened.
+//Warns that the connection has been opened.
 conn.once('open',()=>{
     console.log('Open');
     gfs = new mongoDB.GridFSBucket(conn.db, {bucketName: 'files'});
@@ -76,7 +76,7 @@ app.set('view engine','html');
 //Sets the server to get its resources from the specified directory.
 app.use(express.static(__dirname+'/'));
 
-//Sets the route for the home page.
+//Sets the route for the signIn page
 app.get('/',(req,res)=>{
     res.sendFile(__dirname+'/public/SignIn.html');
 });
@@ -86,56 +86,68 @@ app.get('/Register',(req,res)=>{
     res.sendFile(__dirname+'/public/Register.html');
 });
 
+//Sets the route fot the home page.
 app.get('/Home',(req,res)=>{
     res.sendFile(__dirname+'/public/Home.html');
 });
 
+//Sets the route for the searchDatasets page.
 app.get('/SearchDatasets',(req,res)=>{
     res.sendFile(__dirname+'/public/SearchDatasets.html');
 });
 
+//Sets the route for the searchUsers page
 app.get('/SearchUsers',(req,res)=>{
     res.sendFile(__dirname+'/public/SearchUsers.html');
 });
 
+//Sets the route for the MyDatasets page.
 app.get('/MyDatasets',(req,res)=>{
     res.sendFile(__dirname+'/public/MyDatasets.html');
 });
 
+//Sets the route for the CreateDataset page
 app.get('/CreateDataset',(req,res)=>{
     res.sendFile(__dirname+'/public/CreateDataset.html');
 });
 
+//Sets the route for the ViewDataset page
 app.get('/ViewDataset',(req,res)=>{
     res.sendFile(__dirname+'/public/ViewDataset.html');
 });
 
+//Sets the route for the ViewUser page
 app.get('/ViewUser',(req,res)=>{
     res.sendFile(__dirname+'/public/ViewUser.html');
 });
 
+//Sets the route for the Conversations page.
 app.get('/Conversations',(req,res)=>{
     res.sendFile(__dirname+'/public/Conversations.html');
 });
 
+//Sets the route for the Messages page.
 app.get('/Messages',(req,res)=>{
     res.sendFile(__dirname+'/public/Messages.html');
 });
 
+//Sets the route for the MyProfile page.
 app.get('/MyProfile',(req,res)=>{
     res.sendFile(__dirname+'/public/MyProfile.html');
 });
 
+//Sets the route for the FavoriteDataset page.
 app.get('/FavoriteDatasets',(req,res)=>{
     res.sendFile(__dirname+'/public/FavoriteDatasets.html');
 });
 
-
+//Sets an auxiliary route to upload a comment photo
 app.post('/uploadCommentFile',upload.single('photo'), (req,res)=> {
     let idPhoto = req.file.id.toString();
     subirFoto(idPhoto);
 });
 
+//Sets an auxiliary route to encrypt the password.
 app.post('/encryptPassword',bodyParser.json(),async (req,res)=>{
     console.log(req.body.Password);
     let arrayUsers = await searchAllUsers();
@@ -143,16 +155,19 @@ app.post('/encryptPassword',bodyParser.json(),async (req,res)=>{
     res.json({"answer": response});
 })
 
+//Sets an auxiliary route to find an User
 app.post('/getUser',bodyParser.json(),async (req,res)=>{
     let response = await findUserById(req.body.idUser);
     res.json({"user": response});
 })
 
+//Sets an auxiliary route to upload a Dataset photo
 app.post('/uploadPhotoDataset',upload.single('photoDataset'),async (req,res)=>{
     let fileId = req.file.id;
     res.json({"answer":fileId});
 })
 
+//Sets an auxiliary route to upload the files of the dataset.
 app.post('/uploadFilesDataset',upload.array('filesDataset'),(req,res)=>{
     let files = req.files;
     let ids = [];
@@ -162,6 +177,7 @@ app.post('/uploadFilesDataset',upload.array('filesDataset'),(req,res)=>{
     res.json({"answer":ids});
 })
 
+//Sets an axuiliary route to upload the dataset information to mongodb.
 app.post('/uploadDataset',bodyParser.json(),async (req,res)=>{
     let nameDataset = req.body.nameDataset;
     let descriptionDataset = req.body.description;
@@ -176,6 +192,7 @@ app.post('/uploadDataset',bodyParser.json(),async (req,res)=>{
 
 })
 
+//Sets an auxiliary route that serves the files of an specified dataset.
 app.post('/getFilesDataset',bodyParser.json(), async (req,res)=>{
     let idDataset = new mongoDB.ObjectId(req.body.dataId);
     let dataset = await findDataset(idDataset);
@@ -189,6 +206,7 @@ app.post('/getFilesDataset',bodyParser.json(), async (req,res)=>{
     res.json({"dataFiles":response});
 })
 
+//Sets an auxiliary route that serves specific files from the dataset.
 app.post('/getSomeFiles',bodyParser.json(),async (req,res)=>{
     let Ids = req.body.data;
     const archive = archiver('zip',{zlib: {level: 9}});
@@ -206,6 +224,7 @@ app.post('/getSomeFiles',bodyParser.json(),async (req,res)=>{
     archive.pipe(res);
 });
 
+//Sets an auxiliary route that servers the photo of a dataset.
 app.post('/getPhotoDataset',bodyParser.json(),async (req,res)=>{
     let idDataset = req.body.data;
     let dataset = await findDataset(idDataset);
@@ -219,7 +238,7 @@ app.post('/getPhotoDataset',bodyParser.json(),async (req,res)=>{
     downloadStream.pipe(res);
 })
 
-
+//Sets an auxiliary route that serves the photo of an user.
 app.post('/getPhotoUser',bodyParser.json(),async (req,res)=>{
     let idPhotoUser = req.body.photo;
     let idPhoto = new mongoDB.ObjectId(idPhotoUser);
@@ -233,7 +252,7 @@ app.post('/getPhotoUser',bodyParser.json(),async (req,res)=>{
 })
 
 /* Conversations */
-
+//Sets an auxiliary route to create a conversation.
 app.post('/createConversation',bodyParser.json(),async (req,res)=>{
     let idUser1 = req.body.actualUser;
     let idUser2 = req.body.otherUser;
@@ -243,6 +262,7 @@ app.post('/createConversation',bodyParser.json(),async (req,res)=>{
     res.json({"res" : conversation});    
 })
 
+//Sets an auxiliary route that serves an user conversations.
 app.post('/getConversationsOfUser',bodyParser.json(),async (req,res)=>{
     let idUser = req.body.idUser;
     
@@ -254,7 +274,7 @@ app.post('/getConversationsOfUser',bodyParser.json(),async (req,res)=>{
 
 /* Messages */
 
-
+//Sets an axuliary route that creates a message.
 app.post('/createMessage',bodyParser.json(),async (req,res)=>{
     let idAuthorUser = req.body.user;
     let idConversation = req.body.idConver;
@@ -267,6 +287,7 @@ app.post('/createMessage',bodyParser.json(),async (req,res)=>{
     res.json({"message" : message});
 })
 
+//Sets an axuiliary route that gets the messages of a conversation.
 app.post('/getMessagesConversation',bodyParser.json(),async (req,res)=>{
     let idConversation = req.body.conversation;
 
@@ -278,6 +299,7 @@ app.post('/getMessagesConversation',bodyParser.json(),async (req,res)=>{
 })
 
 /* Comments Dataset */
+//Sets an auxiliary route to create a comment on a dataset.
 app.post("/createComment",bodyParser.json(), async (req,res)=>{
     let p_idUser = req.body.idUser;
     let p_photo = req.body.photo;
@@ -295,7 +317,7 @@ app.post("/createComment",bodyParser.json(), async (req,res)=>{
     });
 })
 
-
+//Sets a route to get a dataset comments.
 app.post("/getDatasetComments",bodyParser.json(), async (req,res)=>{
     let datasetId = req.body.datasetId;
     let queryGet = `SELECT * FROM comment where idDataset = "${datasetId}";`;
@@ -305,6 +327,7 @@ app.post("/getDatasetComments",bodyParser.json(), async (req,res)=>{
     });
 })
 
+//Sets a route that gets  a response comment.
 app.post("/getCommentsResponse",bodyParser.json(), async (req,res)=>{
     let idComment = req.body.idComment;
     let queryGet = `SELECT * FROM comment where idCommentResponse = ${idComment};`;
@@ -314,6 +337,7 @@ app.post("/getCommentsResponse",bodyParser.json(), async (req,res)=>{
     });
 })
 
+//Sets an auxiliary route that gets the information of the dataset.
 app.post('/getInfoDataset',bodyParser.json(),async (req,res)=>{
     let idDataset = new mongoDB.ObjectId(req.body.data);
     let dataset = await findDataset(idDataset);
@@ -324,12 +348,14 @@ app.post('/getInfoDataset',bodyParser.json(),async (req,res)=>{
     "dateOfInsert": date});
 });
 
+//Sets a route to get the users that downloaded a dataset.
 app.post('/getDownloadedUsers',bodyParser.json(),async(req,res)=>{
     let idDataset = req.body.data
     let users =  await downloadedUserDataset(idDataset);
     res.json({"users":users});
 })
 
+//Sets a route to add a user download to a dataset.
 app.post('/addUserDownload',bodyParser.json(),async (req,res)=>{
     let idDataset = req.body.data;
     let idUser = req.body.user;
@@ -337,12 +363,14 @@ app.post('/addUserDownload',bodyParser.json(),async (req,res)=>{
     res.json({"answer": true});
 })
 
+//Sets a route to encript a password in the register side.
 app.post("/encryptPasswordRegister",bodyParser.json(),(req,res)=>{
     let unencryptedPassword = req.body.pass;
     let encryptedPassword = encryptPassword(unencryptedPassword);
     res.json({"encrypted":encryptedPassword});
 })
 
+//Sets a route to create a new user.
 app.post('/insertUser',bodyParser.json(), async (req,res)=>{
     let firstName = req.body.name;
     let firstSurname = req.body.lastName;
@@ -357,43 +385,51 @@ app.post('/insertUser',bodyParser.json(), async (req,res)=>{
     res.json({"user":responseUser});
 })
 
+//Sets a route to get all users.
 app.post("/getUsers",async (req,res)=>{
     let users = await searchAllUsers();
     res.json({"answer":users});
 })
 
+//Sets a route to upload an user photo.
 app.post('/uploadUserPhoto',upload.single('photoUser'), (req,res)=> {
     let idPhoto = req.file.id;
     res.json({"idPhoto":idPhoto});
 });
 
+//Sets a route to get all users followed by the entry user.
 app.post('/getFollowedUsers',bodyParser.json(),async (req,res)=>{
     let idUser = req.body.user;
     let users = await getFollowedUsers(idUser);
     res.json({"users":users});
 })
 
+//Sets a route to get all users following the entry user.
 app.post('/getFollowingUsers',bodyParser.json(),async (req,res)=>{
     let idUser = req.body.user;
     let users = await getFollowingUsers(idUser);
     res.json({"users":users});
 })
 
+//Sets a route to update the password of an user.
 app.post('/updatePasswordUser',bodyParser.json(),async (req,res)=>{
     let update = await  updatePasswordMongo(req.body.username,req.body.pass);
     res.json({"result": update});
 })
 
+//Sets a route to update the name of an user.
 app.post('/updateNameUser',bodyParser.json(),async (req,res)=>{
     let update = await  updateNameMongo(req.body.username,req.body.name);
     res.json({"result": update});
 })
 
+//Sets a route to update the last name of an user.
 app.post('/updateLastNameUser',bodyParser.json(),async (req,res)=>{
     let update = await  updateLastNameMongo(req.body.username,req.body.lastName);
     res.json({"result": update});
 })
 
+//Sets a route to update the user photoId.
 app.post('/updatePhotoIdUser',bodyParser.json(),async (req,res)=>{
     let idPhoto = req.body.photo;
     let username =  req.body.username;
@@ -401,6 +437,7 @@ app.post('/updatePhotoIdUser',bodyParser.json(),async (req,res)=>{
     res.json({"result":response});
 })
 
+//Sets a route that serves a list of users searched by an specific query.
 app.post('/usersSearch',bodyParser.json(),async (req,res)=>{
     let query = req.body.query;
     let response = await searchUsernames(query);
@@ -408,6 +445,7 @@ app.post('/usersSearch',bodyParser.json(),async (req,res)=>{
 
 })
 
+//Sets a route that gets all the likes from a dataset.
 app.post('/getLikesDataset',bodyParser.json(),async (req,res)=>{
     let idDataset = req.body.data;
     let response  = await getLikesDataset(idDataset);
@@ -415,24 +453,28 @@ app.post('/getLikesDataset',bodyParser.json(),async (req,res)=>{
     res.json({"result":response});
 })
 
+//Sets a route that serves the results of a dataset search by name.
 app.post('/nameDatasetSearch',bodyParser.json(), async (req,res)=>{
     let query = req.body.query;
     let response = await searchAllDataSetByName(query);
     res.json({"result":response});
 })
 
+//Sets a route that serves the results of a dataset search by description.
 app.post('/descriptionDatasetSearch',bodyParser.json(),async (req,res)=>{
     let query = req.body.query;
     let response = await searchAllDataSetByDescription(query);
     res.json({"result":response});
 })
 
+//Sets a route that serves the user's liked datasets.
 app.post('/getUserLikedDatasets',bodyParser.json(),async(req,res)=>{
     let idUser = req.body.user;
     let response = await getLikedDatasets(idUser);
     res.json({"result":response});
 })
 
+//Sets a route for deleting an user like.
 app.post('/deleteUserLike',bodyParser.json(),async(req,res)=>{
     let idUser = req.body.user;
     let idDataset = req.body.dataset;
@@ -440,6 +482,7 @@ app.post('/deleteUserLike',bodyParser.json(),async(req,res)=>{
     res.json({"result": true});
 })
 
+//Sets a route for adding a user like.
 app.post('/addUserLike',bodyParser.json(),async (req,res)=>{
     let idUser = req.body.user;
     let idDataset = req.body.dataset;
@@ -447,6 +490,7 @@ app.post('/addUserLike',bodyParser.json(),async (req,res)=>{
     res.json({"result":true});
 })
 
+//Sets a route for adding a user follow.
 app.post('/addUserFollow',bodyParser.json(),async (req,res)=>{
     let idUserFollows = req.body.follows;
     let idUserFollowed = req.body.followed;
@@ -454,6 +498,7 @@ app.post('/addUserFollow',bodyParser.json(),async (req,res)=>{
     res.json({"result":true});
 })
 
+//Sets a route for deleting an user follow.
 app.post('/deleteUserFollow',bodyParser.json(),async (req,res)=>{
     let idUserFollows = req.body.follows;
     let idUserFollowed = req.body.followed;
@@ -461,23 +506,24 @@ app.post('/deleteUserFollow',bodyParser.json(),async (req,res)=>{
     res.json({"result":true});
 })
 
+//Sets a route that serves all user notifications.
 app.post('/getNotificationsUser',bodyParser.json(),async (req,res)=>{
     let idUser = req.body.userId;
     let response = await getUserNotifications(idUser);
     res.json({"result":response});
 })
 
+//Sets a route that deletes a notification.
 app.post('/deleteNotification',bodyParser.json(),async (req,res)=>{
     let idDelete = req.body.idNotification;
     await deleteNotification(idDelete);
     res.json({"result":true});
 })
-console.log(encryptPassword('hola'));
 // # # # # # # # END VALUES # # # # # # #
 
 let id;
 
-
+//Sets a route that uploads a file //## TESTING ##//
 app.post('/upload',upload.array('file'),(req,res)=>{
     const files = req.files;
     console.log(req.body);
@@ -497,19 +543,15 @@ app.post('/upload',upload.array('file'),(req,res)=>{
 
 
 
-//Funciona
+//Sets a route that downloads the requested Dataset.
 app.get('/dataset/:id',async function(req,res){
-    //IMPORTANTE
+    //IMPORTANT
     // id = ObjectID
-    // El id de la direccion tiene que pasarse a string con ObjectId.toString() antes
-    // de ponerselo a la URL-> /dataset/:id
+    // The URL id  has to be parsed into a string with ObjectId.toString() before
+    // passing it to the URL-> /dataset/:id
     mongoose.connect(URI);
     let idDataset = new mongoDB.ObjectId(req.params.id);
-    console.log(idDataset);
     const dataset = await findDataset(idDataset);
-    console.log(dataset);
-    console.log('Hola');
-    //Por aqui iria la llamada al metodo de mongo que busca el Dataset
     let Idsfiles = dataset.archivosDataset;
     const archive = archiver('zip',{zlib: {level: 9}});
     res.set('Content-Type', 'zip');
@@ -525,17 +567,19 @@ app.get('/dataset/:id',async function(req,res){
     archive.pipe(res);
 });
 
+//Sets a route to serve the datasets uploaded by the user.
 app.post("/datasets",bodyParser.json(),async function (req,res){
     let request = await getUploadedDatasets(req.body.data);
     res.json({"response": request});
 })
 
+//Sets a route to get the object Id of an string.
 app.post("/getObjectId",(req,res)=>{
     let id = mongoose.Types.ObjectId(req.body.data);
     res.json({"idDataset": id});
 })
 
-
+//Function that verifies if the User exists in the database.
 async function isUser(Users,username,password){
     let flag = false;
     let user;
@@ -549,12 +593,15 @@ async function isUser(Users,username,password){
 
     return {isUser: flag, user:user};
 }
+
+//Function that finds a dataset and returns it.
 function findDataset(idDataset){
     mongoose.connect(URI);
     const dataset = Dataset.findById(idDataset);
     return dataset;
 }
-//Querys MongoDB.
+
+//Function that creates a User in mongodb.
 async function createUserMongo(username,password,firstName,firstSurname,birthDate,photoUser){
     let photo = new mongoDB.ObjectId(photoUser);
     let birthday = new Date(birthDate);
@@ -571,6 +618,7 @@ async function createUserMongo(username,password,firstName,firstSurname,birthDat
     return user; 
 }
 
+//Function that creates a dataset in mongodb.
 async function createDataset(nameDataset,descriptionDataset,archivosDataset,
     photoDataSet){
     let objectIds = [];
@@ -590,7 +638,7 @@ async function createDataset(nameDataset,descriptionDataset,archivosDataset,
 }
 
 
-// Busca solo 1 elemento.
+//Fins an specific user.
 async function findUserById(idUser){
     let idSearch = new mongoDB.ObjectId(idUser);
     let userdb = await conn.collection('users').find({_id:idSearch})
@@ -599,7 +647,7 @@ async function findUserById(idUser){
 }
 
 
-// Traerá solo 1, aunque hayan con más archivos con el mismo nombre.
+//This function searches for only one user.
 async function searchByOneUsername(username){
     let userdb = await conn.collection('users').findOne({
         username: {$eq: username}
@@ -612,25 +660,25 @@ async function searchByOneUsername(username){
 
 
 
-//Actualiza la contra en MongoDB
+//Function that updates the password in mongodb.
 async function updatePasswordMongo(username,password){
     let result = await conn.collection('users').updateOne({username: username},{$set: {password: password}});
     return result;
 }
 
-//Actualiza el nombre en MongoDB
+//Function that updates the name in mongodb.
 async function updateNameMongo(username,name){
     let result = await conn.collection('users').updateOne({username: username},{$set: {firstName: name}});
     return result;
 }
 
-//Actualiza la contra en MongoDB
+//Function that updates the lastName in mongodb.
 async function updateLastNameMongo(username,lastName){
     let result = await conn.collection('users').updateOne({username: username},{$set: {firstSurname: lastName}});
     return result;
 }
 
-//Actualiza la contra en MongoDB
+//Function that updates the photo of an user in mongodb.
 async function updatePhotoMongo(username,idPhoto){
     let idUpdate = new mongoDB.ObjectId(idPhoto);
     let result = await conn.collection('users').updateOne({username: username},{$set: {photo: idUpdate}});
@@ -638,7 +686,7 @@ async function updatePhotoMongo(username,idPhoto){
 }
 
 
-// Busca todos los usuarios con el mismo nombre.
+//Function that searches for all users with an equal name.
 async function searchAllUsersEqualsName(name){
     let userdb = await conn.collection('users').find({
         FirstName: {
@@ -651,7 +699,7 @@ async function searchAllUsersEqualsName(name){
     return response;
 }
 
-// Busca todos los usuarios con el mismo apellido.
+//Function that searches for all users with an equal surname.
 async function searchAllUsersEqualsSurname(firstSurname){
     const userdb = await conn.collection('users').find({
         FirstSurname: {
@@ -665,15 +713,14 @@ async function searchAllUsersEqualsSurname(firstSurname){
 }
 
 
-// Busca solo 1 elemento.
+// Function that searches for a specific dataset.
 async function searchDataSetById(datasetId){
     mongoose.connect(URI);
     const dataset = Dataset.findById(datasetId);
     return dataset;
 }
 
-// Busca todos por ese atributo en el documento.
-// Ejemplo si hay 3 documentos que tienen el nombre: Ardilla, los traerá.
+// Matches a query on the search of name dataset.
 async function searchAllDataSetByName (criterio){
   let regex = new RegExp(criterio.split(" ").join("|"), "i");
   let datasetdb = await conn.collection('datasets').find({
@@ -685,6 +732,7 @@ async function searchAllDataSetByName (criterio){
   return response;
 }
 
+//Matches a query on the search of users.
 async function searchUsernames(username){
     let regex = new RegExp(username.split(" ").join(".+"), "i");
     let userdb = await conn.collection('users').find({
@@ -697,11 +745,7 @@ async function searchUsernames(username){
    return response;
  }
 
-
-
-
-// Busca todos por ese atributo en el documento.
-// Ejemplo si hay 3 documentos que tienen el nombre: Ardilla, los traerá.
+//Matches a query on the search of datasets by description.
 async function searchAllDataSetByDescription(description){
     let regex = new RegExp(description.split(" ").join("|"), "i");
     let datasetdb = await conn.collection('datasets').find({
@@ -713,9 +757,7 @@ async function searchAllDataSetByDescription(description){
     return response;
 }
 
-
-// Busca todos por ese atributo en el documento.
-// Ejemplo si hay 3 documentos que tienen el nombre: Ardilla, los traerá.
+//Function that searches for all users.
 async function searchAllUsers(){
     let users = await conn.collection('users').find();
     let userList = await users.toArray();
@@ -723,7 +765,7 @@ async function searchAllUsers(){
     return userList;
 }
 
-//Buscar notificaciones de un usuario y ordenarlas por fecha
+//Function that searches for all the notifications of an user.
 async function getUserNotifications(idUser){
     let idObject = new mongoDB.ObjectId(idUser);
     let notifications = await conn.collection('notifications').find(
@@ -736,14 +778,14 @@ async function getUserNotifications(idUser){
     return result;
 }
 
-//Encript password
+//Function that encrypts a password.
 function encryptPassword(password){
     const saltRounds = 10;
     var encrypted_password = bcrypt.hashSync(password, saltRounds);
     return encrypted_password;
   
 }
-
+//Function that creates a notification.
 async function createNotifications(notifiedUsers,userUploads,name){
     let submit = new mongoDB.ObjectId(userUploads);
     for(let i =0;i<notifiedUsers.length;i++){
@@ -757,14 +799,15 @@ async function createNotifications(notifiedUsers,userUploads,name){
     }
 }
 
+//Function that deletes a notification.
 async function deleteNotification(idDelete){
     let submit = new mongoDB.ObjectId(idDelete);
     await conn.collection('notifications').deleteOne({_id:submit});
     console.log("Listo");
 }
-//Algunos metodos de Neo4j.
 
 
+//Function that creates a User in neo4j.
 async function createUser(User,username){
     const session = driver.session({database: 'neo4j'});
     try{
@@ -776,8 +819,8 @@ async function createUser(User,username){
         session.close();
     }
 }
-//Metodo que agrega una relacion de like entre un usuario y un dataset
-//Agrega relacion en ambos sentidos con los puntos dados por el usuario.
+
+//Function that adss a "Like" relation between an user and a dataset, it does it in both ways.
 async function addUserLike(User,Dataset){
     console.log(User);
     console.log(Dataset);
@@ -794,6 +837,7 @@ async function addUserLike(User,Dataset){
     }
 }
 
+//Function that deletes an user like from neo4j.
 async function deleteUserLike(User,Dataset){
     console.log(User);
     console.log(Dataset);
@@ -809,7 +853,7 @@ async function deleteUserLike(User,Dataset){
     }
 }
 
-//Funcion que crea una relacion de FOLLOW y FOLLOWED BY entre dos nodos.
+//Function that create a FOLLOW and FOLLOWED BY relation between two users.
 async function addUserFollow(UserOne,UserTwo){
     console.log(UserOne);
     console.log(UserTwo);
@@ -825,7 +869,7 @@ async function addUserFollow(UserOne,UserTwo){
     }
 }
 
-//Elimina una relacion en ambos sentidos de seguimiento entre usuarios.
+//Delets a FOLLOW and FOLLOWED BY relation between two users.
 async function deleteUserFollow(UserOne, UserTwo){
     console.log(UserOne);
     console.log(UserTwo);
@@ -843,7 +887,7 @@ async function deleteUserFollow(UserOne, UserTwo){
     }
 }
 
-//Agrega una relacion de UPLOAD de un dataset a un Usuario en particular.
+//Function that adds an 'Upload" relation between a dataset and an user in both ways.
 async function userAddsDataset(User,Dataset,nameDataSet){
     const session  = driver.session({database: 'neo4j'});
     try{
@@ -858,7 +902,7 @@ async function userAddsDataset(User,Dataset,nameDataSet){
     }
 }
 
-//Elimina un nodo dataset y sus relaciones.
+//Function that deletes an user dataset in neo4j.
 async function userDeletesDataset(Dataset){
     const session  = driver.session({database: 'neo4j'});
     try{
@@ -872,7 +916,7 @@ async function userDeletesDataset(Dataset){
 }
 
 
-//Elimina un Nodo Usuario, a su vez elimina los datasets que este pudiese haber subido
+//Function that deletes an user from neo4j.
 async function deleteUser(User){
     const session = driver.session({database: 'neo4j'});
     try{
@@ -886,7 +930,7 @@ async function deleteUser(User){
     }
 }
 
-//Crea una relacion de descarga entre el usuario y el dataset.
+//Function that creates a 'download relation between an user and a dataset.
 async function downloadDataset(User,Dataset){
     const session = driver.session({database: 'neo4j'});
     try{
@@ -900,7 +944,7 @@ async function downloadDataset(User,Dataset){
     }
 }
 
-//Consultar usuarios que han descargado un dataset en particular
+//Function that returns the users that have downloaded a particular dataset.
 async function downloadedUserDataset(Dataset){
     const session = driver.session({database: 'neo4j'});
     //Se guardan los nodos de usuarios que han descargado el dataset
@@ -922,7 +966,7 @@ async function downloadedUserDataset(Dataset){
     }
 }
 
-//Trae todos los nodos de Dataset que hayan sido likeados por el usuario.
+//Function that returns all the datasets liked by a user.
 async function getLikedDatasets(User){
     const session = driver.session({database: 'neo4j'});
     let likedDatasets = [];
@@ -945,6 +989,8 @@ async function getLikedDatasets(User){
 //Para implementar en dos funcionalidades: Traer los datos de los usuarios que sigue el usuario
 //logeado y presentarlos, O si un usuario sube un dataset, se le notifica a los demas a partir del
 //arreglo
+//This function returns every User followed by the entry user.
+//Two functionalities: Get information of the followed users and to notify the user.
 async function getFollowedUsers(User){
     const session = driver.session({database: 'neo4j'});
     let followedUsers = [];
@@ -963,7 +1009,7 @@ async function getFollowedUsers(User){
     }
 }
 
-//Devuelve todos los usuarios que siguen al usuario de entrada
+//Function that returns all users that FOLLOW the entry user.
 async function getFollowingUsers(User){
     const session = driver.session({database: 'neo4j'});
     let followedUsers = [];
@@ -983,7 +1029,7 @@ async function getFollowingUsers(User){
 }
 
 
-//Funcion que retorna todos los datasets subidos por un usuario en particular.
+//Function that returns all datasets uploaded by the entry user.
 async function getUploadedDatasets(User){
     const session = driver.session({database: 'neo4j'});
     let dataSets = [];
@@ -1002,7 +1048,7 @@ async function getUploadedDatasets(User){
     }
 }
 
-//Devuelve la cantidad de likes de un dataset
+//Function that returns the quantity of likes of a dataset from neo4j.
 async function getLikesDataset(dataset){
     const session = driver.session({database: 'neo4j'});
     let users = [];
