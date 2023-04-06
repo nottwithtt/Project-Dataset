@@ -1,4 +1,4 @@
-//Variables para conectarse a mongo.
+//Variables to connect to mongodb
 const mongoose = require('mongoose');
 const multer = require("multer");
 const {GridFsStorage} = require('multer-gridfs-storage');
@@ -19,7 +19,7 @@ const mongoDB = require('mongodb');
 const fs = require('fs');
 const stream = require('stream');
 const { PassThrough } = stream;
-//Variables para conectarse a Neoj4
+//Variables to connect to neo4j
 const neo4j = require('neo4j-driver');
 const archiver = require('archiver');
 const URI4J = 'neo4j+s://ae1ed961.databases.neo4j.io';
@@ -35,18 +35,20 @@ const redisDB = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1
 const mysql = require('mysql2');
 const { ObjectID } = require('mongodb');
 //const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
-const connection = mysql.createConnection(DATABASE_URL='mysql://ihgcitgdgufvt0017uf1:pscale_pw_S1PX58KiEOfeRKtCZiEMFdV4v9QZu6pWo4VVJIuwV9s@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
+//const connection = mysql.createConnection(DATABASE_URL='mysql://ihgcitgdgufvt0017uf1:pscale_pw_S1PX58KiEOfeRKtCZiEMFdV4v9QZu6pWo4VVJIuwV9s@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
 
 
 //Variables para conectarse a mysql
 //const mysql = require('mysql2');
 //const connection = mysql.createConnection(DATABASE_URL='mysql://y2mwym9l7m74esstdecs:pscale_pw_QEDQAOyFPYML89jzmSCYWpBtFb1U99bLtuUSkIVm8F8@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}');
 
+
+//Opens the server.
 app.listen(3000,()=>{
     console.log('app listening in port 3000');
 });
 
-
+//Initializes the gridfs storage.
 const storage = new GridFsStorage({ db: conn,
     file:(req,file)=>{
         return {
@@ -58,23 +60,28 @@ const storage = new GridFsStorage({ db: conn,
 
 let gfs;
 
+//Warns thatthe connection has been opened.
 conn.once('open',()=>{
     console.log('Open');
     gfs = new mongoDB.GridFSBucket(conn.db, {bucketName: 'files'});
 });
 
+//Declares multer middleware to use with gridfs.
 const upload = multer({storage});
 
-
+//Sets the server to serve html files.
 app.set('view engine','html');
 
+
+//Sets the server to get its resources from the specified directory.
 app.use(express.static(__dirname+'/'));
 
-
+//Sets the route for the home page.
 app.get('/',(req,res)=>{
     res.sendFile(__dirname+'/public/SignIn.html');
 });
 
+//Sets the route for the register page
 app.get('/Register',(req,res)=>{
     res.sendFile(__dirname+'/public/Register.html');
 });
@@ -1001,6 +1008,27 @@ async function getLikesDataset(dataset){
     let users = [];
     try{
         let query = `MATCH (us:User)-[:LIKES]->(dat:Dataset {id_mongo:"${dataset}"}) RETURN us`;
+        const cursor = await session.executeRead(transaction=>transaction.run(query));
+        cursor.records.forEach((element)=>{
+            let node = element._fields[0].properties;
+            users.push(node);
+        })
+        console.log(users);
+        return users;
+    }catch(error){
+        console.log(error);
+    }finally{
+        session.close();
+    }
+}
+
+
+//Returns a list containing the user in case the user uplaoded the specified dataset.
+async function isUserDataset(user,dataset){
+    const session = driver.session({database: 'neo4j'});
+    let users = [];
+    try{
+        let query = `MATCH (us:User {id_mongo: "${user}"})-[:UPLOADS]->(dat:Dataset {id_mongo:"${dataset}"}) RETURN us`;
         const cursor = await session.executeRead(transaction=>transaction.run(query));
         cursor.records.forEach((element)=>{
             let node = element._fields[0].properties;
