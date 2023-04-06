@@ -124,7 +124,7 @@ async function createNewConversationBox() {
         const idPhotoUser = user[0].photo;
     
         //const photoUser = await uploadPhoto (idPhotoUser);
-        const photoUser = "../Images/Icons/noImage.jpg";
+        const photoUser = await loadImageConver(idPhotoUser);
         const username = user[0].username;
     
         const divPrincipal = document.createElement('div');
@@ -178,7 +178,10 @@ async function getFollowingUsersConver(){
     let users = answer.users;
 
     for(let i =0;i<users.length;i++){
-        followings.innerHTML = `<option id ="${i.toString()}">${users[i]['username']}</option>`;
+        let option = document.createElement('option');
+        option.textContent = users[i].username;
+        option.id = users[i].id_mongo;
+        followings.appendChild(option);
         followingUsers.push({"id":users[i]['id_mongo'], "username": users[i]['username']});
     }
     console.log(followingUsers);

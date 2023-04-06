@@ -19,7 +19,7 @@ async function createDataSetTest (){
     let datasetDescription = document.getElementById("txtDescriptionDataset").value;
     let datasetImage = document.getElementById("imageDataSetForm").files[0];
     let datasetFiles = document.getElementById("fileDataset").files;
-    if(datasetImage&&datasetFiles){
+    if(datasetImage&&datasetFiles&&datasetDescription&&datasetName){
         let formDataOne = new FormData();
         formDataOne.append('photoDataset',datasetImage)
         const responseIdPhotoDataset = await fetch('/uploadPhotoDataset',{
@@ -54,5 +54,5 @@ async function createDataSetTest (){
             },
         });
 
-    }
+    }e
 }
