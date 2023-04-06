@@ -40,7 +40,8 @@ const { ObjectID } = require('mongodb');
 
 //Variables para conectarse a mysql
 const mysql = require('mysql2');
-const connection = mysql.createConnection(DATABASE_URL='mysql://y2mwym9l7m74esstdecs:pscale_pw_QEDQAOyFPYML89jzmSCYWpBtFb1U99bLtuUSkIVm8F8@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}');
+const connection = mysql.createConnection(DATABASE_URL='mysql://e4mcvoqeb8j2yr1ftp97:pscale_pw_aMBO9UDKPDTNhzmnWikiqmN4q8U3We6fPxfAKwrGS8j@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}'
+);
 
 app.listen(3000,()=>{
     console.log('app listening in port 3000');
@@ -298,6 +299,14 @@ app.post("/getDatasetComments",bodyParser.json(), async (req,res)=>{
     });
 })
 
+app.post("/getCommentsResponse",bodyParser.json(), async (req,res)=>{
+    let idComment = req.body.idComment;
+    let queryGet = `SELECT * FROM comment where idCommentResponse = ${idComment};`;
+    connection.query(queryGet, function (err, result){
+        if (err) throw err;
+        res.json({"commentsResponse" : Object.assign(result)});
+    });
+})
 
 app.post('/getInfoDataset',bodyParser.json(),async (req,res)=>{
     let idDataset = new mongoDB.ObjectId(req.body.data);

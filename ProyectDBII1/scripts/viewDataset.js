@@ -18,14 +18,16 @@ async function newCommentBox (margin,comment) {
     divPrincipal.style = "width: auto; height: auto;";
     divPrincipal.id = comment.idComment;
     divPrincipal.innerHTML =
-    `<div class="card d-flex flex-row mt-3" style="width: auto; height: auto; margin-left = ${margin}vw">
+    `<div class="card d-flex flex-row mt-3" style="width: auto; height: auto; margin-left : ${margin}vw">
         <div class="mx-2 mb-1 mt-1">
             <img src=${photoAuthor} style="height: 2vw; width: 2vw; border-radius: 50%;">
         </div>
         <div class="mx-4" style="margin-top: 0.6vw;font-size: small;"> <p>${commentContent}</p></div>
     </div>
-    <a class="text-secondary mx-1" style="font-size: small">Reply</a>`;
-
+    <div style="margin-left : ${margin}vw">
+        <a class="text-secondary mx-1" style="font-size: small;  ">Reply</a>
+    <div/>`;
+    
     container.appendChild(divPrincipal);
 
 }
@@ -51,10 +53,10 @@ async function loadImageComment(idPhoto){
 async function createNewComment() {
     let p_idUser = sessionStorage.getItem("id");
     let p_idComment = 1;
-    let p_idCommentResponse = null;
+    let p_idCommentResponse = "null";
     let p_creationDate = new Date();
     let p_content = document.getElementById("txtMessageComment").value;
-    let p_file = null;
+    let p_file = "null";
     console.log(p_creationDate);
 
     const response = await fetch('/createComment',{
@@ -77,8 +79,10 @@ async function createNewComment() {
     
 }
 
+
 async function getComments() {
 
+    
     const response = await fetch('/getDatasetComments',{
         method: "POST",
         body: JSON.stringify({datasetId: idDataset}),
@@ -90,13 +94,47 @@ async function getComments() {
     let answer = await response.json();
     let commentsDataset = answer["commentList"];
     //console.log(commentsDataset["0"]);
-
-    console.log(commentsDataset.length);
     
-    for (let i = 0; i < commentsDataset.length; i++){
+    //console.log('hola');
 
-        await newCommentBox ("0", commentsDataset[i]);
+    let values = Object.values(commentsDataset);
 
+    let margin = 0;
+    
+    for(let i = 0; i < Object.keys(commentsDataset).length;i++){
+        let idComment = values[i].idCommentResponse;
+        
+        if(idComment == null || idComment== "null"){
+            await newCommentBox(margin,values[i]);
+            await createCommentsResponse(margin,values[i]);
+        }
+    }
+
+
+
+}
+
+async function createCommentsResponse(margin,comment){
+    const response = await fetch('/getCommentsResponse',{
+        method: "POST",
+        body: JSON.stringify({idComment: comment.idComment}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+
+    
+    const res = await response.json();
+    const ansers = res.commentsResponse;
+
+    keys = Object.keys(ansers);
+    values = Object.values(ansers);
+
+    if(keys.length > 0){
+        for(let i = 0; i < keys.length;i++){
+            await newCommentBox(margin + 2,values[i]);
+            await createCommentsResponse(margin,values[i]);
+        }
     }
 }
 
@@ -246,6 +284,8 @@ async function getDownloadedUsers(){
     let users = answer.users;
     console.log(users);
     let container = document.getElementById("downloadedUsers");
+    /*if (container != null){
+    }*/
     container.innerHTML = ``;
     for(let i =0;i<users.length;i++){
         let divPrincipal = document.createElement('div');
