@@ -39,8 +39,8 @@ const { ObjectID } = require('mongodb');
 
 
 //Variables para conectarse a mysql
-const mysql = require('mysql2')
-const connection = mysql.createConnection('mysql://l88xgrfyihrnfy8rvbo7:pscale_pw_DADGWjasZMHwDNFT59999ZCALKiqbnw1FRh3HJttkgD@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
+const mysql = require('mysql2');
+const connection = mysql.createConnection(DATABASE_URL='mysql://y2mwym9l7m74esstdecs:pscale_pw_QEDQAOyFPYML89jzmSCYWpBtFb1U99bLtuUSkIVm8F8@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}');
 
 app.listen(3000,()=>{
     console.log('app listening in port 3000');

@@ -72,7 +72,7 @@ async function createBox(conver, actualUser, idOtherUser){
     appendTo.appendChild(divPrincipal);
 
     const photoUser = document.getElementById(idOtherUser);
-    loadImageConver(photoUser, idPhotoUser);
+    await loadImageConver(photoUser, idPhotoUser);
 }
 
 async function loadImageConver(photoUser, idPhoto){
@@ -148,22 +148,6 @@ async function createNewConversationBox() {
 
     // Close the modal Window
     bootstrap.Modal.getInstance(modal).hide();
-}
-
-async function uploadPhoto (idPhoto){
-    const response = await fetch('/getPhoto',{
-        method: "POST",
-        body: JSON.stringify({data: "64277f67adeb58cdfe1fe141"}),
-        headers: {
-            "Content-Type": "application/json",
-        },
-    })
-
-    const blob = await response.blob();
-    console.log(blob);
-    const url = URL.createObjectURL(blob);
-
-    return url;
 }
 
 async function createConversation(user1,user2){

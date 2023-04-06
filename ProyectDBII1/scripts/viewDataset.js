@@ -1,22 +1,26 @@
 const parameters = new URLSearchParams(window.location.search);
 const idDataset = parameters.get('dataset');
+console.log(idDataset);
+
 const nameDataset = parameters.get('name');
 const userId = sessionStorage.getItem('id');
 const photoUser = sessionStorage.getItem('photo');
-sessionStorage.setItem
 const buttons = [];
 
 /* Comments */
-async function newCommentBox (idComment, commentContent) {
+async function newCommentBox (margin,comment) {
     let container = document.getElementById("commentsContainer");
+
+    const commentContent = comment.content;
+    const photoAuthor = await loadImageComment(comment.photoUser);
 
     let divPrincipal = document.createElement('div');
     divPrincipal.style = "width: auto; height: auto;";
-    divPrincipal.id = idComment;
+    divPrincipal.id = comment.idComment;
     divPrincipal.innerHTML =
-    `<div class="card d-flex flex-row mt-3" style="width: auto; height: auto;">
+    `<div class="card d-flex flex-row mt-3" style="width: auto; height: auto; margin-left = ${margin}vw">
         <div class="mx-2 mb-1 mt-1">
-            <img src="Images/Icons/noImage.jpg" style="height: 2vw; width: 2vw; border-radius: 50%;">
+            <img src=${photoAuthor} style="height: 2vw; width: 2vw; border-radius: 50%;">
         </div>
         <div class="mx-4" style="margin-top: 0.6vw;font-size: small;"> <p>${commentContent}</p></div>
     </div>
@@ -24,13 +28,27 @@ async function newCommentBox (idComment, commentContent) {
 
     container.appendChild(divPrincipal);
 
-    console.log(divPrincipal.id);
+}
 
 
+async function loadImageComment(idPhoto){
+
+    const response = await fetch('/getPhotoUser',{
+        method: "POST",
+        body: JSON.stringify({photo: idPhoto}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+
+    const blob = await response.blob();
+    console.log(blob);
+    const url = URL.createObjectURL(blob);
+
+    return url;
 }
 
 async function createNewComment() {
-    getComments();
     let p_idUser = sessionStorage.getItem("id");
     let p_idComment = 1;
     let p_idCommentResponse = null;
@@ -54,9 +72,8 @@ async function createNewComment() {
         },
     })
     const answer = await response.json();
-    newCommentBox(answer.idComment, answer.content);
-    getComments();
-
+    //newCommentBox(answer.idComment, answer.content);
+    //Aqui debemos actualizar todos los mensajes;
     
 }
 
@@ -73,10 +90,12 @@ async function getComments() {
     let answer = await response.json();
     let commentsDataset = answer["commentList"];
     //console.log(commentsDataset["0"]);
+
+    console.log(commentsDataset.length);
     
     for (let i = 0; i < commentsDataset.length; i++){
 
-        await newCommentBox (commentsDataset[i].idComment, commentsDataset[i].content);
+        await newCommentBox ("0", commentsDataset[i]);
 
     }
 }
