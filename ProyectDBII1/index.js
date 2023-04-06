@@ -39,14 +39,8 @@ const { ObjectID } = require('mongodb');
 
 
 //Variables para conectarse a mysql
-//const mysql = require('mysql2')
-//const connection = mysql.createConnection('mysql://4eme3kqqx4ueltv2mfzj:pscale_pw_L5cO1mxvZ83BMQUwcEYLLMWdEPBPMkrbQE7nB9TEK7t@us-east.connect.psdb.cloud/project?ssl={"rejectUnauthorized":true}')
-
-
-async function subirFoto(foto){
-    connection.query(`INSERT INTO comments(message,idPhoto) VALUES('Hola','${foto}')`);
-    console.log('upload correctly!');
-}
+const mysql = require('mysql2')
+const connection = mysql.createConnection('mysql://l88xgrfyihrnfy8rvbo7:pscale_pw_DADGWjasZMHwDNFT59999ZCALKiqbnw1FRh3HJttkgD@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
 
 app.listen(3000,()=>{
     console.log('app listening in port 3000');
@@ -273,6 +267,35 @@ app.post('/getMessagesConversation',bodyParser.json(),async (req,res)=>{
     console.log(messages);
 
     res.json({"messages" : messages});
+
+})
+
+/* Comments Dataset */
+app.post("/createComment",bodyParser.json(), async (req,res)=>{
+    let p_idUser = req.body.idUser;
+    let p_photo = req.body.photo;
+    let p_idCommentResponse = req.body.idCommentResponse;
+    let p_idDataset = req.body.idDataset;
+    let p_creationDate = req.body.creationDate;
+    let p_content = req.body.content;
+    let p_file = req.body.file;
+
+    let queryCreate = `INSERT INTO comment (idUser,photoUser, idCommentResponse, idDataset, creationDate, content, file) VALUES("${p_idUser}", "${p_photo}" ,${p_idCommentResponse}, "${p_idDataset}" , CONVERT_TZ(now(),  '+00:00', '-06:00') , "${p_content}", "${p_file}");`;
+
+    connection.query(queryCreate, function (err, result){
+        if(err) throw err;
+        res.json({"idComment": result.insertId, "content": p_content})
+    });
+})
+
+
+app.post("/getDatasetComments",bodyParser.json(), async (req,res)=>{
+    let datasetId = req.body.datasetId;
+    let queryGet = `SELECT * FROM comment where idDataset = "${datasetId}";`;
+    connection.query(queryGet, function (err, result){
+        if (err) throw err;
+        res.json({"commentList" : Object.assign(result)});
+    });
 })
 
 
