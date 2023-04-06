@@ -127,7 +127,7 @@
         <li class="btn list-group-item d-flex justify-content-around align-items-center" style="background-color: #2a2d3b; color: #f3f3f3;">
           <img data-bs-toggle="modal" data-bs-target="#not-modal" src="../Images/Icons/bell.png" width="16vw">
           <!-- Number newNotifications -->
-          <span class="badge bg-primary">0</span>
+          <span class="badge bg-primary" id="counterNotifications"></span>
         </li>
       </div>
 
@@ -149,30 +149,8 @@
         <!-- Modal Body  -->
         <div class="modal-body" style="height: 200vw;">
           <!-- Div Notifications  -->
-          <div class="container-fluid">
-            <!-- Example1 -->
-            <div class="row d-flex flex-row justify-content-between">
-              <div class="col-4">
-                <h6>12-10-2023 7:00am</h6>
-              </div>
-              <div class="col-8" id="not-1">
-                <h6>The user "NameUser" create a dataset about "titleDataset"</h6>
-              </div>
-            </div>
-
-            <hr>
-
-            <!-- Example2 -->
-            <div class="row d-flex flex-row justify-content-between">
-              <div class="col-4">
-                <h6>12-10-2023 7:00am</h6>
-              </div>
-              <div class="col-8" id="not-1">
-                <h6>The user "NameUser" create a dataset about "titleDataset"</h6>
-              </div>
-            </div>
-            
-            
+          <div class="container-fluid" id="containerNotifications">
+            <!-- Example1 -->       
           </div>
         </div>
       </div>
