@@ -35,8 +35,7 @@ const redisDB = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1
 const mysql = require('mysql2');
 const { ObjectID } = require('mongodb');
 //const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
-const connection = mysql.createConnection(DATABASE_URL='mysql://5f8kii4pzxxvsox9f4kt:pscale_pw_oShxBRyVX2e1bh7TP7ZKpkDkHpIuLqHtZGuuhzp9B41@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}'
-);
+const connection = mysql.createConnection(DATABASE_URL='mysql://uqe1wr1iggsojm84lb72:pscale_pw_PgwwEZT8Eew49AFAdEr8ubXuRvu9gagvFT4Ah2vbAgn@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
 
 
 //Variables para conectarse a mysql
