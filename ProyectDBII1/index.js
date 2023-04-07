@@ -35,7 +35,7 @@ const redisDB = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1
 const mysql = require('mysql2');
 const { ObjectID } = require('mongodb');
 //const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
-const connection = mysql.createConnection(DATABASE_URL='mysql://ihgcitgdgufvt0017uf1:pscale_pw_S1PX58KiEOfeRKtCZiEMFdV4v9QZu6pWo4VVJIuwV9s@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
+const connection = mysql.createConnection(DATABASE_URL='mysql://j0qzkpsnq66ulkxuf7ki:pscale_pw_Lsk1pmjevgR3NGMZvD9Y2GgfTFNIyfYSUhwbkjBE1fq@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
 
 
 //Variables para conectarse a mysql
@@ -528,6 +528,15 @@ app.post("/getObjectId",(req,res)=>{
     res.json({"idDataset": id});
 })
 
+app.post('/cloneDataset',bodyParser.json(), async(req,res)=>{
+    let idDataset = req.body.idDataset;
+    let newName = req.body.newName;
+    let userId = req.body.idUser;
+    let response = await cloneDataset(idDataset, newName);
+    let newResponse = await response.toString();
+    await userAddsDataset(userId,newResponse, newName)
+    res.json({"result":true})
+})
 
 async function isUser(Users,username,password){
     let flag = false;
@@ -755,7 +764,16 @@ async function deleteNotification(idDelete){
     await conn.collection('notifications').deleteOne({_id:submit});
     console.log("Listo");
 }
-//Algunos metodos de Neo4j.
+
+async function cloneDataset(idDataset, newName){
+    let idSubmit = new mongoDB.ObjectId(idDataset);
+    let original = await conn.collection('datasets').find({_id:idSubmit});
+    let final = await original.toArray();
+    console.log(original);
+    let CloneDT = await createDataset(newName, final[0].description, final[0].archivosDataset, final[0].PhotoDataSet);
+    return CloneDT;
+}
+    //Algunos metodos de Neo4j.
 
 
 async function createUser(User,username){
