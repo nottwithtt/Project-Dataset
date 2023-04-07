@@ -36,7 +36,7 @@ const mysql = require('mysql2');
 const { ObjectID } = require('mongodb');
 //const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
 //const connection = mysql.createConnection(DATABASE_URL='mysql://ihgcitgdgufvt0017uf1:pscale_pw_S1PX58KiEOfeRKtCZiEMFdV4v9QZu6pWo4VVJIuwV9s@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
-const connection = mysql.createConnection(DATABASE_URL='mysql://j0qzkpsnq66ulkxuf7ki:pscale_pw_Lsk1pmjevgR3NGMZvD9Y2GgfTFNIyfYSUhwbkjBE1fq@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
+//const connection = mysql.createConnection(DATABASE_URL='mysql://j0qzkpsnq66ulkxuf7ki:pscale_pw_Lsk1pmjevgR3NGMZvD9Y2GgfTFNIyfYSUhwbkjBE1fq@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
 
 
 //Variables para conectarse a mysql
