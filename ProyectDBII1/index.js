@@ -35,7 +35,8 @@ const redisDB = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1
 const mysql = require('mysql2');
 const { ObjectID } = require('mongodb');
 //const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
-const connection = mysql.createConnection(DATABASE_URL='mysql://j0qzkpsnq66ulkxuf7ki:pscale_pw_Lsk1pmjevgR3NGMZvD9Y2GgfTFNIyfYSUhwbkjBE1fq@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
+const connection = mysql.createConnection(DATABASE_URL='mysql://5f8kii4pzxxvsox9f4kt:pscale_pw_oShxBRyVX2e1bh7TP7ZKpkDkHpIuLqHtZGuuhzp9B41@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}'
+);
 
 
 //Variables para conectarse a mysql
@@ -324,6 +325,16 @@ app.post("/getDatasetComments",bodyParser.json(), async (req,res)=>{
     connection.query(queryGet, function (err, result){
         if (err) throw err;
         res.json({"commentList" : Object.assign(result)});
+    });
+})
+
+//Sets a route to get a comment of a dataset.
+app.post("/getComment",bodyParser.json(), async (req,res)=>{
+    let idComment = req.body.idComment;
+    let queryGet = `SELECT * FROM comment where idComment = "${idComment}";`;
+    connection.query(queryGet, function (err, result){
+        if (err) throw err;
+        res.json({"res" : Object.assign(result)});
     });
 })
 
