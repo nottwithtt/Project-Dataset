@@ -6,19 +6,64 @@ const appendTo = document.getElementById("messages");
 
 async function createMessage(){
     const content = document.getElementById("txtContent").value;
-    const idFile = "none";
-    const response = await fetch('/createMessage',{
-        method: "POST",
-        body: JSON.stringify({user:actualUser,idConver:conver,content: content,idFile:idFile}),
-        headers: {
-            "Content-Type": "application/json",
-        },
-    })
+    const file = document.getElementById("formFile").files[0];
+    if(file&&content){
+        const formData = new FormData();
+        formData.append('file',file);
+        const uploadFile = await fetch("/uploadMessageFile",{
+            method: "POST",
+            body: formData
+        })
+        let responseServer = await uploadFile.json();
+        let idFile = responseServer.idFile;
+        console.log(idFile);
 
-    let responseObject = await response.json();
-    let message = responseObject.message;
-    console.log(message);
+        const response = await fetch('/createMessage',{
+            method: "POST",
+            body: JSON.stringify({user:actualUser,idConver:conver,content: content,idFile:idFile}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+    
+        let responseObject = await response.json();
+        let message = responseObject.message;
+    }
+    else if (file&&!content){
+        const formData = new FormData();
+        formData.append('file',file);
+        const uploadFile = await fetch("/uploadMessageFile",{
+            method: "POST",
+            body: formData
+        })
+        let responseServer = await uploadFile.json();
+        let idFile = responseServer.idFile;
+        console.log(idFile);
 
+        const response = await fetch('/createMessage',{
+            method: "POST",
+            body: JSON.stringify({user:actualUser,idConver:conver,content: null,idFile:idFile}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+    
+        let responseObject = await response.json();
+        let message = responseObject.message;
+    }
+    else{
+        const response = await fetch('/createMessage',{
+            method: "POST",
+            body: JSON.stringify({user:actualUser,idConver:conver,content: content,idFile:null}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+    
+        let responseObject = await response.json();
+        let message = responseObject.message;
+        //console.log(message);
+    }
     loadMessages();
 }
 
@@ -58,21 +103,49 @@ async function createRightMessageBox(message){
     const divPrincipal = document.createElement('div');
 
     const content = message["content"];
-    const file = message["file"];
-    const displayContent = "block";
+    const idFile = message["file"];
+    let fileDisplay = null;
+    let displayContent = "block";
+    let displayContentFile = "block";
+    
 
-    if(content == "none"){
+    if(content == null){
         displayContent = "none";
     }
-    
+
+    if(idFile == null || "none"){
+        displayContentFile = "none";
+    }
+    else{
+        console.log(idFile);
+        fileDisplay = await loadFile(idFile);
+    }
 
     divPrincipal.classList = "col-12 d-flex flex-row justify-content-end";
     divPrincipal.innerHTML = `
     <div class="card bg-primary text-white d-flex flex-row mt-3" style="width: auto; height: auto; margin-right: 7vw;">
         <h5 style="margin-top: 0.8vw; margin-bottom: 0.8vw; margin-left: 0.5vw; margin-right: 0.5vw; display: ${displayContent};">${content}</h5>
+        <img src=${fileDisplay} style="margin-top: 0.8vw; margin-bottom: 0.8vw; margin-left: 0.5vw; margin-right: 0.5vw;max-width: 10vw; display: ${displayContentFile}>
     </div>
     `
     appendTo.appendChild(divPrincipal);
+}
+
+async function loadFile(idFile){
+
+    const response = await fetch('/getPhotoUser',{
+        method: "POST",
+        body: JSON.stringify({photo: idFile}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+
+    const blob = await response.blob();
+    //console.log(blob);
+    const url = URL.createObjectURL(blob);
+
+    return url;
 }
 
 async function createLeftMessageBox(message){
