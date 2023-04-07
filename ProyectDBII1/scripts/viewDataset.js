@@ -397,3 +397,20 @@ async function likeUser(){
             await getLikedUsers();
    }
 }
+
+async function cloneDataSet(){
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const idOriginal = urlSearchParams.get("dataset");
+    const newName = document.getElementById('newNameDataset').value;
+    const response = await fetch('/cloneDataset',{
+        method: "POST",
+        body: JSON.stringify({idDataset: idOriginal,
+        newName: newName, idUser: userId}),
+        headers:{
+            "Content-Type": "application/json",
+        },
+   })
+   let responseSubject = await response.json();
+   if(responseSubject.result)
+        console.log("Clonado.")
+}
