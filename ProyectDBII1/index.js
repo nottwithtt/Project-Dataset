@@ -35,8 +35,7 @@ const redisDB = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1
 const mysql = require('mysql2');
 const { ObjectID } = require('mongodb');
 //const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
-//const connection = mysql.createConnection(DATABASE_URL='mysql://ihgcitgdgufvt0017uf1:pscale_pw_S1PX58KiEOfeRKtCZiEMFdV4v9QZu6pWo4VVJIuwV9s@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
-//const connection = mysql.createConnection(DATABASE_URL='mysql://j0qzkpsnq66ulkxuf7ki:pscale_pw_Lsk1pmjevgR3NGMZvD9Y2GgfTFNIyfYSUhwbkjBE1fq@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
+const connection = mysql.createConnection(DATABASE_URL='mysql://uqe1wr1iggsojm84lb72:pscale_pw_PgwwEZT8Eew49AFAdEr8ubXuRvu9gagvFT4Ah2vbAgn@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
 
 
 //Variables para conectarse a mysql
@@ -328,6 +327,16 @@ app.post("/getDatasetComments",bodyParser.json(), async (req,res)=>{
     });
 })
 
+//Sets a route to get a comment of a dataset.
+app.post("/getComment",bodyParser.json(), async (req,res)=>{
+    let idComment = req.body.idComment;
+    let queryGet = `SELECT * FROM comment where idComment = "${idComment}";`;
+    connection.query(queryGet, function (err, result){
+        if (err) throw err;
+        res.json({"res" : Object.assign(result)});
+    });
+})
+
 //Sets a route that gets  a response comment.
 app.post("/getCommentsResponse",bodyParser.json(), async (req,res)=>{
     let idComment = req.body.idComment;
@@ -581,6 +590,7 @@ app.post("/getObjectId",(req,res)=>{
 })
 
 //Function that verifies if the User exists in the database.
+//Function that create a copy of dataset with other name
 app.post('/cloneDataset',bodyParser.json(), async(req,res)=>{
     let idDataset = req.body.idDataset;
     let newName = req.body.newName;
@@ -591,6 +601,7 @@ app.post('/cloneDataset',bodyParser.json(), async(req,res)=>{
     res.json({"result":true})
 })
 
+//Function that verifies if the User exists in the database.
 async function isUser(Users,username,password){
     let flag = false;
     let user;
@@ -828,6 +839,7 @@ async function cloneDataset(idDataset, newName){
     //Algunos metodos de Neo4j.
 
 
+//Neo4j .
 //Function that creates a User in neo4j.
 async function createUser(User,username){
     const session = driver.session({database: 'neo4j'});

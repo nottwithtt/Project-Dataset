@@ -1,11 +1,34 @@
 const parameters = new URLSearchParams(window.location.search);
 const idDataset = parameters.get('dataset');
-console.log(idDataset);
+//console.log(idDataset);
 
 const nameDataset = parameters.get('name');
 const userId = sessionStorage.getItem('id');
 const photoUser = sessionStorage.getItem('photo');
 const buttons = [];
+let idCommentResponse = null;
+
+function resetReply (){
+    document.getElementById('replyMessage').textContent = "None";
+    idCommentResponse = null;
+}
+
+async function replyComment(idComment){
+    idCommentResponse = idComment;
+
+    const response = await fetch('/getComment',{
+        method: "POST",
+        body: JSON.stringify({idComment: idCommentResponse}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    
+    let answer = await response.json();
+    let comment = answer.res[0].content;
+    document.getElementById('replyMessage').textContent = comment;
+}
+
 
 /* Comments */
 async function newCommentBox (margin,comment) {
@@ -22,14 +45,15 @@ async function newCommentBox (margin,comment) {
         <div class="mx-2 mb-1 mt-1">
             <img src=${photoAuthor} style="height: 2vw; width: 2vw; border-radius: 50%;">
         </div>
-        <div class="mx-4" style="margin-top: 0.6vw;font-size: small;"> <p>${commentContent}</p></div>
+        <div class="mx-4" style="margin-top: 0.6vw;font-size: small;"> <p >${commentContent}</p></div>
     </div>
     <div style="margin-left : ${margin}vw">
-        <a class="text-secondary mx-1" style="font-size: small;  ">Reply</a>
+        <button onclick="replyComment(${comment.idComment})" class="text-secondary mt-1 btn btn-light btn-sm" style="font-size: small;  ">Reply</button>
     <div/>`;
     
     container.appendChild(divPrincipal);
 
+    return;
 }
 
 
@@ -44,7 +68,7 @@ async function loadImageComment(idPhoto){
     })
 
     const blob = await response.blob();
-    console.log(blob);
+    //console.log(blob);
     const url = URL.createObjectURL(blob);
 
     return url;
@@ -53,11 +77,10 @@ async function loadImageComment(idPhoto){
 async function createNewComment() {
     let p_idUser = sessionStorage.getItem("id");
     let p_idComment = 1;
-    let p_idCommentResponse = "null";
+    let p_idCommentResponse = idCommentResponse;
     let p_creationDate = new Date();
     let p_content = document.getElementById("txtMessageComment").value;
     let p_file = "null";
-    console.log(p_creationDate);
 
     const response = await fetch('/createComment',{
         method: "POST",
@@ -74,9 +97,8 @@ async function createNewComment() {
         },
     })
     const answer = await response.json();
-    //newCommentBox(answer.idComment, answer.content);
-    //Aqui debemos actualizar todos los mensajes;
-    
+
+    getComments();
 }
 
 
@@ -97,24 +119,27 @@ async function getComments() {
     
     //console.log('hola');
 
-    let values = Object.values(commentsDataset);
+    const values = Object.values(commentsDataset);
 
     let margin = 0;
     
+    let container = document.getElementById("commentsContainer");
+    container.innerHTML = ``;
     for(let i = 0; i < Object.keys(commentsDataset).length;i++){
         let idComment = values[i].idCommentResponse;
         
         if(idComment == null || idComment== "null"){
+            console.log(values[i].content);
             await newCommentBox(margin,values[i]);
             await createCommentsResponse(margin,values[i]);
         }
     }
-
-
-
 }
 
+
 async function createCommentsResponse(margin,comment){
+    console.log("COM - " + comment.content);
+    console.log("=> call");
     const response = await fetch('/getCommentsResponse',{
         method: "POST",
         body: JSON.stringify({idComment: comment.idComment}),
@@ -122,20 +147,21 @@ async function createCommentsResponse(margin,comment){
             "Content-Type": "application/json",
         },
     })
-
     
     const res = await response.json();
     const ansers = res.commentsResponse;
 
-    keys = Object.keys(ansers);
-    values = Object.values(ansers);
+    const keys = Object.keys(ansers);
+    const values = Object.values(ansers);
 
-    if(keys.length > 0){
-        for(let i = 0; i < keys.length;i++){
-            await newCommentBox(margin + 2,values[i]);
-            await createCommentsResponse(margin,values[i]);
-        }
+    for(let i = 0; i < keys.length; i++){
+        console.log(i);
+        console.log("printComment");
+        await newCommentBox(margin + 2,values[i]);
+        await createCommentsResponse(margin + 2,values[i]);
     }
+    
+
 }
 
 async function uploadPhoto (){
@@ -148,7 +174,7 @@ async function uploadPhoto (){
     })
 
     const blob = await response.blob();
-    console.log(blob);
+    //console.log(blob);
     const url = URL.createObjectURL(blob);
 
     const newImage = document.createElement('img');
@@ -174,7 +200,7 @@ async function getInfoDataset(){
     uploadPhoto();
 
     const datasetInfo = await response.json();
-    console.log(datasetInfo);
+    //console.log(datasetInfo);
     const container = document.getElementById("description");
     let child = document.createElement("p");
     child.classList.add("h6");
@@ -242,7 +268,7 @@ async function getFiles(){
 
 getFiles();
 
-console.log(buttons);
+//console.log(buttons);
 
 async function validaCheckBox(){
     let files = [];
@@ -282,12 +308,12 @@ async function getDownloadedUsers(){
 
     const answer = await response.json();
     let users = answer.users;
-    console.log(users);
+    //console.log(users);
     let container = document.getElementById("downloadedUsers");
     /*if (container != null){
     }*/
     container.innerHTML = ``;
-    console.log(users);
+    //console.log(users);
     for(let i =0;i<users.length;i++){
         let divPrincipal = document.createElement('div');
         divPrincipal.classList.add("row", "d-flex", "flex-row", "justify-content-between");
@@ -328,7 +354,7 @@ async function getLikedUsers(){
     let users = answer.result;
     let container = document.getElementById("counterLikes");
     let counterUsers = users.length;
-    console.log(counterUsers)
+    //console.log(counterUsers)
     container.innerHTML = `<p>${counterUsers}</p>`
 }
 

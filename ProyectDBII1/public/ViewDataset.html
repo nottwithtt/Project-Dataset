@@ -21,11 +21,30 @@
                 <!-- ID = formFileComment -->
                 <input class="form-control" type="file" id="formFileComment" accept=".jpg , .png, .mp4">
             </div>
-            <div class="d-flex mx-4">
+            <div class="d-flex" style="height: 1vw; margin-left: 2vw;">
+                <li id="replyDropdown" class="btn dropup" style="height: 1vw;" >
+                    <a class="dropdown-toggle btn-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Reply
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                      <!-- BUTTON MYDATASETS -->
+                      <li>
+                          <p  class="mx-1" id="replyMessage">None</p>
+                      </li>
+                      
+                    </ul>
+                </li>
+            </div>
+
+            <div class="d-flex" style="margin-left: 2vw;">
+                <div onclick="resetReply()" class="btn btn-secondary">Reset</div>
+            </div>
+
+            <div class="d-flex" style=" margin-left: 2vw;">
 
                 <!-- Comments message -->
                 <!-- ID = txtMessageComment-->
-                <input class="form-control me-2" id="txtMessageComment" type="form-control" placeholder="Write the comment" aria-label="Search" style="width: 70vw;">
+                <input class="form-control me-2" id="txtMessageComment" type="form-control" placeholder="Write the comment" aria-label="Search" style="width: 65vw;">
                 
                 <!-- Button Send Message -->
                 <div onclick = "createNewComment()" class="btn btn-success">Send</div>
@@ -173,7 +192,7 @@
             </div>
             <!-- Modal Footer -->
             <div class="modal-footer">
-                <button type="button" onclick="cloneDataSet()" class="btn btn-primary">Confirm clone dataset</button>
+                <button type="submit" onclick = "cloneDataSet()" class="btn btn-primary">Confirm clone dataset</button>
             </div>
           </div>
         </div>
