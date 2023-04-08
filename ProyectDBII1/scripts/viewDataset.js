@@ -8,6 +8,38 @@ const photoUser = sessionStorage.getItem('photo');
 const buttons = [];
 let idCommentResponse = null;
 
+async function checkCloneButton(){
+    const response = await fetch("/datasets",{
+        method: "POST",
+        body: JSON.stringify({data: sessionStorage.getItem('id')}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    let responseJason = await response.json();
+    let datasets = responseJason.response;
+    let appendTo = document.getElementById("datasetContenedor");
+    console.log(datasets);
+
+    let clone = false;
+    for(let i = 0;i<datasets.length;i++){
+        console.log(datasets[i].id_mongo);
+        if(datasets[i].id_mongo == idDataset){
+            clone = true;
+        }
+    }
+
+    if(clone === true){
+        document.getElementById('cloneDataset').style.display = "block";
+    }
+    else{
+        document.getElementById('cloneDataset').style.display = "none";
+    }
+}
+
+checkCloneButton();
+
 function resetReply (){
     document.getElementById('replyMessage').textContent = "None";
     idCommentResponse = null;
@@ -157,7 +189,13 @@ async function createNewComment() {
     const p_content = document.getElementById("txtMessageComment").value;
     const p_file = document.getElementById("formFileComment").files[0];
 
-    if(p_file&&p_content){
+    if(!p_file&&!p_content){
+        document.getElementById('commentAlert').innerHTML =  `Write a comment or upload a file before sending the comment`;
+        const toast = document.querySelector('.toast');
+        const viewToast = new bootstrap.Toast(toast);
+        viewToast.show();
+    }
+    else if(p_file&&p_content){
         const formData = new FormData();
         formData.append('file',p_file);
         const uploadFile = await fetch("/uploadMessageFile",{
@@ -180,6 +218,7 @@ async function createNewComment() {
             },
         })
         const answer = await response.json();
+        getComments();
     }
     else if(p_file&&!p_content){
         const formData = new FormData();
@@ -204,6 +243,7 @@ async function createNewComment() {
             },
         })
         const answer = await response.json();
+        getComments();
     }
     else{
         const response = await fetch('/createComment',{
@@ -219,9 +259,9 @@ async function createNewComment() {
             },
         })
         const answer = await response.json();
+        getComments();
     }
     
-    getComments();
 }
 
 
@@ -256,6 +296,8 @@ async function getComments() {
         }
     }
 }
+
+getComments();
 
 
 async function createCommentsResponse(margin,comment){
@@ -480,6 +522,7 @@ async function getLikedUsers(){
 }
 
 getLikedUsers();
+
 
 
 async function getDataset(){

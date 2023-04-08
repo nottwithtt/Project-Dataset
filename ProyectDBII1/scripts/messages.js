@@ -8,7 +8,13 @@ let urlPhotoUser = "";
 async function createMessage(){
     const content = document.getElementById("txtContent").value;
     const file = document.getElementById("formFile").files[0];
-    if(file&&content){
+    if(!content && !file){
+        document.getElementById('messageAlert').innerHTML =  `Write a message or upload a file before sending the message`;
+        const toast = document.querySelector('.toast');
+        const viewToast = new bootstrap.Toast(toast);
+        viewToast.show();
+    }
+    else if(file&&content){
         const formData = new FormData();
         formData.append('file',file);
         const uploadFile = await fetch("/uploadMessageFile",{
@@ -32,6 +38,7 @@ async function createMessage(){
     
         let responseObject = await response.json();
         let message = responseObject.message;
+        await loadMessages();
     }
     else if (file&&!content){
         const formData = new FormData();
@@ -57,6 +64,7 @@ async function createMessage(){
     
         let responseObject = await response.json();
         let message = responseObject.message;
+        await loadMessages();
     }
     else{
         const response = await fetch('/createMessage',{
@@ -73,8 +81,9 @@ async function createMessage(){
         let responseObject = await response.json();
         let message = responseObject.message;
         //console.log(message);
+        await loadMessages();
     }
-    await loadMessages();
+    
 }
 
 async function loadMessages () {

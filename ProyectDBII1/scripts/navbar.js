@@ -35,48 +35,62 @@ async function loadPhotoUser(){
 
 async function Search(){
     const filter = document.getElementById('navFilterDropdown');
-    console.log(filter.innerHTML);
     const query = document.getElementById('txtSearchNavbar').value;
-    if(filter.innerHTML == "Users"){
-        const results = await fetch('/usersSearch',{
-            method: "POST",
-            body: JSON.stringify({query: query}),
-            headers: {
-                "Content-Type": "application/json",
-            },
 
-        })
-
-        let answer = await results.json();
-        let arrayResults = answer.result;
-        window.location.href= `/SearchUsers?results=${encodeURIComponent(JSON.stringify(arrayResults))}`;
+    if(filter.innerHTML == "Filter"){
+        document.getElementById('searchAlert').innerHTML = `Search filter not selected`;
+        const toast = document.querySelector('.toast');
+        const viewToast = new bootstrap.Toast(toast);
+        viewToast.show();
     }
-    else if (filter.innerHTML == "Name Dataset"){
-        const results = await fetch('/nameDatasetSearch',{
-            method: "POST",
-            body: JSON.stringify({query: query}),
-            headers: {
-                "Content-Type": "application/json",
-            },
-
-        })
-
-        let answer = await results.json();
-        let arrayResults = answer.result;
-        window.location.href= `/SearchDatasets?results=${encodeURIComponent(JSON.stringify(arrayResults))}`;
-    }else if(filter.innerHTML == "Description Dataset"){
-        const results = await fetch('/descriptionDatasetSearch',{
-            method: "POST",
-            body: JSON.stringify({query: query}),
-            headers: {
-                "Content-Type": "application/json",
-            },
-
-        })
-
-        let answer = await results.json();
-        let arrayResults = answer.result;
-        window.location.href= `/SearchDatasets?results=${encodeURIComponent(JSON.stringify(arrayResults))}`;
+    else if(query == ""){
+        document.getElementById('searchAlert').innerHTML = `No search criteria were entered`;
+        const toast = document.querySelector('.toast');
+        const viewToast = new bootstrap.Toast(toast);
+        viewToast.show();
+    }
+    else{
+        if(filter.innerHTML == "Users"){
+            const results = await fetch('/usersSearch',{
+                method: "POST",
+                body: JSON.stringify({query: query}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+    
+            })
+    
+            let answer = await results.json();
+            let arrayResults = answer.result;
+            window.location.href= `/SearchUsers?results=${encodeURIComponent(JSON.stringify(arrayResults))}`;
+        }
+        else if (filter.innerHTML == "Name Dataset"){
+            const results = await fetch('/nameDatasetSearch',{
+                method: "POST",
+                body: JSON.stringify({query: query}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+    
+            })
+    
+            let answer = await results.json();
+            let arrayResults = answer.result;
+            window.location.href= `/SearchDatasets?results=${encodeURIComponent(JSON.stringify(arrayResults))}`;
+        }else if(filter.innerHTML == "Description Dataset"){
+            const results = await fetch('/descriptionDatasetSearch',{
+                method: "POST",
+                body: JSON.stringify({query: query}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+    
+            })
+    
+            let answer = await results.json();
+            let arrayResults = answer.result;
+            window.location.href= `/SearchDatasets?results=${encodeURIComponent(JSON.stringify(arrayResults))}`;
+        }
     }
 }
 

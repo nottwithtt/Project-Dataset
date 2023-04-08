@@ -28,7 +28,6 @@ async function uploadPhoto (){
     })
 
     const blob = await response.blob();
-    console.log(blob);
     const url = URL.createObjectURL(blob);
 
     const newImage = document.createElement('img');
@@ -159,102 +158,114 @@ async function saveChanges(ActionButton){
         let replyPassword = document.getElementById("txtReplyPassword").value;
         let photo = document.getElementById("buttonUploadPhotoProfile").files[0];
 
-        if(txtPassword&&replyPassword&&txtPassword==replyPassword){
-            const responsePassword = await fetch("/encryptPasswordRegister",{
-                method: "POST",
-                body: JSON.stringify({pass: txtPassword}),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-
-            let responseServerPassword = await responsePassword.json();
-
-            //Trae la contra ya encriptada con hash y salt.
-            let encryptedPassword = responseServerPassword.encrypted;
-
-            let result = await fetch('/updatePasswordUser',{
-                method: "POST",
-                body: JSON.stringify({username: userName,
-                    pass: encryptedPassword}),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-
-            let formatedResult = await result.json();
-
-        }else{
-            //Codigo a implementar de aviso
+        if(txtPassword!=replyPassword){
+            document.getElementById('myProfileAlert').innerHTML = `Password does not match`;
+            const toast = document.querySelector('.toast');
+            const viewToast = new bootstrap.Toast(toast);
+            viewToast.show();
         }
-
-        if(name){
-            let result = await fetch('/updateNameUser',{
-                method: "POST",
-                body: JSON.stringify({username: userName,
-                    name: name}),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-
-            let formatedResult = await result.json();
-
-            sessionStorage.setItem("name",name);
+        else if (!name||!lastName){
+            document.getElementById('myProfileAlert').innerHTML = `Incomplete information, please check`;
+            const toast = document.querySelector('.toast');
+            const viewToast = new bootstrap.Toast(toast);
+            viewToast.show();
         }
-
-        if(lastName){
-            let result = await fetch('/updateLastNameUser',{
+        else{
+            if(txtPassword&&replyPassword&&txtPassword==replyPassword){
+                const responsePassword = await fetch("/encryptPasswordRegister",{
+                    method: "POST",
+                    body: JSON.stringify({pass: txtPassword}),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+    
+                let responseServerPassword = await responsePassword.json();
+    
+                //Trae la contra ya encriptada con hash y salt.
+                let encryptedPassword = responseServerPassword.encrypted;
+    
+                let result = await fetch('/updatePasswordUser',{
+                    method: "POST",
+                    body: JSON.stringify({username: userName,
+                        pass: encryptedPassword}),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+    
+                let formatedResult = await result.json();
+    
+            }
+    
+            if(name){
+                let result = await fetch('/updateNameUser',{
+                    method: "POST",
+                    body: JSON.stringify({username: userName,
+                        name: name}),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+    
+                let formatedResult = await result.json();
+    
+                sessionStorage.setItem("name",name);
+            }
+    
+            if(lastName){
+                let result = await fetch('/updateLastNameUser',{
+                    method: "POST",
+                    body: JSON.stringify({username: userName,
+                        lastName: lastName}),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+    
+                let formatedResult = await result.json();
+    
+                sessionStorage.setItem("lastName",lastName);
+            }
+    
+            if(photo){
+                const formData = new FormData();
+                formData.append('photoUser',photo);
+                const response = await fetch("/uploadUserPhoto",{
                 method: "POST",
-                body: JSON.stringify({username: userName,
-                    lastName: lastName}),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-
-            let formatedResult = await result.json();
-
-            sessionStorage.setItem("lastName",lastName);
+                body: formData
+                })
+                let responseServer = await response.json();
+                let idPhotoUpdate = responseServer.idPhoto;
+    
+                const responseUpdate = await fetch('/updatePhotoIdUser',{
+                    method: "POST",
+                    body: JSON.stringify({username: userName,photo: idPhotoUpdate}),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+    
+                let formatedResult = await responseUpdate.json();
+    
+                sessionStorage.setItem("photo",idPhotoUpdate);
+            }
+            /*Dectivate the button SaveChanges*/
+            document.getElementById('btnSaveChanges').style.display='none';
+            /*Active the button EditProfile*/
+            document.getElementById('btnEditProfile').disabled=false;
+            /*Desactive the upload Photo Button*/
+            document.getElementById('buttonUploadPhotoProfile').style.display='none';
+    
+            /*Desactive the text field Reply Password*/
+            document.getElementById('actionReplyPassword').style.display='none';
+    
+            /*Active fields*/
+            document.getElementById('txtName').disabled=true;
+            document.getElementById('txtLastName').disabled=true;
+            document.getElementById('txtPassword').disabled=true;
+            document.getElementById('txtReplyPassword').disabled=true;
         }
-
-        if(photo){
-            const formData = new FormData();
-            formData.append('photoUser',photo);
-            const response = await fetch("/uploadUserPhoto",{
-            method: "POST",
-            body: formData
-            })
-            let responseServer = await response.json();
-            let idPhotoUpdate = responseServer.idPhoto;
-
-            const responseUpdate = await fetch('/updatePhotoIdUser',{
-                method: "POST",
-                body: JSON.stringify({username: userName,photo: idPhotoUpdate}),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-
-            let formatedResult = await responseUpdate.json();
-
-            sessionStorage.setItem("photo",idPhotoUpdate);
-        }
-        /*Dectivate the button SaveChanges*/
-        document.getElementById('btnSaveChanges').style.display='none';
-        /*Active the button EditProfile*/
-        document.getElementById('btnEditProfile').disabled=false;
-        /*Desactive the upload Photo Button*/
-        document.getElementById('buttonUploadPhotoProfile').style.display='none';
-
-        /*Desactive the text field Reply Password*/
-        document.getElementById('actionReplyPassword').style.display='none';
-
-        /*Active fields*/
-        document.getElementById('txtName').disabled=true;
-        document.getElementById('txtLastName').disabled=true;
-        document.getElementById('txtPassword').disabled=true;
-        document.getElementById('txtReplyPassword').disabled=true;
     }    
 
 }

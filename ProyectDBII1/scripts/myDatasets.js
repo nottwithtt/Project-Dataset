@@ -13,6 +13,8 @@ async function getDatasets(){
     let responseJason = await response.json();
     let datasets = responseJason.response;
     let appendTo = document.getElementById("datasetContenedor");
+    console.log(datasets);
+
     for(let i =0;i<datasets.length;i++){
       console.log(datasets[i].id_mongo);
       const response = await fetch('/getPhotoDataset',{
