@@ -392,7 +392,9 @@ app.post('/insertUser',bodyParser.json(), async (req,res)=>{
     let user =  await createUserMongo(username,password,firstName,firstSurname,birthDate,photo);
     let responseUser = await findUserById(user.insertedId);
     let idNeo4j = user.insertedId.toString();
-    let writeNeo4j = await createUser(idNeo4j,username);
+    console.log(idNeo4j);
+    console.log("Buenos dias");
+    await createUser(idNeo4j,username);
     res.json({"user":responseUser});
 })
 
@@ -590,6 +592,7 @@ app.post("/getObjectId",(req,res)=>{
     res.json({"idDataset": id});
 })
 
+//Function that verifies if the User exists in the database.
 //Function that create a copy of dataset with other name
 app.post('/cloneDataset',bodyParser.json(), async(req,res)=>{
     let idDataset = req.body.idDataset;
@@ -836,13 +839,15 @@ async function cloneDataset(idDataset, newName){
     let CloneDT = await createDataset(newName, final[0].description, final[0].archivosDataset, final[0].PhotoDataSet);
     return CloneDT;
 }
+    //Algunos metodos de Neo4j.
+
 
 //Neo4j .
 //Function that creates a User in neo4j.
 async function createUser(User,username){
     const session = driver.session({database: 'neo4j'});
     try{
-        const query = `CREATE (:User {id_mongo: ${User}, username: ${username}})`;
+        const query = `CREATE (:User {id_mongo: "${User}", username: "${username}"})`;
         await session.executeWrite(transaction => transaction.run(query));
     }catch(error){
         console.error(error);
