@@ -9,7 +9,7 @@
     <title>Messages</title>
     <link rel="stylesheet" href="../bootstrap-5.0.2-dist/css/bootstrap.min.css">
   </head>
-  <body onload="loadMessages()">
+  <body onload="loadMessages()" style="padding-bottom: 100px; padding-top: 80px;">
     
     <nav class="navbar navbar-light bg-light fixed-bottom" style="border-color: #929191;">
       <div class="container-fluid">
@@ -26,29 +26,27 @@
       </div>
     </nav>
     
-    <header>
-      <nav class="navbar navbar-expand-lg navbar-dark position-relative" style="background-color: #2a2d3b;">
-        <div class="col-12 d-flex flex-row justify-content-between">
-          <div>
-            <ul class="navbar-nav me-auto mx-3 mb-lg-0">
-              <li>
-                <img name="photoUser" class="dropdown-toggle"  data-toggle="downtownAccount" src="Images/icons/noImage.jpg" Style="width: 40px; height: 40px;border-radius: 50%;" >
-              </li>
-              <li id="homeWindow" class="nav-item">
-                <p id="username" class="h5 text-white mt-2 mx-2"></a>
-              </li>
-            </ul>
-          </div>
-
-          <div style="margin-right: 2vw;">
-            <a type="button" class="mt-2 btn-close btn-close-white" aria-label="Back" href="/Home"></a></button>
-          </div>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark" style="background-color: #2a2d3b;">
+      <div class="col-12 d-flex flex-row justify-content-between">
+        <div>
+          <ul class="navbar-nav me-auto mx-3 mb-lg-0">
+            <li>
+              <img name="photoUser" class="dropdown-toggle"  data-toggle="downtownAccount" src="Images/icons/noImage.jpg" Style="width: 40px; height: 40px;border-radius: 50%;" >
+            </li>
+            <li id="homeWindow" class="nav-item">
+              <p id="username" class="h5 text-white mt-2 mx-2"></a>
+            </li>
+          </ul>
         </div>
-      </nav>
-    </header>
+
+        <div style="margin-right: 2vw;">
+          <a type="button" class="mt-2 btn-close btn-close-white" aria-label="Back" href="/Home"></a></button>
+        </div>
+      </div>
+    </nav>
 
     <div class="container-fluid">
-      <div class="row" style="margin-top: 40px;">
+      <div class="row" >
         <!-- DIV MESSAGES -->
         <!-- ID = messages -->
         <div id="messages" class="col-12 d-flex flex-column">
@@ -82,7 +80,7 @@
     </div>
   </div>-->
 
-    <script src="../bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
+    <script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
     <script src="../scripts/messages.js"></script>
     <script src="../scripts/session.js"></script>
   </body>

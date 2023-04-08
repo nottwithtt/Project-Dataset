@@ -104,35 +104,72 @@ async function createRightMessageBox(message){
 
     const content = message["content"];
     const idFile = message["file"];
-    let fileDisplay = null;
+    let fileMessage = null;
     let displayContent = "block";
     let displayContentFile = "block";
     
 
-    if(content == null){
+    if(content == ""){
         displayContent = "none";
     }
 
-    if(idFile == null || "none"){
+    if(idFile == ""){
         displayContentFile = "none";
     }
     else{
         console.log(idFile);
-        fileDisplay = await loadFile(idFile);
+        fileMessage = await loadFile(idFile);
     }
+    console.log("se cayo aqui");
+    
+    if (displayContentFile == "none"){
+        divPrincipal.classList = "col-12 d-flex flex-row justify-content-end";
+        divPrincipal.innerHTML = `
+        <div class="card bg-primary text-white d-flex flex-row mt-3" style="width: auto; height: auto; margin-right: 7vw;">
+            <h6 style="margin-top: 0.8vw; margin-bottom: 0.8vw; margin-left: 0.5vw; margin-right: 0.5vw; display: ${displayContent};">${content}</h6>
+        </div>
+        `
+    }
+    else if(fileMessage.type == "image/png" || fileMessage.type == "image/jpeg"){
+        divPrincipal.classList = "col-12 d-flex flex-row justify-content-end";
+        divPrincipal.innerHTML = `
+        <div class="card bg-primary text-white d-flex flex-row mt-3" style="width: auto; height: auto; margin-right: 7vw;">
+            <div class="d-flex flex-column">
+                <div>
+                    <h6 style="margin-top: 0.8vw; margin-bottom: 0.8vw; margin-left: 0.5vw; margin-right: 0.5vw; display: ${displayContent};">${content}</h6>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <img src=${fileMessage.url} style="max-width: 15vw; border-radius: 10%; display: ${displayContentFile}">
+                <div>
+            </div>
+        </div>
+        `
+    }
+    else if(fileMessage.type == "video/mp4"){
+        divPrincipal.classList = "col-12 d-flex flex-row justify-content-end";
+        divPrincipal.innerHTML = `
+        <div class="card bg-primary text-white d-flex flex-row mt-3" style="width: auto; height: auto; margin-right: 7vw;">
+            <div class="d-flex flex-column">
+                <div>
+                    <h6 style="margin-top: 0.8vw; margin-bottom: 0.8vw; margin-left: 0.5vw; margin-right: 0.5vw; display: ${displayContent};">${content}</h6>
+                </div>
+                <div class="embed-responsive embed-responsive-16by9">
+                    <video class="embed-responsive-item" controls>
+                    <source src=${fileMessage.url} type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+        `
+    }
+    
+    
 
-    divPrincipal.classList = "col-12 d-flex flex-row justify-content-end";
-    divPrincipal.innerHTML = `
-    <div class="card bg-primary text-white d-flex flex-row mt-3" style="width: auto; height: auto; margin-right: 7vw;">
-        <h5 style="margin-top: 0.8vw; margin-bottom: 0.8vw; margin-left: 0.5vw; margin-right: 0.5vw; display: ${displayContent};">${content}</h5>
-        <img src=${fileDisplay} style="margin-top: 0.8vw; margin-bottom: 0.8vw; margin-left: 0.5vw; margin-right: 0.5vw;max-width: 10vw; display: ${displayContentFile}>
-    </div>
-    `
     appendTo.appendChild(divPrincipal);
 }
 
 async function loadFile(idFile){
-
+    console.log("entra");
     const response = await fetch('/getPhotoUser',{
         method: "POST",
         body: JSON.stringify({photo: idFile}),
@@ -142,37 +179,68 @@ async function loadFile(idFile){
     })
 
     const blob = await response.blob();
-    //console.log(blob);
-    const url = URL.createObjectURL(blob);
 
-    return url;
+    console.log(blob.type);
+    const url = URL.createObjectURL(blob);
+    console.log(url);
+    return {url:url,type:blob.type};
 }
 
 async function createLeftMessageBox(message){
     const divPrincipal = document.createElement('div');
 
     const content = message["content"];
-    const file = message["file"];
+    const idFile = message["file"];
+    let fileMessage = null;
+    let displayContent = "block";
+    let displayContentFile = "block";
+    
 
-    const displayContent = "block";
-    const imageOtherUser = "../Images/Icons/noImage.jpg";
-
-    if(content == "none"){
+    if(content == ""){
         displayContent = "none";
     }
-    if(content == "none"){
-        displayContent = "none";
-    }
 
-    divPrincipal.classList = "col-12 d-flex flex-row justify-content-start";
-    divPrincipal.innerHTML = `
-    <div class="card bg-light d-flex flex-row mt-3" style="width: auto; height: auto; margin-left: 7vw;">
-        <div class="mx-2 mb-1 mt-2">
-        <img name="photoUser" src=${imageOtherUser} style="height: 2vw; width: 2vw; border-radius: 50%;">
+    if(idFile == ""){
+        displayContentFile = "none";
+    }
+    else{
+        console.log(idFile);
+        fileMessage = await loadFile(idFile);
+    }
+    
+    if (displayContentFile == "none"){
+        divPrincipal.classList = "col-12 d-flex flex-row justify-content-start";
+        divPrincipal.innerHTML = `
+        <div class="card bg-primary text-dark d-flex flex-row mt-3" style="width: auto; height: auto; margin-right: 7vw;">
+            <div>
+                <img name="photoUser" src="" style="height: 2vw; width: 2vw; border-radius: 50%;">
+            </div>
+            <div>
+                <h6 style="margin-top: 0.8vw; margin-bottom: 0.8vw; margin-left: 0.5vw; margin-right: 0.5vw; display: ${displayContent};">${content}</h6>
+            </div>
         </div>
-        <h5 style="margin-top: 0.8vw; margin-bottom: 0.8vw; margin-left: 0.5vw; margin-right: 0.5vw;display: ${displayContent};">${content}</h5>
-    </div>
-    `
+        `
+    }
+    else{
+        divPrincipal.classList = "col-12 d-flex flex-row justify-content-start";
+        divPrincipal.innerHTML = `
+        <div class="card bg-light text-dark d-flex flex-row mt-3" style="width: auto; height: auto; margin-right: 7vw;">
+            <div class="mt-1 mx-1">
+                <img name="photoUser" src="" style="height: 2vw; width: 2vw; border-radius: 50%">
+            </div>
+            <div class="d-flex flex-column">
+                <div>
+                    <h6 style="margin-top: 0.8vw; margin-bottom: 0.8vw; margin-left: 0.5vw; margin-right: 0.5vw; display: ${displayContent};">${content}</h6>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <img src=${fileMessage} style="max-width: 15vw; border-radius: 10%; display: ${displayContentFile}">
+                <div>
+            </div>
+        </div>
+        `
+    }
+
+
     appendTo.appendChild(divPrincipal);
 }
 
