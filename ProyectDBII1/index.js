@@ -35,7 +35,7 @@ const redisDB = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1
 const mysql = require('mysql2');
 const { ObjectID } = require('mongodb');
 //const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
-const connection = mysql.createConnection(DATABASE_URL='mysql://wjbimfrbywx38ag1ufs2:pscale_pw_91qhMU1IeP7Z78NCqgQ9WqWOBRpOhcvkFSpCp0CFKTP@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
+const connection = mysql.createConnection(DATABASE_URL='mysql://fdpte4y6uk3z19ztr3rd:pscale_pw_Ndzzs7NVSBcz6oFuNPWCdWuVzHdB9dL4hGNF6yq48He@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
 
 
 //Variables para conectarse a mysql
@@ -306,7 +306,6 @@ app.post("/createComment",bodyParser.json(), async (req,res)=>{
     let p_photo = req.body.photo;
     let p_idCommentResponse = req.body.idCommentResponse;
     let p_idDataset = req.body.idDataset;
-    let p_creationDate = req.body.creationDate;
     let p_content = req.body.content;
     let p_file = req.body.file;
 

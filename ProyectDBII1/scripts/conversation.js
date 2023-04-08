@@ -19,8 +19,7 @@ async function loadConversations () {
     let conversations = responseObject.conver;
     let keysConversations = Object.keys(conversations);
 
-    //console.log(Object.entries(conversations)[0][1]['user1']);
-    //console.log(Object.entries(conversations)[1][1]);
+
     let i = 0;
     for(i = 0; i < keysConversations.length; i++){
         if(Object.entries(conversations)[i][1]['user1'] == idActualUser){
@@ -132,7 +131,7 @@ async function createNewConversationBox() {
         divPrincipal.style = "border-radius: 6px; margin-bottom: 1vw; width: 75vw;";
         divPrincipal.id = otherUser;
         divPrincipal.innerHTML = `
-        <a href="Messages?actualUser=${actualUser}&otherUser=${otherUser}%conver=${conver}" class="d-flex flex-row list-group-item list-group-item-action">
+        <a href="Messages?actualUser=${actualUser}&otherUser=${otherUser}&conver=${conver}" class="d-flex flex-row list-group-item list-group-item-action">
             
             <div> <img id=${idOtherUser} src="" style="border-radius: 50%; width: 2.7vw; height: 2.7vw; margin-right: 1vw;"> </div>
             

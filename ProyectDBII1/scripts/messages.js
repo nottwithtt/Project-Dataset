@@ -3,6 +3,7 @@ const actualUser = parameters.get("actualUser");
 const otherUser = parameters.get("otherUser");
 const conver = parameters.get("conver");
 const appendTo = document.getElementById("messages");
+let urlPhotoUser = "";
 
 async function createMessage(){
     const content = document.getElementById("txtContent").value;
@@ -20,7 +21,10 @@ async function createMessage(){
 
         const response = await fetch('/createMessage',{
             method: "POST",
-            body: JSON.stringify({user:actualUser,idConver:conver,content: content,idFile:idFile}),
+            body: JSON.stringify({user:actualUser,
+                                  idConver:conver,
+                                  content: content,
+                                  idFile:idFile}),
             headers: {
                 "Content-Type": "application/json",
             },
@@ -42,7 +46,10 @@ async function createMessage(){
 
         const response = await fetch('/createMessage',{
             method: "POST",
-            body: JSON.stringify({user:actualUser,idConver:conver,content: null,idFile:idFile}),
+            body: JSON.stringify({user:actualUser,
+                                  idConver:conver,
+                                  content: null,
+                                  idFile:idFile}),
             headers: {
                 "Content-Type": "application/json",
             },
@@ -54,7 +61,10 @@ async function createMessage(){
     else{
         const response = await fetch('/createMessage',{
             method: "POST",
-            body: JSON.stringify({user:actualUser,idConver:conver,content: content,idFile:null}),
+            body: JSON.stringify({user:actualUser,
+                                  idConver:conver,
+                                  content: content,
+                                  idFile:null}),
             headers: {
                 "Content-Type": "application/json",
             },
@@ -64,11 +74,12 @@ async function createMessage(){
         let message = responseObject.message;
         //console.log(message);
     }
-    loadMessages();
+    await loadMessages();
 }
 
-
 async function loadMessages () {
+    await loadImageMessages();
+
     //eliminar los mensajes actuales
     appendTo.innerHTML = ``;
     //Traer los mensajes de la base de datos
@@ -84,19 +95,19 @@ async function loadMessages () {
     let messages = responseObject.messages;
     let lenMessages = Object.keys(messages).length;
 
-    console.log(lenMessages);
+    console.log(messages);
+
 
     for(let i = 0; i < lenMessages;i++ ){
         let mes = messages[i];
         if(mes["idAuthor"] == actualUser){
-            createRightMessageBox(mes);
+            console.log("hola");
+            await createRightMessageBox(mes);
         }
         else{
-            createLeftMessageBox(mes);
+            await createLeftMessageBox(mes);
         }
     }
-
-    await loadImageMessages();
 }
 
 async function createRightMessageBox(message){
@@ -121,9 +132,9 @@ async function createRightMessageBox(message){
         fileMessage = await loadFile(idFile);
     }
     console.log("se cayo aqui");
-    
+
+    divPrincipal.classList = "col-12 d-flex flex-row justify-content-end";
     if (displayContentFile == "none"){
-        divPrincipal.classList = "col-12 d-flex flex-row justify-content-end";
         divPrincipal.innerHTML = `
         <div class="card bg-primary text-white d-flex flex-row mt-3" style="width: auto; height: auto; margin-right: 7vw;">
             <h6 style="margin-top: 0.8vw; margin-bottom: 0.8vw; margin-left: 0.5vw; margin-right: 0.5vw; display: ${displayContent};">${content}</h6>
@@ -131,7 +142,6 @@ async function createRightMessageBox(message){
         `
     }
     else if(fileMessage.type == "image/png" || fileMessage.type == "image/jpeg"){
-        divPrincipal.classList = "col-12 d-flex flex-row justify-content-end";
         divPrincipal.innerHTML = `
         <div class="card bg-primary text-white d-flex flex-row mt-3" style="width: auto; height: auto; margin-right: 7vw;">
             <div class="d-flex flex-column">
@@ -140,13 +150,12 @@ async function createRightMessageBox(message){
                 </div>
                 <div class="d-flex justify-content-center">
                     <img src=${fileMessage.url} style="max-width: 15vw; border-radius: 10%; display: ${displayContentFile}">
-                <div>
+                </div>
             </div>
         </div>
         `
     }
     else if(fileMessage.type == "video/mp4"){
-        divPrincipal.classList = "col-12 d-flex flex-row justify-content-end";
         divPrincipal.innerHTML = `
         <div class="card bg-primary text-white d-flex flex-row mt-3" style="width: auto; height: auto; margin-right: 7vw;">
             <div class="d-flex flex-column">
@@ -166,24 +175,6 @@ async function createRightMessageBox(message){
     
 
     appendTo.appendChild(divPrincipal);
-}
-
-async function loadFile(idFile){
-    console.log("entra");
-    const response = await fetch('/getPhotoUser',{
-        method: "POST",
-        body: JSON.stringify({photo: idFile}),
-        headers: {
-            "Content-Type": "application/json",
-        },
-    })
-
-    const blob = await response.blob();
-
-    console.log(blob.type);
-    const url = URL.createObjectURL(blob);
-    console.log(url);
-    return {url:url,type:blob.type};
 }
 
 async function createLeftMessageBox(message){
@@ -208,12 +199,12 @@ async function createLeftMessageBox(message){
         fileMessage = await loadFile(idFile);
     }
     
+    divPrincipal.classList = "col-12 d-flex flex-row justify-content-start";
     if (displayContentFile == "none"){
-        divPrincipal.classList = "col-12 d-flex flex-row justify-content-start";
         divPrincipal.innerHTML = `
-        <div class="card bg-primary text-dark d-flex flex-row mt-3" style="width: auto; height: auto; margin-right: 7vw;">
+        <div class="card bg-light text-dark d-flex flex-row mt-3" style="width: auto; height: auto; margin-left: 7vw;">
             <div>
-                <img name="photoUser" src="" style="height: 2vw; width: 2vw; border-radius: 50%;">
+                <img src=${urlPhotoUser} style="height: 2vw; width: 2vw; border-radius: 50%;">
             </div>
             <div>
                 <h6 style="margin-top: 0.8vw; margin-bottom: 0.8vw; margin-left: 0.5vw; margin-right: 0.5vw; display: ${displayContent};">${content}</h6>
@@ -221,20 +212,38 @@ async function createLeftMessageBox(message){
         </div>
         `
     }
-    else{
-        divPrincipal.classList = "col-12 d-flex flex-row justify-content-start";
+    else if(fileMessage.type == "image/png" || fileMessage.type == "image/jpeg"){
         divPrincipal.innerHTML = `
-        <div class="card bg-light text-dark d-flex flex-row mt-3" style="width: auto; height: auto; margin-right: 7vw;">
+        <div class="card bg-light text-dark d-flex flex-row mt-3" style="width: auto; height: auto; margin-left: 7vw;">
             <div class="mt-1 mx-1">
-                <img name="photoUser" src="" style="height: 2vw; width: 2vw; border-radius: 50%">
+                <img src=${urlPhotoUser} style="height: 2vw; width: 2vw; border-radius: 50%">
             </div>
             <div class="d-flex flex-column">
                 <div>
                     <h6 style="margin-top: 0.8vw; margin-bottom: 0.8vw; margin-left: 0.5vw; margin-right: 0.5vw; display: ${displayContent};">${content}</h6>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <img src=${fileMessage} style="max-width: 15vw; border-radius: 10%; display: ${displayContentFile}">
+                    <img src=${fileMessage.url} style="max-width: 15vw; border-radius: 10%; display: ${displayContentFile}">
                 <div>
+            </div>
+        </div>
+        `
+    }
+    else if(fileMessage.type == "video/mp4"){
+        divPrincipal.innerHTML = `
+        <div class="card bg-light text-dark d-flex flex-row mt-3" style="width: auto; height: auto; margin-left: 7vw;">
+            <div class="mt-1 mx-1">
+                <img src=${urlPhotoUser} style="height: 2vw; width: 2vw; border-radius: 50%">
+            </div>
+            <div class="d-flex flex-column">
+                <div>
+                    <h6 style="margin-top: 0.8vw; margin-bottom: 0.8vw; margin-left: 0.5vw; margin-right: 0.5vw; display: ${displayContent};">${content}</h6>
+                </div>
+                <div class="embed-responsive embed-responsive-16by9">
+                    <video class="embed-responsive-item" controls>
+                    <source src=${fileMessage.url} type="video/mp4">
+                    </video>
+                </div>
             </div>
         </div>
         `
@@ -244,7 +253,27 @@ async function createLeftMessageBox(message){
     appendTo.appendChild(divPrincipal);
 }
 
+async function loadFile(idFile){
+    console.log("entra");
+    const response = await fetch('/getPhotoUser',{
+        method: "POST",
+        body: JSON.stringify({photo: idFile}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+
+    const blob = await response.blob();
+
+    console.log(blob.type);
+    const url = URL.createObjectURL(blob);
+    
+    return {url:url,type:blob.type};
+}
+
+
 async function loadImageMessages(){
+    console.log(otherUser);
     const idPhoto = await getOtherUser();
     console.log(idPhoto);
 
@@ -260,11 +289,9 @@ async function loadImageMessages(){
     console.log(blob);
     const url = URL.createObjectURL(blob);
 
-    const photos = document.getElementsByName("photoUser");
-    
-    for(let i = 0; i< photos.length; i++){
-        photos[i].src = url;
-    }
+    const photo = document.getElementById("photoUser");
+    photo.src = url;
+    urlPhotoUser = url;
 
 }
 

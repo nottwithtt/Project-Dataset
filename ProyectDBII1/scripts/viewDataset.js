@@ -33,27 +33,104 @@ async function replyComment(idComment){
 /* Comments */
 async function newCommentBox (margin,comment) {
     let container = document.getElementById("commentsContainer");
-
-    const commentContent = comment.content;
+    const content = comment.content;
+    const idFile = comment.file;
     const photoAuthor = await loadImageComment(comment.photoUser);
+    const divPrincipal = document.createElement('div');
+    let displayContent = "block";
+    let displayContentFile = "block";
+    let fileContent = "";
 
-    let divPrincipal = document.createElement('div');
+    console.log(comment.content);
+    console.log(comment.file);
+
+    if(content == "null"){
+        displayContent = "none";
+    }
+    if (idFile == "null"){
+        console.log("entro");
+        displayContentFile = "none";
+    }
+    else{
+        console.log(idFile);
+        fileContent = await loadFileComment(idFile);
+    }
+
+
     divPrincipal.style = "width: auto; height: auto;";
     divPrincipal.id = comment.idComment;
-    divPrincipal.innerHTML =
-    `<div class="card d-flex flex-row mt-3" style="width: auto; height: auto; margin-left : ${margin}vw">
-        <div class="mx-2 mb-1 mt-1">
-            <img src=${photoAuthor} style="height: 2vw; width: 2vw; border-radius: 50%;">
+
+    if(displayContentFile == "none"){
+        console.log("printNoArchivo");
+        divPrincipal.innerHTML =
+        `<div class="card d-flex flex-row mt-3" style="width: auto; height: auto; margin-left : ${margin}vw">
+            <div class="mx-2 mb-1 mt-1">
+                <img src=${photoAuthor} style="height: 2vw; width: 2vw; border-radius: 50%;">
+            </div>
+            <div class="mx-4" style="margin-top: 0.6vw;font-size: small;"> <p >${content}</p></div>
         </div>
-        <div class="mx-4" style="margin-top: 0.6vw;font-size: small;"> <p >${commentContent}</p></div>
-    </div>
-    <div style="margin-left : ${margin}vw">
-        <button onclick="replyComment(${comment.idComment})" class="text-secondary mt-1 btn btn-light btn-sm" style="font-size: small;  ">Reply</button>
-    <div/>`;
+        <div style="margin-left : ${margin}vw">
+            <button onclick="replyComment(${comment.idComment})" class="text-secondary mt-1 btn btn-light btn-sm" style="font-size: small;  ">Reply</button>
+        <div/>`;
+    }
+    else if(fileContent.type == "image/png" || fileContent.type == "image/jpeg"){
+        divPrincipal.innerHTML =
+        `
+        <div class="card d-flex flex-row mt-3" style="width: auto; height: auto; margin-left : ${margin}vw">
+            <div class="mx-2 mb-1 mt-1">
+                <img src=${photoAuthor} style="height: 2vw; width: 2vw; border-radius: 50%;">
+            </div>
+            <div class="d-flex flex-column">
+                <div class="mx-4" style="margin-top: 0.6vw;font-size: small; display: ${displayContent}">
+                    <p >${content}</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <img src=${fileContent.url} style="max-width: 10vw; border-radius: 10%; display: ${displayContentFile}">
+                </div>
+            </div>
+        </div>
+
+        <div class="" style="margin-left : ${margin}vw">
+            <button onclick="replyComment(${comment.idComment})" class="text-secondary mt-1 btn btn-light btn-sm" style="font-size: small;  ">Reply</button>
+        <div/>`;
+    }
+    else if(fileContent.type == "video/mp4"){
+        divPrincipal.innerHTML =
+        `<div class="card d-flex flex-row mt-3" style="width: auto; height: auto; margin-left : ${margin}vw">
+            <div class="mx-2 mb-1 mt-1">
+                <img src=${photoAuthor} style="height: 2vw; width: 2vw; border-radius: 50%;">
+            </div>
+            <div class="d-flex flex-column">
+                <div class="mx-4" style="margin-top: 0.6vw;font-size: small; display: ${displayContent}"> <p >${content}</p></div>
+                <div class="mt-2 mx-2 embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src=${fileContent.url}></iframe>
+                </div>
+            </div>
+        </div>
+        <div style="margin-left : ${margin}vw">
+            <button onclick="replyComment(${comment.idComment})" class="text-secondary mt-1 btn btn-light btn-sm" style="font-size: small;  ">Reply</button>
+        <div/>`;
+    }
     
     container.appendChild(divPrincipal);
 
     return;
+}
+
+async function loadFileComment(idFile){
+    const response = await fetch('/getPhotoUser',{
+        method: "POST",
+        body: JSON.stringify({photo: idFile}),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+
+    const blob = await response.blob();
+
+    const url = URL.createObjectURL(blob);
+    
+    return {url:url,type:blob.type};
 }
 
 
@@ -75,36 +152,80 @@ async function loadImageComment(idPhoto){
 }
 
 async function createNewComment() {
-    let p_idUser = sessionStorage.getItem("id");
-    let p_idComment = 1;
-    let p_idCommentResponse = idCommentResponse;
-    let p_creationDate = new Date();
-    let p_content = document.getElementById("txtMessageComment").value;
-    let p_file = "null";
+    const p_idUser = sessionStorage.getItem("id");
+    const p_idCommentResponse = idCommentResponse;
+    const p_content = document.getElementById("txtMessageComment").value;
+    const p_file = document.getElementById("formFileComment").files[0];
 
-    const response = await fetch('/createComment',{
-        method: "POST",
-        body: JSON.stringify({idUser: p_idUser,
-                            photo: photoUser,
-                            idComment: p_idComment,
-                            idCommentResponse: p_idCommentResponse,
-                            idDataset: idDataset,
-                            creationDate: p_creationDate,
-                            content: p_content,
-                            file: p_file}),
-        headers: {
-            "Content-Type": "application/json",
-        },
-    })
-    const answer = await response.json();
+    if(p_file&&p_content){
+        const formData = new FormData();
+        formData.append('file',p_file);
+        const uploadFile = await fetch("/uploadMessageFile",{
+            method: "POST",
+            body: formData
+        })
+        let responseServer = await uploadFile.json();
+        let idFile = responseServer.idFile;
 
+        const response = await fetch('/createComment',{
+            method: "POST",
+            body: JSON.stringify({idUser: p_idUser,
+                                photo: photoUser,
+                                idCommentResponse: p_idCommentResponse,
+                                idDataset: idDataset,
+                                content: p_content,
+                                file: idFile}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        const answer = await response.json();
+    }
+    else if(p_file&&!p_content){
+        const formData = new FormData();
+        formData.append('file',p_file);
+        const uploadFile = await fetch("/uploadMessageFile",{
+            method: "POST",
+            body: formData
+        })
+        let responseServer = await uploadFile.json();
+        let idFile = responseServer.idFile;
+
+        const response = await fetch('/createComment',{
+            method: "POST",
+            body: JSON.stringify({idUser: p_idUser,
+                                photo: photoUser,
+                                idCommentResponse: p_idCommentResponse,
+                                idDataset: idDataset,
+                                content: null,
+                                file: idFile}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        const answer = await response.json();
+    }
+    else{
+        const response = await fetch('/createComment',{
+            method: "POST",
+            body: JSON.stringify({idUser: p_idUser,
+                                photo: photoUser,
+                                idCommentResponse: p_idCommentResponse,
+                                idDataset: idDataset,
+                                content: p_content,
+                                file: null}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        const answer = await response.json();
+    }
+    
     getComments();
 }
 
 
 async function getComments() {
-
-    
     const response = await fetch('/getDatasetComments',{
         method: "POST",
         body: JSON.stringify({datasetId: idDataset}),
@@ -129,7 +250,7 @@ async function getComments() {
         let idComment = values[i].idCommentResponse;
         
         if(idComment == null || idComment== "null"){
-            console.log(values[i].content);
+            //console.log(values[i].content);
             await newCommentBox(margin,values[i]);
             await createCommentsResponse(margin,values[i]);
         }
@@ -138,8 +259,8 @@ async function getComments() {
 
 
 async function createCommentsResponse(margin,comment){
-    console.log("COM - " + comment.content);
-    console.log("=> call");
+    //console.log("COM - " + comment.content);
+    //console.log("=> call");
     const response = await fetch('/getCommentsResponse',{
         method: "POST",
         body: JSON.stringify({idComment: comment.idComment}),
@@ -155,8 +276,8 @@ async function createCommentsResponse(margin,comment){
     const values = Object.values(ansers);
 
     for(let i = 0; i < keys.length; i++){
-        console.log(i);
-        console.log("printComment");
+        //console.log(i);
+        //console.log("printComment");
         await newCommentBox(margin + 2,values[i]);
         await createCommentsResponse(margin + 2,values[i]);
     }
