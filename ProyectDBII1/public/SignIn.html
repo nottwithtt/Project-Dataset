@@ -27,36 +27,59 @@
             <!-- Div -->
             <div class="col d-flex flex-row justify-content-center" style="margin-top: 35px">
                 <!-- Card information -->
-                <div class="card" style="width: 700px; height: 460px;">
-                    <div class="card-body" style="margin-top: 35px;margin-left: 50px; margin-right: 50px;margin-bottom: 35px;">
-                        
-                        <p class="h2">Sign In</p>
-                        
-                        <!-- USERNAME FORM -->
-                        <!-- ID = txtUsernameSignIn -->
-                        <label for="txtUsernameSignIn" class="form-label mt-3">Username</label>
-                        <input id="txtUsernameSignIn" type="text" class="form-control" required>
+                <div class="row d-flex justify-content-center">
+                    <div class="card" style="width: 700px; height: 460px;">
+                        <div class="card-body" style="margin-top: 35px;margin-left: 50px; margin-right: 50px;margin-bottom: 35px;">
+                            
+                            <p class="h2">Sign In</p>
+                            <form >
+                                <label for="txtUsernameSignIn" class="form-label mt-3">Username</label>
+                                <!-- USERNAME FORM -->
+                                <!-- ID = txtUsernameSignIn -->
+                                <div class="input-group mb-1">
+                                    <span class="input-group-text" id="arroba">@</span>
+                                    <input id="txtUsernameSignIn" type="text" class="form-control" aria-label="Username" aria-describedby="arroba" required>
+                                </div>
+                                  
+                                <!-- PASSWORD FORM -->
+                                <!-- ID = txtPasswordSignIn -->
+                                <label for="txtPasswordSignIn" class="form-label mt-3">Password</label>
+                                <input id="txtPasswordSignIn" type="password" class="form-control" required>
+                            </form>
+    
+                            
+                            <p class="mt-3">Don't have an account? 
+                                <!-- REGISTER BUTTON -->
+                                <a href="/Register">Register</a>
+                            </p>
+    
+                            <!-- SIGN IN BUTTON -->
+                            <!-- CALL SignIn() Function -->
+                            <input id="submitSignIn" onclick="SignIn()" type="submit" class="btn btn-outline-primary mt-3" value="Sign In">
+                        </div>
 
-                        <!-- PASSWORD FORM -->
-                        <!-- ID = txtPasswordSignIn -->
-                        <label for="txtPasswordSignIn" class="form-label mt-3">Password</label>
-                        <input id="txtPasswordSignIn" type="password" class="form-control" required>
 
                         
-                        <p class="mt-3">Don't have an account? 
-                            <!-- REGISTER BUTTON -->
-                            <a href="/Register">Register</a>
-                        </p>
-
-                        <!-- SIGN IN BUTTON -->
-                        <!-- CALL SignIn() Function -->
-                        <input id="submitSignIn" onclick="SignIn()" type="submit" class="btn btn-outline-primary mt-3" value="Sign In">
                     </div>
                 </div>
             </div>
         </div>
+
+        <div id="signinAlert" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="toast-header">
+                <img src="../Images/Icons/Isotipo.png" class="rounded me-2" width="30vw">
+                <strong class="me-auto">Dataford</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+              <div class="toast-body">
+                Incorrect username or password check your credentials
+              </div>
+            </div>
+        </div>
     </div>
 
+    
 
     <script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
     <script src="../scripts/signIn.js"></script>

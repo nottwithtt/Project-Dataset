@@ -19,27 +19,39 @@ async function createDataSetTest (){
     let datasetDescription = document.getElementById("txtDescriptionDataset").value;
     let datasetImage = document.getElementById("imageDataSetForm").files[0];
     let datasetFiles = document.getElementById("fileDataset").files;
-    if(datasetImage&&datasetFiles&&datasetDescription&&datasetName){
+
+    if(!datasetImage||!datasetFiles||!datasetDescription||!datasetName){
+        document.getElementById('searchAlert').innerHTML =  `Incomplete information, please check`;
+        const toast = document.querySelector('.toast');
+        const viewToast = new bootstrap.Toast(toast);
+        viewToast.show();
+    }
+    else if(datasetImage&&datasetFiles&&datasetDescription&&datasetName){
         let formDataOne = new FormData();
-        formDataOne.append('photoDataset',datasetImage)
+        formDataOne.append('photoDataset',datasetImage);
         const responseIdPhotoDataset = await fetch('/uploadPhotoDataset',{
             method: "POST",
             body: formDataOne
         });
+
         let response = await responseIdPhotoDataset.json()
         let idPhoto = response.answer;
         console.log(idPhoto);
+
         let formDataTwo = new FormData();
         for(let i = 0;i<datasetFiles.length;i++){
             formDataTwo.append('filesDataset',datasetFiles[i]);
         }
+
         const responseIdsFiles = await fetch('/uploadFilesDataset',{
             method: "POST",
             body: formDataTwo
-        })
+        });
+
         let responseIdFiles = await responseIdsFiles.json();
         let arrayIds = responseIdFiles.answer;
         console.log(arrayIds);
+
         const uploadDataset = await fetch('/uploadDataset',{
             method: "POST",
             body: JSON.stringify({
@@ -53,6 +65,12 @@ async function createDataSetTest (){
                 "Content-Type": "application/json",
             },
         });
+        
+        let res = await uploadDataset.json();
 
-    }e
+        document.getElementById('searchAlert').innerHTML =  `Dataset created correctly`;
+        const toast = document.querySelector('.toast');
+        const viewToast = new bootstrap.Toast(toast);
+        viewToast.show();
+    }
 }

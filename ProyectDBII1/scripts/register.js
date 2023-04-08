@@ -113,7 +113,18 @@ async function Register(event){
     
         
     }else{
-        window.location.href = "/Register"
+        if(!RegisterRestrictions(usersArray,username)){
+            document.getElementById('registerAlert').innerHTML = `The username exists, try another one`;
+            const toast = document.querySelector('.toast');
+            const viewToast = new bootstrap.Toast(toast);
+            viewToast.show();
+        }
+        else if(!name||!username||!lastName||!birthday||!photo||!password){
+            document.getElementById('registerAlert').innerHTML = `Incomplete information, please check`;
+            const toast = document.querySelector('.toast');
+            const viewToast = new bootstrap.Toast(toast);
+            viewToast.show();
+        }
     }
 }
 

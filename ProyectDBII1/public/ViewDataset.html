@@ -9,7 +9,7 @@
     <title>View Dataset</title>
     <link rel="stylesheet" href="../bootstrap-5.0.2-dist/css/bootstrap.min.css">
 </head>
-<body onload="getComments()" style="background-color: white; padding-bottom: 56px;" >
+<body style="background-color: white; padding-bottom: 56px;" >
     
     <!-- Navbar comments-->
     <nav class="navbar navbar-light bg-light fixed-bottom" style="border-color: #929191;">
@@ -152,6 +152,19 @@
 
             </div>
         </div>
+    </div>
+
+    <div class="position-fixed bottom-0 end-0 border-bottom-0 mb-5 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <img src="../Images/Icons/Isotipo.png" class="rounded me-2" width="30vw">
+            <strong class="me-auto">Dataford</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body" id="commentAlert">
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="modal fade" id="downloadUsers-modal" tabindex="-1" aria-hidden="true" aria-labelledby="label-modal-1">

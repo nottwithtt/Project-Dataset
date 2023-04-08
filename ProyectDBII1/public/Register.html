@@ -57,7 +57,12 @@
                                             <!-- ID = txtUsernameRegister -->
                                             <div id="labelRegisterUsername" class="mt-2">
                                                 <label for="txtUsernameRegister" class="form-label">Username</label>
-                                                <input id="txtUsernameRegister" type="text" class="form-control form-control-sm" required>
+                                                <div class="input-group input-group-sm">
+                                                    <span class="input-group-text " id="arroba">@</span>
+                                                    <input id="txtUsernameRegister" type="text" class="form-control form-control-sm" aria-label="Username" aria-describedby="arroba" required>
+                                                </div>
+                                                
+                                                
                                             </div>
 
                                             <!-- BIRTHDAY FORM -->
@@ -109,12 +114,23 @@
 
             </div>
         </div>
+
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="toast-header">
+                <img src="../Images/Icons/Isotipo.png" class="rounded me-2" width="30vw">
+                <strong class="me-auto">Dataford</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+              <div class="toast-body" id="registerAlert">
+              </div>
+            </div>
+        </div>
     </div>
     
    
     <script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
     <script src="../scripts/register.js"></script>
-    <script src="../scripts/navbar.js"></script>
     <script src="../scripts/session.js"></script>
 </body>
 </html>
