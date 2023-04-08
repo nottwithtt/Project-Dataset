@@ -35,7 +35,7 @@ const redisDB = new Redis("redis://default:b953727216e840ba8c2590cb8b4ceeee@usw1
 const mysql = require('mysql2');
 const { ObjectID } = require('mongodb');
 //const connection = mysql.createConnection(DATABASE_URL='mysql://zcvz5mpa0mku4a1wrhmr:pscale_pw_z55WN8fUijvuNvIk2MutRQIqMyt3tWYsyzsHMZ77hp@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":true}')
-const connection = mysql.createConnection(DATABASE_URL='mysql://uqe1wr1iggsojm84lb72:pscale_pw_PgwwEZT8Eew49AFAdEr8ubXuRvu9gagvFT4Ah2vbAgn@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
+//const connection = mysql.createConnection(DATABASE_URL='mysql://uqe1wr1iggsojm84lb72:pscale_pw_PgwwEZT8Eew49AFAdEr8ubXuRvu9gagvFT4Ah2vbAgn@aws.connect.psdb.cloud/mysql-db1?ssl={"rejectUnauthorized":false}');
 
 
 //Variables para conectarse a mysql
@@ -391,7 +391,9 @@ app.post('/insertUser',bodyParser.json(), async (req,res)=>{
     let user =  await createUserMongo(username,password,firstName,firstSurname,birthDate,photo);
     let responseUser = await findUserById(user.insertedId);
     let idNeo4j = user.insertedId.toString();
-    let writeNeo4j = await createUser(idNeo4j,username);
+    console.log(idNeo4j);
+    console.log("Buenos dias");
+    await createUser(idNeo4j,username);
     res.json({"user":responseUser});
 })
 
@@ -844,7 +846,7 @@ async function cloneDataset(idDataset, newName){
 async function createUser(User,username){
     const session = driver.session({database: 'neo4j'});
     try{
-        const query = `CREATE (:User {id_mongo: ${User}, username: ${username}})`;
+        const query = `CREATE (:User {id_mongo: "${User}", username: "${username}"})`;
         await session.executeWrite(transaction => transaction.run(query));
     }catch(error){
         console.error(error);
