@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const bcrypt = require('bcrypt');
 let db;
-const URI = 'mongodb+srv://nottwithtt:Nicolita1998+@cluster0.gi2w4fi.mongodb.net/dbprojectDataSet?retryWrites=true&w=majority';
+const URI = 'mongodb+srv://nottwithtt:@cluster0.gi2w4fi.mongodb.net/dbprojectDataSet?retryWrites=true&w=majority';
 const conn = mongoose.createConnection(URI, {useNewUrlParser: true});
 const JSZIP = require('jszip');
 const fileSaver = require('file-saver');
